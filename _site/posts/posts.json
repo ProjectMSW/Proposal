@@ -15,5 +15,22 @@
     "preview": {},
     "last_modified": "2021-02-23T22:42:54+08:00",
     "input_file": {}
+  },
+  {
+    "path": "posts/2021-02-23-visual-analystic-project-proposal/",
+    "title": "Visual Analystic Project Proposal",
+    "description": "This is the page for our Project Proposal",
+    "author": [
+      {
+        "name": "Amanda Tan, Daniel Lin, SMC",
+        "url": "https://example.com/norajones"
+      }
+    ],
+    "date": "2021-02-23",
+    "categories": [],
+    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-02-23T22:49:32+08:00",
+    "input_file": "visual-analystic-project-proposal.utf8.md"
   }
 ]
