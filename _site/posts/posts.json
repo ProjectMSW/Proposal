@@ -18,19 +18,19 @@
   },
   {
     "path": "posts/2021-02-23-visual-analystic-project-proposal/",
-    "title": "Visual Analystic Project Proposal",
-    "description": "This is the page for our Project Proposal",
+    "title": "Project Proposal",
+    "description": "Project Proposal for ISSS608 Visual Analytics",
     "author": [
       {
-        "name": "Amanda Tan, Daniel Lin, SMC",
-        "url": "https://example.com/norajones"
+        "name": "Amanda Tan, Daniel Lin Yong Yan, Siow Mun Chai",
+        "url": "https://www.smu.edu.sg"
       }
     ],
     "date": "2021-02-23",
     "categories": [],
-    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nAmanda’s hihihi\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "contents": "\r\nIntroduction\r\nOne of the three shifts that the Singapore government is making to keep healthcare affordable and sustainable is to bring healthcare closer to homes and support ageing in the community. To achieve this, public healthcare services are organised into three clusters overseeing a specific region:\r\nCentral region: National Healthcare Group (NHG)\r\nEastern region: Singapore Health Services (SingHealth)\r\nWestern region: National University Health System (NUHS)\r\nThis segregation would allow the clusters to better coordinate care delivery along the care continuum from primary, acute, intermediate to long-term care, in their respective regions (Ministry of Health, Singapore, 2018).\r\nIn Singapore General Hospital, part of the SingHealth cluster, the Community Care Team (CCT), comprising of Medical Social Workers (MSWs), was formed in mid 2018. The aim of the CCT is to facilitate person-centred care in the community and to enable patients to remain in the community as long as possible. This is achieved through collaboration with community partners to meet patient psychosocial needs with health and social issues.\r\nIn order to explore the breadth and depth of psychosocial needs in the community and to devise targeted intervention strategies to address them, the Psychosocial Acuity Scale (PAS), established in the University of Michigan Health System, Ann Arbor, was introduced and is being used to capture patient’s data based on their psychosocial needs (Klett, Firn, Abney, Battles, Harrington & Vantine, 2014). The PAS is a clinical measure and tool used to assess the patient/family/community situation prior to any social work involvement. It consists of seven domains, with each domain having four acuity levels.\r\nThis project looks at providing an application to aid in the visualisation and analysis of the data collected by the CCT MSWs.\r\nMotivation\r\nThe project team is motivated to help the CCT MSWs to discover trends and gain insights on the psychosocial acuity of patients in the community. The analysis tool will enable the MSW team to identify current trends and service needs, which would in turn inform the MSWs on the potential intervention strategies required in the community. This would have both practice and health and social care policy implications on enabling patients to age well in the community.\r\nWhile the dataset is meant for data analysis, it has been mainly used for case monitoring and workload statistics purposes. To enhance and facilitate the analysis task for the MSWs, the project team will attempt to provide an easy-to-use and interactive application. It is also an opportune time to start analysing their data, after allowing the CCT team’s systems and processes to stabilise since its formation in mid 2018.\r\nData\r\nThe data is split into three files, one for each MSW. The fields can be categorised into the following areas:\r\nPatient’s sociodemographics and postal code\r\nReferral details\r\nMSW assessment details including the PAS levels\r\nEach file contains the patient assessment records done by the respective MSW from mid 2018 to 2020. There could be repeated assessments for the same patient at different times.\r\nReferences\r\nMinistry of Health, Singapore (14 Aug 2018). Opening Address by Dr Amy Khor, Senior Minister of State, Ministry of Health, at the Singapore Healthcare Management Congress 2018, 14 August 2018. Retrieved from https://www.moh.gov.sg/news-highlights/details/opening-address-by-dr-amy-khor-senior-minister-of-state-ministry-of-health-at-the-singapore-healthcare-management-congress-2018-14-august-2018\r\nKlett, S., Firn, J., Abney, N., Battles, A., Harrington, J., & Vantine, A. (2014). Developing a reliable and valid scale to measure psychosocial acuity. Social work in health care, 53(5), 503–517. https://doi.org/10.1080/00981389.2014.898726\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-02-27T08:57:52+08:00",
+    "last_modified": "2021-02-27T17:05:41+08:00",
     "input_file": "visual-analystic-project-proposal.utf8.md"
   }
 ]
