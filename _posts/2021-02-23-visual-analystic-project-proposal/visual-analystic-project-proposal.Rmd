@@ -1,11 +1,11 @@
 ---
-title: "Visualisation and Analysis of Patient's Psychosocial Acuity"
+title: "Visualisation and Analysis of Patient Psychosocial Acuity"
 description: |
   Project Proposal
 author:
   - name: Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda
     url: www.smu.edu.sg
-date: 02-24-2021
+date: 02-23-2021
 output:
   distill::distill_article:
     self_contained: false
@@ -88,6 +88,40 @@ knitr::include_graphics("image/Sketch_regression_prediction.jpg")
 ```{r pressure4, echo=FALSE, fig.cap="Proposed screen for Data Exploration", out.width = '100%'}
 knitr::include_graphics("image/Sketch_data_exploration.jpg")
 ```
+
+## Project Timeline
+
+```{r pressure5, echo=FALSE, fig.cap="Project Timeline", out.width = '300%'}
+knitr::include_graphics("image/timeline.jpg")
+```
+
+## Software Tool
+
+The application will be written in R using RStudio.
+
+### R Packages
+
+The following R packages would be used:
+
+
+- DT: https://cran.r-project.org/web/packages/DT
+- ggplot2: https://cran.r-project.org/web/packages/ggplot2/index.html
+- leaflet: https://cran.r-project.org/web/packages/leaflet
+- lubridate: https://cran.r-project.org/web/packages/lubridate/index.html
+- plotly: https://cran.r-project.org/web/packages/plotly
+- readr: https://cran.r-project.org/web/packages/readr
+- shiny: https://shiny.rstudio.com
+- shinythemes: https://cran.r-project.org/web/packages/shinythemes
+- shinyWidgets: https://cran.r-project.org/web/packages/shinyWidgets
+- tidyverse: https://www.tidyverse.org
+- corrplot: https://cran.r-project.org/web/packages/corrplot
+- purr: https://cran.r-project.org/web/packages/purrr/index.html
+- rgdal: https://cran.r-project.org/web/packages/rgdal
+- rgeos: https://cran.r-project.org/web/packages/rgeos
+- cluster: https://cran.r-project.org/web/packages/cluster/index.html
+- dendextend https://cran.r-project.org/web/packages/dendextend
+- MASS: https://cran.r-project.org/web/packages/MASS/index.html
+
 
 
 ## References
