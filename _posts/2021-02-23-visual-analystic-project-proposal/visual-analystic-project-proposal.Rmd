@@ -1,11 +1,11 @@
 ---
 title: "Visualisation and Analysis of Patient's Psychosocial Acuity"
 description: |
-  Project Proposal for ISSS608 Visual Analytics
+  Project Proposal
 author:
-  - name: Amanda Tan, Daniel Lin Yong Yan, Siow Mun Chai
-    url: https://www.smu.edu.sg
-date: 02-23-2021
+  - name: Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda
+    url: www.smu.edu.sg
+date: 02-24-2021
 output:
   distill::distill_article:
     self_contained: false
@@ -13,8 +13,9 @@ output:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
+
 ## Introduction
 
 One of the three shifts that the Singapore government is making to keep healthcare affordable and sustainable is to bring healthcare closer to homes and support ageing in the community. To achieve this, public healthcare services are organised into three clusters overseeing a specific region: 
