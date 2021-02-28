@@ -54,14 +54,14 @@ The following is the proposed scope of the project.
 
 1. Analysis and preparation of PAS dataset
 2. Exploratory Data Analysis (EDA)
-3. Time Series and Geospatial Analysis
+3. Time Series and Geo-spatial Analysis
 4. Clustering Analysis
 5. Multiple Linear Regression (MLR) and Predictive Modelling 
 6. Development of R-Shiny mobile application for user interactivity
 
 ## Storyboard
 
-There will be 4 sections in the final app. The first section will be on Time Series and Geo-spatial Analysis. The second section will be on Clustering Analysis and the third section will be on Regression and Prediction Modelling. The fourth section will allow the user to explore with the data used in the application.
+There will be four sections in the final app. The first section will be on Time Series and Geo-spatial Analysis. The second section will be on Clustering Analysis and the third section will be on Regression and Prediction Modelling. The fourth section will allow the user to explore with the data used in the application.
 
 Proposed layouts and features of the sections are as follow.
 
