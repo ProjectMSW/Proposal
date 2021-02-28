@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2021-02-23-visual-analystic-project-proposal/",
+    "title": "Visual Analystic Project Proposal",
+    "description": "This is the page for our Project Proposal",
+    "author": [
+      {
+        "name": "Amanda Tan, Daniel Lin, SMC",
+        "url": "https://example.com/norajones"
+      }
+    ],
+    "date": "2021-02-23",
+    "categories": [],
+    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\n<<<<<<< HEAD Hi hi hi!!! ======= Amanda’s hihihi >>>>>>> 722aae3c1b450add4663ae9bd982ea618ea3ea27\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-02-27T09:07:27+08:00",
+    "input_file": "visual-analystic-project-proposal.utf8.md"
+  },
+  {
     "path": "posts/welcome/",
     "title": "Welcome to My Blog",
     "description": "Welcome to our new blog, My Blog. We hope you enjoy \nreading what we have to say!",
@@ -13,24 +30,7 @@
     "categories": [],
     "contents": "\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-02-23T22:42:54+08:00",
+    "last_modified": "2021-02-26T21:13:25+08:00",
     "input_file": {}
-  },
-  {
-    "path": "posts/2021-02-23-visual-analystic-project-proposal/",
-    "title": "Visual Analystic Project Proposal",
-    "description": "This is the page for our Project Proposal",
-    "author": [
-      {
-        "name": "Amanda Tan, Daniel Lin, SMC",
-        "url": "https://example.com/norajones"
-      }
-    ],
-    "date": "2021-02-23",
-    "categories": [],
-    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nHi hi hi!!!\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
-    "preview": {},
-    "last_modified": "2021-02-26T21:14:52+08:00",
-    "input_file": "visual-analystic-project-proposal.utf8.md"
   }
 ]

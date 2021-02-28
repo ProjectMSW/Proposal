@@ -18,7 +18,11 @@ knitr::opts_chunk$set(echo = FALSE)
 
 Distill is a publication format for scientific and technical writing, native to the web.
 
+<<<<<<< HEAD
 Hi hi hi!!!
+=======
+Amanda's hihihi
+>>>>>>> 722aae3c1b450add4663ae9bd982ea618ea3ea27
 
 Learn more about using Distill at <https://rstudio.github.io/distill>.
 

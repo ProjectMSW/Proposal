@@ -1,0 +1,40 @@
+---
+title: "Project Proposal"
+author: "Amanda Tan"
+date: "2/24/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+One of the three shifts that the Singapore government is making to keep healthcare affordable and sustainable is to bring healthcare closer to homes and support ageing in the community. To achieve this, public healthcare services are organised into three clusters to better coordinate care delivery along the care continuum - primary, acute, intermediate and long-term care (Ministry of Health, Singapore, 2018). 
+
+In one of the acute hospitals in Singapore, a small team of Medical Social Workers (MSWs) was formed in 2018 to facilitate person-centred care in the community and to enable patients to remain in the community as long as possible. This is achieved through collaboration with community partners to meet patient psychosocial needs with health and social issues. The Community Care Team (CCT) MSWs also provide psychosocial consultations, assessments and intervention for patients in the community. Patient sociodemographics and key salient points of the MSWs' assessment, based on the Psychosocial Acuity Scale (PAS), are captured in an Excel database. The PAS is a clinical measure and tool used to assess the patient/family/community situation prior to any social work involvement. It consists of seven domains, with each domain having four acuity levels.
+
+This project looks at providing an application to aid in the visualisation and analysis of the data collected by the CCT MSWs.
+
+## Motivation
+
+The project team is motivated to help the CCT MSWs to discover trends and gain insights about the good work that they do for person-centred care in the community. The analysis tool will enable the MSW team to identify current trends and possible service gaps. This in turn will empower the MSWs to engage the ministry, community care partners and other relevant stakeholders to explore more targeted intervention strategies to help keep healthcare affordable and sustainable, and enable patients to age well in the community.
+
+The nature of the dataset also makes it difficult to conduct any analysis. The Excel file is designed for data entry by the MSWs for case monitoring and workload statistics purposes. To facilitate the analysis task for the MSWs, the project team will attempt to provide an easy-to-use and interactive application. It is also an opportune time to start analysing their data, after allowing the CCT team's systems and processes to stabilise since its formation in mid 2018.
+
+## Data
+
+The data is split into three files, one for each MSW. The fields in each data file is largely the same, except for some addition of fields for the individual MSW's reference. The fields can be categorised into the following areas:
+
+* Patient's sociodemographics and postal code
+* Referral details
+* MSW assessment details including the PAS levels
+
+Each file contains the patient assessment records done by the respective MSW from mid 2018 to 2020. There could be repeated assessments for the same patient at different times.
+
+
+## References
+
+Ministry of Health, Singapore (14 Aug 2018). Opening Address by Dr Amy Khor, Senior Minister of State, Ministry of Health, at the Singapore Healthcare Management Congress 2018, 14 August 2018. Retrieved from https://www.moh.gov.sg/news-highlights/details/opening-address-by-dr-amy-khor-senior-minister-of-state-ministry-of-health-at-the-singapore-healthcare-management-congress-2018-14-august-2018
+
