@@ -1,8 +1,8 @@
 [
   {
     "path": "posts/2021-03-27-covid-deaths/",
-    "title": "COVID Deaths",
-    "description": "A short description of the post.",
+    "title": "hmmm...",
+    "description": "About the planning and prototyping process for one of the three sub-modules of a Shiny-based Visual Analytics Application project for the course *ISSS608 - Visual Analytics and Applications* offered in SMU MITB.",
     "author": [
       {
         "name": "amanda",
@@ -11,9 +11,9 @@
     ],
     "date": "2021-03-27",
     "categories": [],
-    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "contents": "\r\nOverview\r\nCurrent visualisations on COVID-19 deaths\r\nProportional symbol map\r\nTime-series graph\r\nHorizontal bar graph\r\nTable with horizontal data bars\r\nStoryboard\r\nData Preparation\r\nPrototype\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-03-27T07:39:53+08:00",
+    "last_modified": "2021-03-27T15:28:03+08:00",
     "input_file": "covid-deaths.utf8.md"
   },
   {

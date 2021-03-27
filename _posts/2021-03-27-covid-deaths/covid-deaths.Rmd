@@ -1,21 +1,35 @@
 ---
-title: "COVID Deaths"
+title: "hmmm..."
 description: |
-  A short description of the post.
+  About the planning and prototyping process for one of the three sub-modules of a Shiny-based Visual Analytics Application project for the course *ISSS608 - Visual Analytics and Applications* offered in SMU MITB.
 author: amanda
+URL: https://mydatastory.netlify.app
 date: 03-27-2021
 output:
   distill::distill_article:
     self_contained: false
 ---
 
-
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE)
 ```
 
-Distill is a publication format for scientific and technical writing, native to the web.
+# Overview
 
-Learn more about using Distill at <https://rstudio.github.io/distill>.
 
+# Current visualisations on COVID-19 deaths
+
+## Proportional symbol map
+## Time-series graph
+## Horizontal bar graph
+
+Table with horizontal data bars
+
+# Storyboard
+
+# Data Preparation
+
+# Prototype
 
