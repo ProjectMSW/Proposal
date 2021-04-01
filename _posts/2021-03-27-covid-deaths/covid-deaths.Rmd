@@ -18,8 +18,18 @@ knitr::opts_chunk$set(echo = FALSE,
 
 # Overview
 
+In December 2019, the Coronavirus (COVID-19) has caught the world's attention with the first COVID-19 cases reported in Wuhan, Hubei, China. Since then, the virus has spread like wildfire across the globe, with countries struggling to contain the virus to curb further spread and resurgence.
+
+Experts believe that COVID-19 is less deadly but more infectious than the Severe Acute Respiratory Syndrome (SARS) virus in 2003. In this sub-module, the questions that we want to answer are:
+
+* How do countries compare against each other in the total number of deaths due to COVID-19?
+* What is the relationship between the deaths and the country's standing in different areas e.g. number of COVID-19 cases, healthcare systems and expenditure, population make-up, human development index?
 
 # Current visualisations on COVID-19 deaths
+
+There are many time-series visualisations on COVID-19 deaths 
+
+Conducting literature review on how the analysis were performed before. The focus should be on identifying gaps whereby interactive web approach and visual analytics techniques can be used to enhance user experience on using the analysis techniques.
 
 ## Proportional symbol map
 ## Time-series graph
@@ -30,6 +40,162 @@ Table with horizontal data bars
 # Storyboard
 
 # Data Preparation
+
+## Loading all necessary packages for file import
+
+The following code chunk loads the necessary packages required for importing data files.
+
+```{r}
+
+packages = c('tidyverse', 'FunnelPlotR', 'sf', 'tmap')
+for(p in packages){
+  if(!require(p, character.only = T)){
+  install.packages(p)
+  }
+  library(p, character.only = T)
+}
+```
+
+## Importing files into R
+
+Import and selection of variables
+
+```{r warning=FALSE}
+covid <- read_csv("./data/owid-covid-latest.csv",
+                         col_types = cols_only(
+                           "iso_code" = "c",
+                           "continent" = "c",
+                           "location" = "c",
+                           "last_updated_date" = "D",
+                           "total_cases" = "n",
+                           "total_deaths" = "n",
+                           "total_tests" = "n",
+                           "positive_rate" = "n",
+                           "test_units" = "c",
+                           "population" = "n",
+                           "population_density" = "n",
+                           "gdp_per_capita" = "n",
+                           "extreme_poverty" = "n",
+                           "handwashing_facilities" = "n",
+                           "hospital_beds_per_thousand" = "n",
+                           "human_development_index" = "n"),
+                         locale = locale(date_format = "%Y-%m-%d")
+                         )
+
+health_exp <- read_csv("./data/UNdata_HealthExpenditure.csv",
+                       skip = 2,
+                       col_names = c("region/country/area","year_exp","series","percentage"),
+                       col_types = "_cncn__")
+
+health_personnel <- read_csv("./data/UNdata_HealthPersonnel.csv",
+                       skip = 2,
+                       col_names = c("region/country/area","year_personnel","series","value"),
+                       col_types = "_cncn__")
+
+pop_prop <- list.files(path="./data/", pattern="WorldBank_PopProp_", full.names = TRUE) %>%
+  map_df(~read_csv(.,
+                   skip = 4,
+                   col_types = cols_only(
+                     "Country Name" = "c",
+                     "Indicator Name" = "c",
+                     "2019" = "n")
+                   )
+         )
+
+intl_tourists <- read_csv("./data/UNDP_Intl_inbound_tourists_(thousands).csv",
+                          skip = 6,
+                          col_types = "_c________________________n_",
+                          na = c("..")
+                          )
+
+geo_lookup <- read_csv("./data/UID_ISO_FIPS_LookUp_Table.csv",
+                       col_types = "c_c_____nn__") %>%
+  filter(nchar(UID) <= 3) %>%
+  select(iso3, Lat, Long_) %>%
+  rename("lat" = "Lat", "long" = "Long_")
+```
+
+## Cleaning the data
+
+Want to join all values into one main table covid_deaths. Look at each dataset to prep before joining.
+
+```{r}
+pop_prop_cleaned <- pivot_wider(pop_prop, names_from = "Indicator Name", values_from = "2019") %>%
+  rename("0_to_14(%)" = "Population ages 0-14 (% of total population)",
+         "15_to_64(%)" = "Population ages 15-64 (% of total population)",
+         "65_and_above(%)" = "Population ages 65 and above (% of total population)")
+```
+
+```{r}
+intl_tourists_cleaned <- rename(intl_tourists,
+                        "annual_intl_arrivals_thousands" = "2011-2018")
+```
+
+```{r}
+health_personnel_phy <- health_personnel %>%
+  group_by(`region/country/area`, `series`) %>%
+  slice(which.max(`year_personnel`)) %>%
+  filter(`series` == "Health personnel: Physicians (per 1000 population)") %>%
+  pivot_wider(names_from = "series", values_from = "value") %>%
+  rename("num_physicians_per_thousand" = "Health personnel: Physicians (per 1000 population)")
+```
+
+```{r}
+health_exp_cleaned <- health_exp %>%
+  group_by(`region/country/area`, `series`) %>%
+  slice(which.max(`year_exp`)) %>%
+  pivot_wider(names_from = "series", values_from = "percentage") %>%
+  rename("current_health_exp_%gdp" = "Current health expenditure (% of GDP)",
+         "domestic_govt_health_exp_%totalgovtexp" = "Domestic general government health expenditure (% of total government expenditure)")
+```
+
+```{r}
+covid_deaths <- covid %>%
+  left_join(pop_prop_cleaned, by = c("location" = "Country Name")) %>%
+  left_join(intl_tourists_cleaned, by=c("location" = "Country")) %>%
+  left_join(health_personnel_phy, by=c("location" = "region/country/area")) %>%
+  left_join(health_exp_cleaned, by=c("location" = "region/country/area")) %>%
+  left_join(geo_lookup, by=c("iso_code" = "iso3")) %>%
+  filter(!is.na(continent))
+
+covid_deaths
+```
+
+## Reordering the columns in the data frame
+
+```{r}
+col_order <- c("iso_code", "continent", "location", "last_updated_date",
+               "total_cases", "total_deaths", "total_tests", "positive_rate",
+               "hospital_beds_per_thousand", "num_physicians_per_thousand",
+               "year_personnel", "handwashing_facilities",
+               "gdp_per_capita", "current_health_exp_%gdp", "domestic_govt_health_exp_%totalgovtexp",
+               "population", "population_density", "0_to_14(%)", "15_to_64(%)", "65_and_above(%)",
+               "extreme_poverty", "human_development_index",
+               "annual_intl_arrivals_thousands",
+               "lat", "long")
+
+covid_deaths <- covid_deaths[, col_order]
+```
+
+
+
+
+```{r warning=FALSE}
+ggplot(covid_deaths, aes(x=total_cases, y=total_deaths, colour = continent)) +
+  geom_point() +
+  scale_x_log10() +
+  scale_y_log10() +
+  theme(legend.position = "none")
+```
+
+```{r}
+ggplot(covid_deaths, aes(x=total_cases, y=case_fatality, colour = location)) +
+  geom_point() +
+  scale_x_log10() +
+  scale_y_log10() +
+  theme(legend.position = "none")
+```
+
 
 # Prototype
 
