@@ -1,7 +1,7 @@
 ---
-title: "hmmm..."
+title: "COVID-19: death statistics"
 description: |
-  About the planning and prototyping process for one of the three sub-modules of a Shiny-based Visual Analytics Application project for the course *ISSS608 - Visual Analytics and Applications* offered in SMU MITB.
+  This post is on the planning and prototyping process for one of the three sub-modules of a Shiny-based Visual Analytics Application project for the course *ISSS608 - Visual Analytics and Applications* offered in SMU MITB.
 author: amanda
 URL: https://mydatastory.netlify.app
 date: 03-27-2021
@@ -20,22 +20,28 @@ knitr::opts_chunk$set(echo = FALSE,
 
 In December 2019, the Coronavirus (COVID-19) has caught the world's attention with the first COVID-19 cases reported in Wuhan, Hubei, China. Since then, the virus has spread like wildfire across the globe, with countries struggling to contain the virus to curb further spread and resurgence.
 
-Experts believe that COVID-19 is less deadly but more infectious than the Severe Acute Respiratory Syndrome (SARS) virus in 2003. In this sub-module, the questions that we want to answer are:
-
-* How do countries compare against each other in the total number of deaths due to COVID-19?
-* What is the relationship between the deaths and the country's standing in different areas e.g. number of COVID-19 cases, healthcare systems and expenditure, population make-up, human development index?
+Experts believe that COVID-19 is less deadly but more infectious than the Severe Acute Respiratory Syndrome (SARS) virus in 2003. Although the number of deaths due to COVID-19 reached a staggering 2.85 million worldwide, its case fatality ratio or rate (defined as the proportion of deaths among a defined population of interest, in this case, the number of COVID-19 cases) is estimated at 1.4% to 3.4%, a far cry from the 9.6% of SARS and 34.3% of the lesser known Middle East Respiratory Syndrome coronavirus (MERS-CoV). Of the 2.85 million deaths, how do countries compare against each other? What is the relationship between the deaths and the country's standing in different areas e.g. number of COVID-19 cases, healthcare systems and expenditure, population make-up, human development index?
 
 # Current visualisations on COVID-19 deaths
 
-There are many time-series visualisations on COVID-19 deaths 
+The most frequently shown analysis on the COVID-19 deaths are:
+
+* Geo-spatial analysis: number of deaths and/or case fatality ratio shown on the map as a choropleth, point symbol map or proportional symbol map (see Figure 1)
+* Time series analysis: number of deaths and/or case fatality ratio for each country, plotted on a time series scale (see Figure 2)
+* Tabular analysis: table of death statistics with horizontal data bars to provide visual comparisons between countries/locations (see Figure 2)
+
+![Figure 1:<br>(*Left*) Proportional symbol map showing the case fatality ratio by location.<br>Source: https://coronavirus.jhu.edu/map.html<br>(*Right*) Choropleth of cumulative confirmed deaths per million people.<br>Source: https://ourworldindata.org/covid-deaths](images/curr_geospatial.jpg)
+
+![Figure 2: Table with horizontal data bars and time series analysis.<br>Source: https://pandemic.internationalsos.com/2019-ncov/covid-19-data-visualisation ](images/curr_table_horizontal_bar_charts_time_series.jpg)
+
+Both the time series and geo-spatial visualisations allow for a quick aggregate comparison between countries. Comparisons are made based on visual encodings such as colour and size of data points. This could however result in colour-fatigue, as there are many countries (and thus colours) for the user to take in. More details on number of deaths for individual countries are provided via interacting with the visualisations (not shown in figures above). However, comparisons on the details are challenging as it requires the user to exercise his/her memory to do the comparisons between countries. On the other hand, the table provides a single-view of the details across countries, but the numbers could be overwhelming for users to compare across countries, even with the horizontal bar charts.
+
+A lesser known visualisation used to compare case fatality rate is the funnel plot. There is one visualisation created specifically for COVID-19 case fatality rate for counties in North Carolina, USA, by a SAS researcher Rick Wicklin. Unlike the time-series, geo-spatial and tabular visualisations where users make comparisons based on the face-value of the numbers, the funnel plot seeks to highlight any anomalies from the expected range of the numerical values based on some statistical theories.
+
+
 
 Conducting literature review on how the analysis were performed before. The focus should be on identifying gaps whereby interactive web approach and visual analytics techniques can be used to enhance user experience on using the analysis techniques.
 
-## Proportional symbol map
-## Time-series graph
-## Horizontal bar graph
-
-Table with horizontal data bars
 
 # Storyboard
 
@@ -182,14 +188,6 @@ covid_deaths <- covid_deaths[, col_order]
 
 ```{r warning=FALSE}
 ggplot(covid_deaths, aes(x=total_cases, y=total_deaths, colour = continent)) +
-  geom_point() +
-  scale_x_log10() +
-  scale_y_log10() +
-  theme(legend.position = "none")
-```
-
-```{r}
-ggplot(covid_deaths, aes(x=total_cases, y=case_fatality, colour = location)) +
   geom_point() +
   scale_x_log10() +
   scale_y_log10() +
