@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["covid-deaths_files/anchor-4.2.2/anchor.min.js","covid-deaths_files/bowser-1.9.3/bowser.min.js","covid-deaths_files/distill-2.2.21/template.v2.js","covid-deaths_files/figure-html5/unnamed-chunk-9-1.png","covid-deaths_files/header-attrs-2.7/header-attrs.js","covid-deaths_files/jquery-1.11.3/jquery.min.js","covid-deaths_files/popper-2.6.0/popper.min.js","covid-deaths_files/tippy-6.2.7/tippy-bundle.umd.min.js","covid-deaths_files/tippy-6.2.7/tippy-light-border.css","covid-deaths_files/tippy-6.2.7/tippy.css","covid-deaths_files/tippy-6.2.7/tippy.umd.min.js","covid-deaths_files/webcomponents-2.0.0/webcomponents.js","data/owid-covid-latest.csv","data/UID_ISO_FIPS_LookUp_Table.csv","data/UNdata_HealthExpenditure.csv","data/UNdata_HealthPersonnel.csv","data/UNDP_Intl_inbound_tourists_(thousands).csv","data/WorldBank_PopProp_0-14.csv","data/WorldBank_PopProp_14-64.csv","data/WorldBank_PopProp_65&above.csv","images/currcorr.jpg","images/currfunnelplot.jpg","images/currMLR.jpg","images/currscatterplot.jpg","images/currviz.jpg"]}
+  {"type":"character","attributes":{},"value":["covid-deaths_files/anchor-4.2.2/anchor.min.js","covid-deaths_files/bowser-1.9.3/bowser.min.js","covid-deaths_files/distill-2.2.21/template.v2.js","covid-deaths_files/figure-html5/unnamed-chunk-10-1.png","covid-deaths_files/figure-html5/unnamed-chunk-9-1.png","covid-deaths_files/header-attrs-2.7/header-attrs.js","covid-deaths_files/jquery-1.11.3/jquery.min.js","covid-deaths_files/popper-2.6.0/popper.min.js","covid-deaths_files/tippy-6.2.7/tippy-bundle.umd.min.js","covid-deaths_files/tippy-6.2.7/tippy-light-border.css","covid-deaths_files/tippy-6.2.7/tippy.css","covid-deaths_files/tippy-6.2.7/tippy.umd.min.js","covid-deaths_files/webcomponents-2.0.0/webcomponents.js","data/owid-covid-latest.csv","data/UID_ISO_FIPS_LookUp_Table.csv","data/UNdata_HealthExpenditure.csv","data/UNdata_HealthPersonnel.csv","data/UNDP_Intl_inbound_tourists_(thousands).csv","data/WorldBank_PopProp_0-14.csv","data/WorldBank_PopProp_14-64.csv","data/WorldBank_PopProp_65&above.csv","images/currcorr.jpg","images/currfunnelplot.jpg","images/currMLR.jpg","images/currscatterplot.jpg","images/currviz.jpg"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2101,7 +2101,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <h1 id="overview">Overview</h1>
 <p>In December 2019, the Coronavirus (COVID-19) has caught the world’s attention with the first COVID-19 cases reported in Wuhan, Hubei, China. Since then, the virus has spread like wildfire across the globe, with countries struggling to contain the virus to curb further spread and resurgence.</p>
 <p>Experts believe that COVID-19 is less deadly but more infectious than the Severe Acute Respiratory Syndrome (SARS) virus in 2003. Although the number of deaths due to COVID-19 reached a staggering 2.85 million worldwide, its case fatality ratio or rate (defined as the proportion of deaths among a defined population of interest, in this case, the number of COVID-19 cases) is estimated at 1.4% to 3.4%, a far cry from the 9.6% of SARS and 34.3% of the lesser known Middle East Respiratory Syndrome coronavirus (MERS-CoV). Of the 2.85 million deaths, how do countries compare against each other? This assignment aims to visualise the relationships between health, economic and population structure indicators with COVID-19 deaths across countries.</p>
-<h1 id="review-of-current-visualisations-on-covid-19-deaths">Review of current visualisations on COVID-19 deaths</h1>
+<h1 id="literature-review-of-current-visualisations-on-covid-19-deaths">Literature review of current visualisations on COVID-19 deaths</h1>
 <p>Most visualisations report the death toll by location using geo-spatial, time-series and/or in tabular form (see Figure 1).</p>
 <figure>
 <img src="images/currviz.jpg" alt="Figure 1: Current visualisations on COVID-19 deaths. (a) Choropleth map of cumulative confirmed deaths per million people. Source: https://ourworldindata.org/covid-deaths  (b) Proportional symbol map showing the case fatality ratio by location. Actual numbers are reported on the right side panel. Source: https://coronavirus.jhu.edu/map.html  (c) Time-series of cumulative confirmed deaths per million people. Countries can be added or removed. Source: https://ourworldindata.org/covid-deaths  (d) Table with horizontal bar charts and another time-series visualisation on the deaths reported per day. Source: https://pandemic.internationalsos.com/2019-ncov/covid-19-data-visualisation" /><figcaption aria-hidden="true">Figure 1: Current visualisations on COVID-19 deaths.<br><em>(a)</em> Choropleth map of cumulative confirmed deaths per million people.<br>Source: <a href="https://ourworldindata.org/covid-deaths" class="uri">https://ourworldindata.org/covid-deaths</a> <br><em>(b)</em> Proportional symbol map showing the case fatality ratio by location. Actual numbers are reported on the right side panel.<br>Source: <a href="https://coronavirus.jhu.edu/map.html" class="uri">https://coronavirus.jhu.edu/map.html</a> <br><em>(c)</em> Time-series of cumulative confirmed deaths per million people. Countries can be added or removed.<br>Source: <a href="https://ourworldindata.org/covid-deaths" class="uri">https://ourworldindata.org/covid-deaths</a> <br><em>(d)</em> Table with horizontal bar charts and another time-series visualisation on the deaths reported per day.<br>Source: <a href="https://pandemic.internationalsos.com/2019-ncov/covid-19-data-visualisation" class="uri">https://pandemic.internationalsos.com/2019-ncov/covid-19-data-visualisation</a></figcaption>
@@ -2157,67 +2157,264 @@ document.addEventListener('DOMContentLoaded', function() {
 </tr>
 <tr class="even">
 <td>Interactivity</td>
-<td><em>ggplotly</em></td>
+<td><em>plotly</em>, <em>ggvis</em></td>
 </tr>
 </tbody>
 </table>
 <h1 id="data-preparation">Data Preparation</h1>
-<h2 id="loading-all-necessary-packages-for-file-import">Loading all necessary packages for file import</h2>
-<p>The following code chunk loads the necessary packages required for importing data files.</p>
+<p>All data extraction and wrangling are done in R using the <em>tidyverse</em> suite of packages.</p>
+<h2 id="install-and-load-all-necessary-packages">Install and load all necessary packages</h2>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>packages</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'tidyverse'</span>,
+             <span class='st'>'ggstatsplot'</span>, <span class='st'>'car'</span>,
+             <span class='st'>'FunnelPlotR'</span>, <span class='st'>'metafor'</span>, <span class='st'>'metaviz'</span>, <span class='st'>'funnelR'</span>,
+             <span class='st'>'mlr'</span>, <span class='st'>'olsrr'</span>,
+             <span class='st'>'plotly'</span>, <span class='st'>'ggvis'</span><span class='op'>)</span>
+<span class='kw'>for</span><span class='op'>(</span><span class='va'>p</span> <span class='kw'>in</span> <span class='va'>packages</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='kw'>if</span><span class='op'>(</span><span class='op'>!</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'>p</span>, character.only <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='va'>p</span><span class='op'>)</span>
+  <span class='op'>}</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>p</span>, character.only <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
+<span class='op'>}</span>
+</code></pre>
+</div>
+</div>
+<h2 id="import-and-extract-relevant-data">Import and extract relevant data</h2>
+<p>Data by country is obtained from various sources, as shown in the following table:</p>
+<table>
+<colgroup>
+<col style="width: 68%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><img width=200> Data source</th>
+<th><img width=350> Data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Our World in Data (owid)</td>
+<td>COVID-19 tests, positive rates, country to latitude-longitude coordinates mapping</td>
+</tr>
+<tr class="even">
+<td>John Hopkins University (JHU)</td>
+<td>COVID-19 cases, deaths</td>
+</tr>
+<tr class="odd">
+<td>World Bank</td>
+<td>Population age structure, GDP per capita, poverty indicator</td>
+</tr>
+<tr class="even">
+<td>UNdata</td>
+<td>Health expenditure, healthcare facilities and capacity indicators</td>
+</tr>
+<tr class="odd">
+<td>United Nations Development Programme (UNDP)</td>
+<td>Human Development Index (HDI), international inbound tourists</td>
+</tr>
+</tbody>
+</table>
+<p>The data is stored across eight files and <code>read_csv()</code> is used to import and extract the relevant columns into R.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>covid</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"./data/owid-covid-latest.csv"</span>,
+                         col_types <span class='op'>=</span> <span class='fu'>cols_only</span><span class='op'>(</span>
+                           <span class='st'>"iso_code"</span> <span class='op'>=</span> <span class='st'>"c"</span>,
+                           <span class='st'>"continent"</span> <span class='op'>=</span> <span class='st'>"c"</span>,
+                           <span class='st'>"location"</span> <span class='op'>=</span> <span class='st'>"c"</span>,
+                           <span class='st'>"last_updated_date"</span> <span class='op'>=</span> <span class='st'>"D"</span>,
+                           <span class='st'>"total_cases"</span> <span class='op'>=</span> <span class='st'>"n"</span>,
+                           <span class='st'>"total_deaths"</span> <span class='op'>=</span> <span class='st'>"n"</span>,
+                           <span class='st'>"total_tests"</span> <span class='op'>=</span> <span class='st'>"n"</span>,
+                           <span class='st'>"positive_rate"</span> <span class='op'>=</span> <span class='st'>"n"</span>,
+                           <span class='st'>"test_units"</span> <span class='op'>=</span> <span class='st'>"c"</span>,
+                           <span class='st'>"population"</span> <span class='op'>=</span> <span class='st'>"n"</span>,
+                           <span class='st'>"population_density"</span> <span class='op'>=</span> <span class='st'>"n"</span>,
+                           <span class='st'>"gdp_per_capita"</span> <span class='op'>=</span> <span class='st'>"n"</span>,
+                           <span class='st'>"extreme_poverty"</span> <span class='op'>=</span> <span class='st'>"n"</span>,
+                           <span class='st'>"handwashing_facilities"</span> <span class='op'>=</span> <span class='st'>"n"</span>,
+                           <span class='st'>"hospital_beds_per_thousand"</span> <span class='op'>=</span> <span class='st'>"n"</span>,
+                           <span class='st'>"human_development_index"</span> <span class='op'>=</span> <span class='st'>"n"</span><span class='op'>)</span>,
+                         locale <span class='op'>=</span> <span class='fu'>locale</span><span class='op'>(</span>date_format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>
+                         <span class='op'>)</span>
 
-</div>
-<h2 id="importing-files-into-r">Importing files into R</h2>
-<p>Import and selection of variables</p>
-<div class="layout-chunk" data-layout="l-body">
+<span class='va'>health_exp</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"./data/UNdata_HealthExpenditure.csv"</span>,
+                       skip <span class='op'>=</span> <span class='fl'>2</span>,
+                       col_names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"region/country/area"</span>,<span class='st'>"year_exp"</span>,<span class='st'>"series"</span>,<span class='st'>"percentage"</span><span class='op'>)</span>,
+                       col_types <span class='op'>=</span> <span class='st'>"_cncn__"</span><span class='op'>)</span>
 
-</div>
-<h2 id="cleaning-the-data">Cleaning the data</h2>
-<p>Want to join all values into one main table covid_deaths. Look at each dataset to prep before joining.</p>
-<div class="layout-chunk" data-layout="l-body">
+<span class='va'>health_personnel</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"./data/UNdata_HealthPersonnel.csv"</span>,
+                       skip <span class='op'>=</span> <span class='fl'>2</span>,
+                       col_names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"region/country/area"</span>,<span class='st'>"year_personnel"</span>,<span class='st'>"series"</span>,<span class='st'>"value"</span><span class='op'>)</span>,
+                       col_types <span class='op'>=</span> <span class='st'>"_cncn__"</span><span class='op'>)</span>
 
-</div>
-<div class="layout-chunk" data-layout="l-body">
+<span class='va'>pop_prop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span><span class='op'>(</span>path<span class='op'>=</span><span class='st'>"./data/"</span>, pattern<span class='op'>=</span><span class='st'>"WorldBank_PopProp_"</span>, full.names <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>map_df</span><span class='op'>(</span><span class='op'>~</span><span class='fu'>read_csv</span><span class='op'>(</span><span class='va'>.</span>,
+                   skip <span class='op'>=</span> <span class='fl'>4</span>,
+                   col_types <span class='op'>=</span> <span class='fu'>cols_only</span><span class='op'>(</span>
+                     <span class='st'>"Country Name"</span> <span class='op'>=</span> <span class='st'>"c"</span>,
+                     <span class='st'>"Indicator Name"</span> <span class='op'>=</span> <span class='st'>"c"</span>,
+                     <span class='st'>"2019"</span> <span class='op'>=</span> <span class='st'>"n"</span><span class='op'>)</span>
+                   <span class='op'>)</span>
+         <span class='op'>)</span>
 
-</div>
-<div class="layout-chunk" data-layout="l-body">
+<span class='va'>intl_tourists</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"./data/UNDP_Intl_inbound_tourists_(thousands).csv"</span>,
+                          skip <span class='op'>=</span> <span class='fl'>6</span>,
+                          col_types <span class='op'>=</span> <span class='st'>"_c________________________n_"</span>,
+                          na <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>".."</span><span class='op'>)</span>
+                          <span class='op'>)</span>
 
+<span class='va'>geo_lookup</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"./data/UID_ISO_FIPS_LookUp_Table.csv"</span>,
+                       col_types <span class='op'>=</span> <span class='st'>"c_c_____nn__"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nchar.html'>nchar</a></span><span class='op'>(</span><span class='va'>UID</span><span class='op'>)</span> <span class='op'>&lt;=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>select</span><span class='op'>(</span><span class='va'>iso3</span>, <span class='va'>Lat</span>, <span class='va'>Long_</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>rename</span><span class='op'>(</span><span class='st'>"lat"</span> <span class='op'>=</span> <span class='st'>"Lat"</span>, <span class='st'>"long"</span> <span class='op'>=</span> <span class='st'>"Long_"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h2 id="wrangle-and-combine-the-data">Wrangle and combine the data</h2>
+<p>Before combining the data frames into one main data frame for analysis, we need to explore and prepare each data frame.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>pop_prop_cleaned</span> <span class='op'>&lt;-</span> <span class='fu'>pivot_wider</span><span class='op'>(</span><span class='va'>pop_prop</span>, names_from <span class='op'>=</span> <span class='st'>"Indicator Name"</span>, values_from <span class='op'>=</span> <span class='st'>"2019"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>rename</span><span class='op'>(</span><span class='st'>"0_to_14(%)"</span> <span class='op'>=</span> <span class='st'>"Population ages 0-14 (% of total population)"</span>,
+         <span class='st'>"15_to_64(%)"</span> <span class='op'>=</span> <span class='st'>"Population ages 15-64 (% of total population)"</span>,
+         <span class='st'>"65_and_above(%)"</span> <span class='op'>=</span> <span class='st'>"Population ages 65 and above (% of total population)"</span><span class='op'>)</span>
+</code></pre>
+</div>
 </div>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>intl_tourists_cleaned</span> <span class='op'>&lt;-</span> <span class='fu'>rename</span><span class='op'>(</span><span class='va'>intl_tourists</span>,
+                        <span class='st'>"annual_intl_arrivals_thousands"</span> <span class='op'>=</span> <span class='st'>"2011-2018"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>health_personnel_phy</span> <span class='op'>&lt;-</span> <span class='va'>health_personnel</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>`region/country/area`</span>, <span class='va'>`series`</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>slice</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/which.min.html'>which.max</a></span><span class='op'>(</span><span class='va'>`year_personnel`</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>`series`</span> <span class='op'>==</span> <span class='st'>"Health personnel: Physicians (per 1000 population)"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>pivot_wider</span><span class='op'>(</span>names_from <span class='op'>=</span> <span class='st'>"series"</span>, values_from <span class='op'>=</span> <span class='st'>"value"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>rename</span><span class='op'>(</span><span class='st'>"num_physicians_per_thousand"</span> <span class='op'>=</span> <span class='st'>"Health personnel: Physicians (per 1000 population)"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>health_exp_cleaned</span> <span class='op'>&lt;-</span> <span class='va'>health_exp</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>`region/country/area`</span>, <span class='va'>`series`</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>slice</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/which.min.html'>which.max</a></span><span class='op'>(</span><span class='va'>`year_exp`</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>pivot_wider</span><span class='op'>(</span>names_from <span class='op'>=</span> <span class='st'>"series"</span>, values_from <span class='op'>=</span> <span class='st'>"percentage"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>rename</span><span class='op'>(</span><span class='st'>"current_health_exp_%gdp"</span> <span class='op'>=</span> <span class='st'>"Current health expenditure (% of GDP)"</span>,
+         <span class='st'>"domestic_govt_health_exp_%totalgovtexp"</span> <span class='op'>=</span> <span class='st'>"Domestic general government health expenditure (% of total government expenditure)"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>After cleaning the individual data frames, we can now combine and store the data in a single data frame.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>covid_deaths</span> <span class='op'>&lt;-</span> <span class='va'>covid</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>left_join</span><span class='op'>(</span><span class='va'>pop_prop_cleaned</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"location"</span> <span class='op'>=</span> <span class='st'>"Country Name"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>left_join</span><span class='op'>(</span><span class='va'>intl_tourists_cleaned</span>, by<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"location"</span> <span class='op'>=</span> <span class='st'>"Country"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>left_join</span><span class='op'>(</span><span class='va'>health_personnel_phy</span>, by<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"location"</span> <span class='op'>=</span> <span class='st'>"region/country/area"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>left_join</span><span class='op'>(</span><span class='va'>health_exp_cleaned</span>, by<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"location"</span> <span class='op'>=</span> <span class='st'>"region/country/area"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>left_join</span><span class='op'>(</span><span class='va'>geo_lookup</span>, by<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"iso_code"</span> <span class='op'>=</span> <span class='st'>"iso3"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>continent</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>We will reorder the columns to group similar variables.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>col_order</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"iso_code"</span>, <span class='st'>"continent"</span>, <span class='st'>"location"</span>, <span class='st'>"last_updated_date"</span>,
+               <span class='st'>"total_cases"</span>, <span class='st'>"total_deaths"</span>, <span class='st'>"total_tests"</span>, <span class='st'>"positive_rate"</span>,
+               <span class='st'>"hospital_beds_per_thousand"</span>, <span class='st'>"num_physicians_per_thousand"</span>,
+               <span class='st'>"year_personnel"</span>, <span class='st'>"handwashing_facilities"</span>,
+               <span class='st'>"gdp_per_capita"</span>, <span class='st'>"current_health_exp_%gdp"</span>, <span class='st'>"domestic_govt_health_exp_%totalgovtexp"</span>,
+               <span class='st'>"population"</span>, <span class='st'>"population_density"</span>, <span class='st'>"0_to_14(%)"</span>, <span class='st'>"15_to_64(%)"</span>, <span class='st'>"65_and_above(%)"</span>,
+               <span class='st'>"extreme_poverty"</span>, <span class='st'>"human_development_index"</span>,
+               <span class='st'>"annual_intl_arrivals_thousands"</span>,
+               <span class='st'>"lat"</span>, <span class='st'>"long"</span><span class='op'>)</span>
 
-</div>
-<div class="layout-chunk" data-layout="l-body">
-<pre><code># A tibble: 202 x 26
-   iso_code continent    location         last_updated_da~ total_cases
-   &lt;chr&gt;    &lt;chr&gt;        &lt;chr&gt;            &lt;date&gt;                 &lt;dbl&gt;
- 1 AFG      Asia         Afghanistan      2021-03-27             56290
- 2 ALB      Europe       Albania          2021-03-27            123641
- 3 DZA      Africa       Algeria          2021-03-27            116750
- 4 AND      Europe       Andorra          2021-03-27             11809
- 5 AGO      Africa       Angola           2021-03-27             22031
- 6 AIA      North Ameri~ Anguilla         2021-03-19                NA
- 7 ATG      North Ameri~ Antigua and Bar~ 2021-03-27              1122
- 8 ARG      South Ameri~ Argentina        2021-03-27           2301389
- 9 ARM      Asia         Armenia          2021-03-27            189540
-10 AUS      Oceania      Australia        2021-03-27             29259
-# ... with 192 more rows, and 21 more variables: total_deaths &lt;dbl&gt;,
-#   total_tests &lt;dbl&gt;, positive_rate &lt;dbl&gt;, population &lt;dbl&gt;,
-#   population_density &lt;dbl&gt;, gdp_per_capita &lt;dbl&gt;,
-#   extreme_poverty &lt;dbl&gt;, handwashing_facilities &lt;dbl&gt;,
-#   hospital_beds_per_thousand &lt;dbl&gt;, human_development_index &lt;dbl&gt;,
-#   0_to_14(%) &lt;dbl&gt;, 15_to_64(%) &lt;dbl&gt;, 65_and_above(%) &lt;dbl&gt;,
-#   annual_intl_arrivals_thousands &lt;dbl&gt;, year_personnel &lt;dbl&gt;,
-#   num_physicians_per_thousand &lt;dbl&gt;, year_exp &lt;dbl&gt;,
-#   current_health_exp_%gdp &lt;dbl&gt;,
-#   domestic_govt_health_exp_%totalgovtexp &lt;dbl&gt;, lat &lt;dbl&gt;,
-#   long &lt;dbl&gt;</code></pre>
-</div>
-<h2 id="reordering-the-columns-in-the-data-frame">Reordering the columns in the data frame</h2>
-<div class="layout-chunk" data-layout="l-body">
+<span class='va'>covid_deaths</span> <span class='op'>&lt;-</span> <span class='va'>covid_deaths</span><span class='op'>[</span>, <span class='va'>col_order</span><span class='op'>]</span>
 
+<span class='fu'>glimpse</span><span class='op'>(</span><span class='va'>covid_deaths</span><span class='op'>)</span>
+</code></pre>
 </div>
+<pre><code>Rows: 202
+Columns: 25
+$ iso_code                                 &lt;chr&gt; &quot;AFG&quot;, &quot;ALB&quot;, &quot;DZA&quot;~
+$ continent                                &lt;chr&gt; &quot;Asia&quot;, &quot;Europe&quot;, &quot;~
+$ location                                 &lt;chr&gt; &quot;Afghanistan&quot;, &quot;Alb~
+$ last_updated_date                        &lt;date&gt; 2021-03-27, 2021-0~
+$ total_cases                              &lt;dbl&gt; 56290, 123641, 1167~
+$ total_deaths                             &lt;dbl&gt; 2469, 2204, 3077, 1~
+$ total_tests                              &lt;dbl&gt; NA, 517102, NA, 162~
+$ positive_rate                            &lt;dbl&gt; NA, 0.173, NA, 0.09~
+$ hospital_beds_per_thousand               &lt;dbl&gt; 0.50, 2.89, 1.90, N~
+$ num_physicians_per_thousand              &lt;dbl&gt; 2.78, 12.16, 17.19,~
+$ year_personnel                           &lt;dbl&gt; 2016, 2016, 2018, 2~
+$ handwashing_facilities                   &lt;dbl&gt; 37.746, NA, 83.741,~
+$ gdp_per_capita                           &lt;dbl&gt; 1803.987, 11803.431~
+$ `current_health_exp_%gdp`                &lt;dbl&gt; 11.7772, NA, 6.3743~
+$ `domestic_govt_health_exp_%totalgovtexp` &lt;dbl&gt; 2.3191, 14.6789, 10~
+$ population                               &lt;dbl&gt; 38928341, 2877800, ~
+$ population_density                       &lt;dbl&gt; 54.422, 104.871, 17~
+$ `0_to_14(%)`                             &lt;dbl&gt; 42.47227, 17.39956,~
+$ `15_to_64(%)`                            &lt;dbl&gt; 54.91193, 68.39781,~
+$ `65_and_above(%)`                        &lt;dbl&gt; 2.615794, 14.202631~
+$ extreme_poverty                          &lt;dbl&gt; NA, 1.1, 0.5, NA, N~
+$ human_development_index                  &lt;dbl&gt; 0.511, 0.795, 0.748~
+$ annual_intl_arrivals_thousands           &lt;dbl&gt; NA, 5340, 2657, 304~
+$ lat                                      &lt;dbl&gt; 33.93911, 41.15330,~
+$ long                                     &lt;dbl&gt; 67.709953, 20.16830~</code></pre>
+</div>
+<h2 id="check-the-data-for-missing-values">Check the data for missing values</h2>
 <div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>missing_values</span> <span class='op'>&lt;-</span> <span class='va'>covid_deaths</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>gather</span><span class='op'>(</span>key <span class='op'>=</span> <span class='st'>"key"</span>, value <span class='op'>=</span> <span class='st'>"val"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>isna <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>val</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>key</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>total <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>key</span>, <span class='va'>total</span>, <span class='va'>isna</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>summarise</span><span class='op'>(</span>num.isna <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>pct <span class='op'>=</span> <span class='va'>num.isna</span> <span class='op'>/</span> <span class='va'>total</span> <span class='op'>*</span> <span class='fl'>100</span><span class='op'>)</span>
+
+<span class='va'>levels</span> <span class='op'>&lt;-</span> <span class='op'>(</span><span class='va'>missing_values</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>isna</span> <span class='op'>==</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>     
+           <span class='fu'>arrange</span><span class='op'>(</span><span class='va'>pct</span><span class='op'>)</span><span class='op'>)</span><span class='op'>$</span><span class='va'>key</span>
+
+<span class='va'>percentage_plot</span> <span class='op'>&lt;-</span> <span class='va'>missing_values</span> <span class='op'>%&gt;%</span>
+      <span class='fu'>ggplot</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+        <span class='fu'>geom_bar</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>key</span>, <span class='va'>pct</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>pct</span>, fill<span class='op'>=</span><span class='va'>isna</span><span class='op'>)</span>,
+                 stat <span class='op'>=</span> <span class='st'>"identity"</span>,
+                 alpha<span class='op'>=</span><span class='fl'>0.8</span><span class='op'>)</span> <span class='op'>+</span>
+        <span class='fu'>scale_x_discrete</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='va'>levels</span><span class='op'>)</span> <span class='op'>+</span>
+        <span class='fu'>scale_fill_manual</span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>""</span>,
+                          values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lightblue"</span>,<span class='st'>"rosybrown"</span><span class='op'>)</span>,
+                          labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Present"</span>, <span class='st'>"Missing"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+        <span class='fu'>coord_flip</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+        <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Percentage of missing values"</span>, x <span class='op'>=</span> <span class='st'>'Variable'</span>, y <span class='op'>=</span> <span class='st'>"% of missing values"</span><span class='op'>)</span>
+
+<span class='va'>percentage_plot</span>
+</code></pre>
+</div>
 <p><img src="covid-deaths_files/figure-html5/unnamed-chunk-9-1.png" width="624" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>covid_deaths</span>, <span class='fu'>aes</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>total_cases</span>, y<span class='op'>=</span><span class='va'>total_deaths</span>, colour <span class='op'>=</span> <span class='va'>continent</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_x_log10</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_y_log10</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="covid-deaths_files/figure-html5/unnamed-chunk-10-1.png" width="624" /></p>
 </div>
 <h1 id="prototype">Prototype</h1>
 <h1 id="storyboard">Storyboard</h1>

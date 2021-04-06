@@ -11,8 +11,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE,
-                      message = FALSE,
+knitr::opts_chunk$set(message = FALSE,
                       warning = FALSE)
 ```
 
@@ -22,7 +21,7 @@ In December 2019, the Coronavirus (COVID-19) has caught the world's attention wi
 
 Experts believe that COVID-19 is less deadly but more infectious than the Severe Acute Respiratory Syndrome (SARS) virus in 2003. Although the number of deaths due to COVID-19 reached a staggering 2.85 million worldwide, its case fatality ratio or rate (defined as the proportion of deaths among a defined population of interest, in this case, the number of COVID-19 cases) is estimated at 1.4% to 3.4%, a far cry from the 9.6% of SARS and 34.3% of the lesser known Middle East Respiratory Syndrome coronavirus (MERS-CoV). Of the 2.85 million deaths, how do countries compare against each other? This assignment aims to visualise the relationships between health, economic and population structure indicators with COVID-19 deaths across countries.
 
-# Review of current visualisations on COVID-19 deaths
+# Literature review of current visualisations on COVID-19 deaths
 
 Most visualisations report the death toll by location using geo-spatial, time-series and/or in tabular form (see Figure 1).
 
@@ -75,17 +74,20 @@ The following R packages will be explored:
 | Scatterplot   | *ggplot*, *ggstatsplot*, *car* |
 | Funnel Plot   | *ggplot*, *FunnelPlotR*, *metafor*, *metaviz*, *funnelR* |
 | Multivariate Analysis | *mlr*, *olsrr* |
-| Interactivity | *ggplotly* |
+| Interactivity | *plotly*, *ggvis* |
 
 # Data Preparation
 
-## Loading all necessary packages for file import
+All data extraction and wrangling are done in R using the *tidyverse* suite of packages. 
 
-The following code chunk loads the necessary packages required for importing data files.
+## Install and load all necessary packages
 
 ```{r}
-
-packages = c('tidyverse', 'FunnelPlotR', 'sf', 'tmap')
+packages = c('tidyverse',
+             'ggstatsplot', 'car',
+             'FunnelPlotR', 'metafor', 'metaviz', 'funnelR',
+             'mlr', 'olsrr',
+             'plotly', 'ggvis')
 for(p in packages){
   if(!require(p, character.only = T)){
   install.packages(p)
@@ -94,9 +96,19 @@ for(p in packages){
 }
 ```
 
-## Importing files into R
+## Import and extract relevant data
 
-Import and selection of variables
+Data by country is obtained from various sources, as shown in the following table:
+
+| <img width=200> Data source | <img width=350> Data |
+|-------------|------|
+| Our World in Data (owid) | COVID-19 tests, positive rates, country to latitude-longitude coordinates mapping |
+| John Hopkins University (JHU) | COVID-19 cases, deaths |
+| World Bank | Population age structure, GDP per capita, poverty indicator |
+| UNdata | Health expenditure, healthcare facilities and capacity indicators |
+| United Nations Development Programme (UNDP) | Human Development Index (HDI), international inbound tourists |
+
+The data is stored across eight files and ```read_csv()``` is used to import and extract the relevant columns into R.
 
 ```{r warning=FALSE}
 covid <- read_csv("./data/owid-covid-latest.csv",
@@ -153,9 +165,9 @@ geo_lookup <- read_csv("./data/UID_ISO_FIPS_LookUp_Table.csv",
   rename("lat" = "Lat", "long" = "Long_")
 ```
 
-## Cleaning the data
+## Wrangle and combine the data
 
-Want to join all values into one main table covid_deaths. Look at each dataset to prep before joining.
+Before combining the data frames into one main data frame for analysis, we need to explore and prepare each data frame.
 
 ```{r}
 pop_prop_cleaned <- pivot_wider(pop_prop, names_from = "Indicator Name", values_from = "2019") %>%
@@ -187,6 +199,8 @@ health_exp_cleaned <- health_exp %>%
          "domestic_govt_health_exp_%totalgovtexp" = "Domestic general government health expenditure (% of total government expenditure)")
 ```
 
+After cleaning the individual data frames, we can now combine and store the data in a single data frame.
+
 ```{r}
 covid_deaths <- covid %>%
   left_join(pop_prop_cleaned, by = c("location" = "Country Name")) %>%
@@ -195,11 +209,9 @@ covid_deaths <- covid %>%
   left_join(health_exp_cleaned, by=c("location" = "region/country/area")) %>%
   left_join(geo_lookup, by=c("iso_code" = "iso3")) %>%
   filter(!is.na(continent))
-
-covid_deaths
 ```
 
-## Reordering the columns in the data frame
+We will reorder the columns to group similar variables.
 
 ```{r}
 col_order <- c("iso_code", "continent", "location", "last_updated_date",
@@ -213,6 +225,38 @@ col_order <- c("iso_code", "continent", "location", "last_updated_date",
                "lat", "long")
 
 covid_deaths <- covid_deaths[, col_order]
+
+glimpse(covid_deaths)
+```
+
+## Check the data for missing values
+
+```{r}
+missing_values <- covid_deaths %>%
+  gather(key = "key", value = "val") %>%
+  mutate(isna = is.na(val)) %>%
+  group_by(key) %>%
+  mutate(total = n()) %>%
+  group_by(key, total, isna) %>%
+  summarise(num.isna = n()) %>%
+  mutate(pct = num.isna / total * 100)
+
+levels <- (missing_values %>% filter(isna == TRUE) %>%     
+           arrange(pct))$key
+
+percentage_plot <- missing_values %>%
+      ggplot() +
+        geom_bar(aes(x = reorder(key, pct), y = pct, fill=isna),
+                 stat = "identity",
+                 alpha=0.8) +
+        scale_x_discrete(limits = levels) +
+        scale_fill_manual(name = "",
+                          values = c("lightblue","rosybrown"),
+                          labels = c("Present", "Missing")) +
+        coord_flip() +
+        labs(title = "Percentage of missing values", x = 'Variable', y = "% of missing values")
+
+percentage_plot
 ```
 
 
@@ -228,5 +272,6 @@ ggplot(covid_deaths, aes(x=total_cases, y=total_deaths, colour = continent)) +
 
 
 # Prototype
+
 
 # Storyboard
