@@ -83,7 +83,7 @@ All data extraction and wrangling are done in R using the *tidyverse* suite of p
 ## Install and load all necessary packages
 
 ```{r}
-packages = c('tidyverse',
+packages = c('tidyverse', 'UpSetR', 'visdat', 'naniar',
              'ggstatsplot', 'car',
              'FunnelPlotR', 'metafor', 'metaviz', 'funnelR',
              'mlr', 'olsrr',
@@ -108,7 +108,7 @@ Data by country is obtained from various sources, as shown in the following tabl
 | UNdata | Health expenditure, healthcare facilities and capacity indicators |
 | United Nations Development Programme (UNDP) | Human Development Index (HDI), international inbound tourists |
 
-The data is stored across eight files and ```read_csv()``` is used to import and extract the relevant columns into R.
+The data is stored across eight files and ```read_csv()``` is used to import and extract the relevant columns from each file into R.
 
 ```{r warning=FALSE}
 covid <- read_csv("./data/owid-covid-latest.csv",
@@ -241,25 +241,39 @@ missing_values <- covid_deaths %>%
   summarise(num.isna = n()) %>%
   mutate(pct = num.isna / total * 100)
 
-levels <- (missing_values %>% filter(isna == TRUE) %>%     
-           arrange(pct))$key
+levels <- (missing_values %>% filter(isna == TRUE) %>%
+             arrange(pct))$key
 
 percentage_plot <- missing_values %>%
-      ggplot() +
-        geom_bar(aes(x = reorder(key, pct), y = pct, fill=isna),
-                 stat = "identity",
-                 alpha=0.8) +
-        scale_x_discrete(limits = levels) +
-        scale_fill_manual(name = "",
-                          values = c("lightblue","rosybrown"),
-                          labels = c("Present", "Missing")) +
-        coord_flip() +
-        labs(title = "Percentage of missing values", x = 'Variable', y = "% of missing values")
+  ggplot() +
+    geom_bar(aes(x = reorder(key, pct), y = pct, fill=isna),
+             stat = "identity",
+             alpha=0.8) +
+    scale_x_discrete(limits = levels) +
+    scale_fill_manual(name = "",
+                      values = c("lightblue","rosybrown"),
+                      labels = c("Present", "Missing")) +
+    coord_flip() +
+    labs(title = "Percentage of missing values", x = 'Variable', y = "% of missing values")
 
 percentage_plot
 ```
+```{r}
+vis_miss(covid_deaths)
+```
 
 
+
+```{r}
+gg_miss_upset(covid_deaths, nsets = n_var_miss(covid_deaths), nintersects = NA)
+```
+
+
+
+
+
+
+# Prototype
 
 
 ```{r warning=FALSE}
@@ -269,9 +283,5 @@ ggplot(covid_deaths, aes(x=total_cases, y=total_deaths, colour = continent)) +
   scale_y_log10() +
   theme(legend.position = "none")
 ```
-
-
-# Prototype
-
 
 # Storyboard

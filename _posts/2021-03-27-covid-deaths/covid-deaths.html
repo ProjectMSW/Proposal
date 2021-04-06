@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["covid-deaths_files/anchor-4.2.2/anchor.min.js","covid-deaths_files/bowser-1.9.3/bowser.min.js","covid-deaths_files/distill-2.2.21/template.v2.js","covid-deaths_files/figure-html5/unnamed-chunk-10-1.png","covid-deaths_files/figure-html5/unnamed-chunk-9-1.png","covid-deaths_files/header-attrs-2.7/header-attrs.js","covid-deaths_files/jquery-1.11.3/jquery.min.js","covid-deaths_files/popper-2.6.0/popper.min.js","covid-deaths_files/tippy-6.2.7/tippy-bundle.umd.min.js","covid-deaths_files/tippy-6.2.7/tippy-light-border.css","covid-deaths_files/tippy-6.2.7/tippy.css","covid-deaths_files/tippy-6.2.7/tippy.umd.min.js","covid-deaths_files/webcomponents-2.0.0/webcomponents.js","data/owid-covid-latest.csv","data/UID_ISO_FIPS_LookUp_Table.csv","data/UNdata_HealthExpenditure.csv","data/UNdata_HealthPersonnel.csv","data/UNDP_Intl_inbound_tourists_(thousands).csv","data/WorldBank_PopProp_0-14.csv","data/WorldBank_PopProp_14-64.csv","data/WorldBank_PopProp_65&above.csv","images/currcorr.jpg","images/currfunnelplot.jpg","images/currMLR.jpg","images/currscatterplot.jpg","images/currviz.jpg"]}
+  {"type":"character","attributes":{},"value":["covid-deaths_files/anchor-4.2.2/anchor.min.js","covid-deaths_files/bowser-1.9.3/bowser.min.js","covid-deaths_files/distill-2.2.21/template.v2.js","covid-deaths_files/figure-html5/unnamed-chunk-10-1.png","covid-deaths_files/figure-html5/unnamed-chunk-11-1.png","covid-deaths_files/figure-html5/unnamed-chunk-12-1.png","covid-deaths_files/figure-html5/unnamed-chunk-9-1.png","covid-deaths_files/header-attrs-2.7/header-attrs.js","covid-deaths_files/jquery-1.11.3/jquery.min.js","covid-deaths_files/popper-2.6.0/popper.min.js","covid-deaths_files/tippy-6.2.7/tippy-bundle.umd.min.js","covid-deaths_files/tippy-6.2.7/tippy-light-border.css","covid-deaths_files/tippy-6.2.7/tippy.css","covid-deaths_files/tippy-6.2.7/tippy.umd.min.js","covid-deaths_files/webcomponents-2.0.0/webcomponents.js","data/owid-covid-latest.csv","data/UID_ISO_FIPS_LookUp_Table.csv","data/UNdata_HealthExpenditure.csv","data/UNdata_HealthPersonnel.csv","data/UNDP_Intl_inbound_tourists_(thousands).csv","data/WorldBank_PopProp_0-14.csv","data/WorldBank_PopProp_14-64.csv","data/WorldBank_PopProp_65&above.csv","images/currcorr.jpg","images/currfunnelplot.jpg","images/currMLR.jpg","images/currscatterplot.jpg","images/currviz.jpg"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1546,7 +1546,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h2 id="install-and-load-all-necessary-packages">Install and load all necessary packages</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>packages</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'tidyverse'</span>,
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>packages</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'tidyverse'</span>, <span class='st'>'UpSetR'</span>, <span class='st'>'visdat'</span>, <span class='st'>'naniar'</span>,
              <span class='st'>'ggstatsplot'</span>, <span class='st'>'car'</span>,
              <span class='st'>'FunnelPlotR'</span>, <span class='st'>'metafor'</span>, <span class='st'>'metaviz'</span>, <span class='st'>'funnelR'</span>,
              <span class='st'>'mlr'</span>, <span class='st'>'olsrr'</span>,
@@ -1596,7 +1596,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </tr>
 </tbody>
 </table>
-<p>The data is stored across eight files and <code>read_csv()</code> is used to import and extract the relevant columns into R.</p>
+<p>The data is stored across eight files and <code>read_csv()</code> is used to import and extract the relevant columns from each file into R.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>covid</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"./data/owid-covid-latest.csv"</span>,
@@ -1765,26 +1765,41 @@ $ long                                     &lt;dbl&gt; 67.709953, 20.16830~</cod
   <span class='fu'>summarise</span><span class='op'>(</span>num.isna <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>mutate</span><span class='op'>(</span>pct <span class='op'>=</span> <span class='va'>num.isna</span> <span class='op'>/</span> <span class='va'>total</span> <span class='op'>*</span> <span class='fl'>100</span><span class='op'>)</span>
 
-<span class='va'>levels</span> <span class='op'>&lt;-</span> <span class='op'>(</span><span class='va'>missing_values</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>isna</span> <span class='op'>==</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>     
-           <span class='fu'>arrange</span><span class='op'>(</span><span class='va'>pct</span><span class='op'>)</span><span class='op'>)</span><span class='op'>$</span><span class='va'>key</span>
+<span class='va'>levels</span> <span class='op'>&lt;-</span> <span class='op'>(</span><span class='va'>missing_values</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>isna</span> <span class='op'>==</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+             <span class='fu'>arrange</span><span class='op'>(</span><span class='va'>pct</span><span class='op'>)</span><span class='op'>)</span><span class='op'>$</span><span class='va'>key</span>
 
 <span class='va'>percentage_plot</span> <span class='op'>&lt;-</span> <span class='va'>missing_values</span> <span class='op'>%&gt;%</span>
-      <span class='fu'>ggplot</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-        <span class='fu'>geom_bar</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>key</span>, <span class='va'>pct</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>pct</span>, fill<span class='op'>=</span><span class='va'>isna</span><span class='op'>)</span>,
-                 stat <span class='op'>=</span> <span class='st'>"identity"</span>,
-                 alpha<span class='op'>=</span><span class='fl'>0.8</span><span class='op'>)</span> <span class='op'>+</span>
-        <span class='fu'>scale_x_discrete</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='va'>levels</span><span class='op'>)</span> <span class='op'>+</span>
-        <span class='fu'>scale_fill_manual</span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>""</span>,
-                          values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lightblue"</span>,<span class='st'>"rosybrown"</span><span class='op'>)</span>,
-                          labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Present"</span>, <span class='st'>"Missing"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-        <span class='fu'>coord_flip</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-        <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Percentage of missing values"</span>, x <span class='op'>=</span> <span class='st'>'Variable'</span>, y <span class='op'>=</span> <span class='st'>"% of missing values"</span><span class='op'>)</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_bar</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>key</span>, <span class='va'>pct</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>pct</span>, fill<span class='op'>=</span><span class='va'>isna</span><span class='op'>)</span>,
+             stat <span class='op'>=</span> <span class='st'>"identity"</span>,
+             alpha<span class='op'>=</span><span class='fl'>0.8</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>scale_x_discrete</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='va'>levels</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>scale_fill_manual</span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>""</span>,
+                      values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lightblue"</span>,<span class='st'>"rosybrown"</span><span class='op'>)</span>,
+                      labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Present"</span>, <span class='st'>"Missing"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>coord_flip</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Percentage of missing values"</span>, x <span class='op'>=</span> <span class='st'>'Variable'</span>, y <span class='op'>=</span> <span class='st'>"% of missing values"</span><span class='op'>)</span>
 
 <span class='va'>percentage_plot</span>
 </code></pre>
 </div>
 <p><img src="covid-deaths_files/figure-html5/unnamed-chunk-9-1.png" width="624" /></p>
 </div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>vis_miss</span><span class='op'>(</span><span class='va'>covid_deaths</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="covid-deaths_files/figure-html5/unnamed-chunk-10-1.png" width="624" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>gg_miss_upset</span><span class='op'>(</span><span class='va'>covid_deaths</span>, nsets <span class='op'>=</span> <span class='fu'>n_var_miss</span><span class='op'>(</span><span class='va'>covid_deaths</span><span class='op'>)</span>, nintersects <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="covid-deaths_files/figure-html5/unnamed-chunk-11-1.png" width="624" /></p>
+</div>
+<h1 id="prototype">Prototype</h1>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>covid_deaths</span>, <span class='fu'>aes</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>total_cases</span>, y<span class='op'>=</span><span class='va'>total_deaths</span>, colour <span class='op'>=</span> <span class='va'>continent</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
@@ -1794,9 +1809,8 @@ $ long                                     &lt;dbl&gt; 67.709953, 20.16830~</cod
   <span class='fu'>theme</span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span>
 </code></pre>
 </div>
-<p><img src="covid-deaths_files/figure-html5/unnamed-chunk-10-1.png" width="624" /></p>
+<p><img src="covid-deaths_files/figure-html5/unnamed-chunk-12-1.png" width="624" /></p>
 </div>
-<h1 id="prototype">Prototype</h1>
 <h1 id="storyboard">Storyboard</h1>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
