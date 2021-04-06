@@ -4,7 +4,7 @@ description: |
   This post is on the planning and prototyping process for one of the three sub-modules of a Shiny-based Visual Analytics Application project for the course *ISSS608 - Visual Analytics and Applications* offered in SMU MITB.
 author: amanda
 URL: https://mydatastory.netlify.app
-date: 03-27-2021
+date: 04-11-2021
 output:
   distill::distill_article:
     self_contained: false
@@ -20,30 +20,62 @@ knitr::opts_chunk$set(echo = FALSE,
 
 In December 2019, the Coronavirus (COVID-19) has caught the world's attention with the first COVID-19 cases reported in Wuhan, Hubei, China. Since then, the virus has spread like wildfire across the globe, with countries struggling to contain the virus to curb further spread and resurgence.
 
-Experts believe that COVID-19 is less deadly but more infectious than the Severe Acute Respiratory Syndrome (SARS) virus in 2003. Although the number of deaths due to COVID-19 reached a staggering 2.85 million worldwide, its case fatality ratio or rate (defined as the proportion of deaths among a defined population of interest, in this case, the number of COVID-19 cases) is estimated at 1.4% to 3.4%, a far cry from the 9.6% of SARS and 34.3% of the lesser known Middle East Respiratory Syndrome coronavirus (MERS-CoV). Of the 2.85 million deaths, how do countries compare against each other? What is the relationship between the deaths and the country's standing in different areas e.g. number of COVID-19 cases, healthcare systems and expenditure, population make-up, human development index?
+Experts believe that COVID-19 is less deadly but more infectious than the Severe Acute Respiratory Syndrome (SARS) virus in 2003. Although the number of deaths due to COVID-19 reached a staggering 2.85 million worldwide, its case fatality ratio or rate (defined as the proportion of deaths among a defined population of interest, in this case, the number of COVID-19 cases) is estimated at 1.4% to 3.4%, a far cry from the 9.6% of SARS and 34.3% of the lesser known Middle East Respiratory Syndrome coronavirus (MERS-CoV). Of the 2.85 million deaths, how do countries compare against each other? This assignment aims to visualise the relationships between health, economic and population structure indicators with COVID-19 deaths across countries.
 
-# Current visualisations on COVID-19 deaths
+# Review of current visualisations on COVID-19 deaths
 
-The most frequently shown analysis on the COVID-19 deaths are:
+Most visualisations report the death toll by location using geo-spatial, time-series and/or in tabular form (see Figure 1).
 
-* Geo-spatial analysis: number of deaths and/or case fatality ratio shown on the map as a choropleth, point symbol map or proportional symbol map (see Figure 1)
-* Time series analysis: number of deaths and/or case fatality ratio for each country, plotted on a time series scale (see Figure 2)
-* Tabular analysis: table of death statistics with horizontal data bars to provide visual comparisons between countries/locations (see Figure 2)
+![Figure 1: Current visualisations on COVID-19 deaths.<br>*(a)* Choropleth map of cumulative confirmed deaths per million people.<br>Source: https://ourworldindata.org/covid-deaths <br>*(b)* Proportional symbol map showing the case fatality ratio by location. Actual numbers are reported on the right side panel.<br>Source: https://coronavirus.jhu.edu/map.html <br>*(c)* Time-series of cumulative confirmed deaths per million people. Countries can be added or removed.<br>Source: https://ourworldindata.org/covid-deaths <br>*(d)* Table with horizontal bar charts and another time-series visualisation on the deaths reported per day.<br>Source: https://pandemic.internationalsos.com/2019-ncov/covid-19-data-visualisation](images/currviz.jpg)
 
-![Figure 1:<br>(*Left*) Proportional symbol map showing the case fatality ratio by location.<br>Source: https://coronavirus.jhu.edu/map.html<br>(*Right*) Choropleth of cumulative confirmed deaths per million people.<br>Source: https://ourworldindata.org/covid-deaths](images/curr_geospatial.jpg)
+These visualisations focus on comparing countries based on the number of deaths or case fatality rates. Comparisons are made based on visual encodings such as colour and size of data points. When used appropriately, users are able to perceive the information effectively (Figure 1-a to c). We can see that there is a lot of visual clutter when more countries are added, as seen in the time-series graph in Figure 1-d.
 
-![Figure 2: Table with horizontal data bars and time series analysis.<br>Source: https://pandemic.internationalsos.com/2019-ncov/covid-19-data-visualisation ](images/curr_table_horizontal_bar_charts_time_series.jpg)
+More details on number of deaths for individual countries are also provided via interactivity in some visualisations (see Figure 1-c for example). However, the comparisons are limited to the countries selected and it could be challenging to make comparisons when more countries are added. On the other hand, the table provides a single-view of the details across countries in descending order, but the numbers could be overwhelming for users to process even with the horizontal bar charts. Furthermore, a tabular layout makes it difficult to compare specific countries of interest.
 
-Both the time series and geo-spatial visualisations allow for a quick aggregate comparison between countries. Comparisons are made based on visual encodings such as colour and size of data points. This could however result in colour-fatigue, as there are many countries (and thus colours) for the user to take in. More details on number of deaths for individual countries are provided via interacting with the visualisations (not shown in figures above). However, comparisons on the details are challenging as it requires the user to exercise his/her memory to do the comparisons between countries. On the other hand, the table provides a single-view of the details across countries, but the numbers could be overwhelming for users to compare across countries, even with the horizontal bar charts.
+There are lesser analyses that compare deaths or case fatality with other indicators. Some analyses study the impact of COVID-19 on the indicators while others study the impact of the indicators on the COVID-19 numbers. The review will focus on the analysis or visualisations used, which can potentially be employed to both types of analyses.
 
-A lesser known visualisation used to compare case fatality rate is the funnel plot. There is one visualisation created specifically for COVID-19 case fatality rate for counties in North Carolina, USA, by a SAS researcher Rick Wicklin. Unlike the time-series, geo-spatial and tabular visualisations where users make comparisons based on the face-value of the numbers, the funnel plot seeks to highlight any anomalies from the expected range of the numerical values based on some statistical theories.
+#### Scatterplot of economic indicators against number of deaths per million
 
+![Figure 2: Scatterplot on change in GDP per capita against deaths per million.<br>Source: https://theconversation.com/data-from-45-countries-show-containing-covid-vs-saving-the-economy-is-a-false-dichotomy-150533](images/currscatterplot.jpg)
 
+The scatterplot is useful in showing the relationship between two independent variables. In this scatterplot, size and colour scales are used to encode number of deaths and continent respectively. The size of the data points are not obvious from the graph due to the size range used, the 3-character country code labels and the choice of colour for Europe (the green stands out too much). The overlap in data points belonging to the same continent also make it difficult to identify the data points. There is no interactivity in this visualisation.
 
-Conducting literature review on how the analysis were performed before. The focus should be on identifying gaps whereby interactive web approach and visual analytics techniques can be used to enhance user experience on using the analysis techniques.
+#### Funnel plot of case fatality rate against number of confirmed cases
 
+There are two similar visualisations created specifically for COVID-19 case fatality rate for counties in the US by a SAS researcher Rick Wicklin (see Figure 3). Unlike the time-series, geo-spatial and tabular visualisations where users make comparisons based on the face-value of the numbers, the funnel plot seeks to highlight any anomalies from the expected range of the numerical values based on statistical concepts. Note that the factors plotted on a funnel plot are dependent on each other, i.e. the number of confirmed cases is used to calculate the case fatality rate.
 
-# Storyboard
+![Figure 3: Funnel plot on case fatality rate against number of confirmed cases.<br>Source: https://blogs.sas.com/content/iml/2020/04/22/funnel-plot-covid-us.html](images/currfunnelplot.jpg)
+
+The drawback of the visualisations is that the funnel plots are static with no interactivity: users are unable to identify the other data points that are not labelled by the author.
+
+#### Tabular presentation of correlation index between socio-economic indicators and number of deaths per million
+
+The study "Rich at risk: socio-economic drivers of COVID-19 pandemic spread" by Gangemi, S., Billeci, L. & Tonacci, A. (2020) seeks to understand the spread of the COVID-19 virus driven by socio-economic factors and long-distance transportations. The results are presented in a table (see Figure 4). Although the presentation of the results are not visually appealing, this study sheds light on the current analysis performed for COVID-19 deaths. 
+
+![Figure 4: Table of correlations between socio-economic indicators and number of cases per million and number of deaths per million.<br>Source: https://clinicalmolecularallergy.biomedcentral.com/articles/10.1186/s12948-020-00127-4](images/currcorr.jpg)
+
+#### Scatterplot with fit line and regression model summary table to predict number of new deaths
+
+The visualisations discussed thus far are bivariate in nature: analysis of each factor with the number of deaths. There are very few multivariate analysis done, and of those conducted, most of them are presented in tabular form or described in text. There is one study on regression models to predict the number of COVID-19 new deaths, which presents its findings visually in the research paper (see Figure 5).
+
+![Figure 5: *(Left)* Table showing the regression models summaries and parameter estimates to predict new COVID-19 deaths. *(Right)* Scatterplot with fit lines comparing the regression models built to predict new COVID-19 deaths by day.<br>Source: https://www.medrxiv.org/content/10.1101/2020.09.04.20188094v1.full.pdf](images/currMLR.jpg)
+
+Although the intention of the assignment is an exploratory analysis, we can still gain some insights from the visualisation used in this predictive regression analysis. It is noted that the regression models built are to predict the number of new deaths by day for a particular location, Ethiopia, solely based on COVID-19 related indicators. The scatterplot with fit lines allows users to visually compare the different regression models built. There is no interactivity in this graph as it is used for reporting purposes.
+
+# Suggested visualisations and R packages
+
+There are gaps in the current visualisations in supporting the intended analysis of this assignment. The majority of interactive visualisations are univariate presented on maps or in time series, while the bivariate and multivariate analysis of the country indicators and the number of deaths are largely static.
+
+In this assignment, we will attempt to create interactive visualisations for bivariate (scatterplot and funnel plot) and multivariate analysis (multiple linear regression) of the number of deaths due to COVID-19 with selected health-socio-economic indicators across countries.
+
+The following R packages will be explored:
+
+| Visualisation | Packages |
+|---------------|----------|
+| Scatterplot   | *ggplot*, *ggstatsplot*, *car* |
+| Funnel Plot   | *ggplot*, *FunnelPlotR*, *metafor*, *metaviz*, *funnelR* |
+| Multivariate Analysis | *mlr*, *olsrr* |
+| Interactivity | *ggplotly* |
 
 # Data Preparation
 
@@ -197,3 +229,4 @@ ggplot(covid_deaths, aes(x=total_cases, y=total_deaths, colour = continent)) +
 
 # Prototype
 
+# Storyboard
