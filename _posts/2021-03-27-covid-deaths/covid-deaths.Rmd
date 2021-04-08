@@ -75,10 +75,10 @@ The following R packages will be explored:
 
 | Visualisation | Packages |
 |---------------|----------|
-| Scatterplot   | *ggplot*, *ggstatsplot*, *car* |
-| Funnel Plot   | *ggplot*, *FunnelPlotR*, *metafor*, *metaviz*, *funnelR* |
-| Multivariate Analysis | *mlr*, *olsrr* |
-| Interactivity | *plotly*, *ggvis* |
+| Scatterplot   | *ggstatsplot*, *car*, *ggplot* |
+| Funnel Plot   | *FunnelPlotR*, *funnelR*, *ggplot* |
+| Multivariate Analysis | *olsrr* |
+| Interactivity | *plotly* |
 
 # Data Preparation
 
@@ -86,12 +86,23 @@ All data extraction and wrangling are done in R using the *tidyverse* suite of p
 
 ## Install and load all necessary packages
 
+Besides the mentioned packages, the following packages are also loaded:
+
+* *mlr*: for data exploration with ```summarizeColumns()```
+* *naniar*: for visualisation of missing values with ```gg_miss_upset()```
+* *VIM*: for imputation of missing values with ```kNN()```
+* *gridExtra*: for handling of multiple plots with ```grid.arrange()```
+* *corrr*: for visualisation of correlation with ```correlate()``` and ```rplot()```
+* *ggExtra* : for 
+
+The code chunk below is used to install and load the packages.
+
 ```{r}
-packages = c('tidyverse', 'naniar', 'corrr',
+packages = c('tidyverse', 'mlr', 'naniar','VIM', 'gridExtra', 'corrr',
              'ggstatsplot', 'car', 'ggExtra',
-             'FunnelPlotR', 'metafor', 'metaviz', 'funnelR',
-             'mlr', 'olsrr',
-             'plotly', 'ggvis')
+             'FunnelPlotR', 'funnelR',
+             'olsrr',
+             'plotly')
 for(p in packages){
   if(!require(p, character.only = T)){
   install.packages(p)
@@ -200,10 +211,10 @@ health_exp_cleaned <- health_exp %>%
   slice(which.max(`year_exp`)) %>%
   pivot_wider(names_from = "series", values_from = "percentage") %>%
   rename("current_health_exp_%gdp" = "Current health expenditure (% of GDP)",
-         "domestic_govt_health_exp_%totalgovtexp" = "Domestic general government health expenditure (% of total government expenditure)")
+         "govt_health_exp_%totalgovtexp" = "Domestic general government health expenditure (% of total government expenditure)")
 ```
 
-After cleaning the individual data frames, we can now combine and store the data in a single data frame.
+After cleaning the individual data frames, we can now combine and store the data in a single data frame, and drop any unnecessary columns for subsequent analysis.
 
 ```{r}
 covid_deaths <- covid %>%
@@ -213,30 +224,63 @@ covid_deaths <- covid %>%
   left_join(health_exp_cleaned, by=c("location" = "region/country/area")) %>%
   left_join(geo_lookup, by=c("iso_code" = "iso3")) %>%
   mutate(case_fatality_rate = total_deaths/total_cases) %>%
-  filter(!is.na(continent))
+  filter(!is.na(continent)) %>%
+  select(-c("iso_code","last_updated_date"))
+```
+
+As the data for number of physicians are taken across different years, the code chunk below extracts and presents the most recent year in which the number of physicians were available for each country.
+
+```{r}
+personnel_data <- covid_deaths %>%
+  select(c("location", "year_personnel")) %>%
+  pivot_wider(names_from = "year_personnel", 
+              values_from = "location", 
+              names_sep = ", ")
+
+glimpse(personnel_data[,order(colnames(personnel_data))])
 ```
 
 We will reorder the columns to group similar variables.
 
 ```{r}
-col_order <- c("iso_code", "continent", "location", "last_updated_date",
+col_order <- c("continent", "location",
                "total_cases", "total_deaths", "case_fatality_rate", "total_tests", "positive_rate",
-               "hospital_beds_per_thousand", "num_physicians_per_thousand",
-               "year_personnel", "handwashing_facilities",
-               "gdp_per_capita", "current_health_exp_%gdp", "domestic_govt_health_exp_%totalgovtexp",
+               "hospital_beds_per_thousand", "num_physicians_per_thousand", "year_personnel", "handwashing_facilities",
+               "gdp_per_capita", "current_health_exp_%gdp", "govt_health_exp_%totalgovtexp",
                "population", "population_density", "0_to_14(%)", "15_to_64(%)", "65_and_above(%)",
                "extreme_poverty", "human_development_index",
                "annual_intl_arrivals_thousands",
                "lat", "long")
 
-covid_deaths <- covid_deaths[, col_order]
+covid_deaths <- covid_deaths[, col_order] %>% 
+  select(-c("year_personnel"))
 
 glimpse(covid_deaths)
 ```
 
+The base dataset is ready for the next step on data exploration. Before we move on to the next step, we will clear the R environment to free up memory space with the following code chunk:
+
+```{r}
+rm(list = setdiff(ls(), "covid_deaths"))
+```
+
 ## Explore the data
 
+Let us take a look at a summary of the data.
+
+```{r}
+summarizeColumns(covid_deaths)
+```
+
+Note that there are a number of variables with missing values. As it is challenging to explore the data in numbers, we will employ visualisation to aid in data exploration in the following three areas:
+
+* Missingness
+* Distribution
+* Outliers
+
 ### Missingness
+
+*ggplot* is used to visualise missing values in the dataset with the code chunk below:
 
 ```{r}
 missing_values <- covid_deaths %>%
@@ -248,7 +292,8 @@ missing_values <- covid_deaths %>%
   summarise(num.isna = n()) %>%
   mutate(pct = num.isna / total * 100)
 
-levels <- (missing_values %>% filter(isna == TRUE) %>%
+levels <- (missing_values %>% 
+             filter(isna == TRUE) %>%
              arrange(pct))$key
 
 percentage_plot <- missing_values %>%
@@ -266,6 +311,8 @@ percentage_plot <- missing_values %>%
 percentage_plot
 ```
 
+From the above plot, **handwashing facilities** has the highest percentage of missing values, followed by **total tests** and **positive rate**. We can also use *gg_miss_upset* plot to understand how missing values are linked across variables.
+
 ```{r fig.height=10}
 gg_miss_upset(covid_deaths, 
               nsets = n_var_miss(covid_deaths), 
@@ -275,29 +322,71 @@ gg_miss_upset(covid_deaths,
               set_size.numbers_size = 4)
 ```
 
+From the UpSet plot, 35 of the records have only missing values in handwashing facilities, while there is one record with missing values across all variables. As the missing values would pose a problem later in the analysis, the missing values are imputed using the k-Nearest Neighbour (kNN) imputation, where k = 5. Key indicators of a country, such as the population, population density and Gross Domestic Product (GDP) per capita are used to estimate the imputation value. The continent in which the country falls under is also considered.
+
+```{r}
+covid_deaths_imputed_raw <- covid_deaths %>% 
+  drop_na(population) %>%
+  kNN(k=5,
+      dist_var = c("continent", 
+                   "population",
+                   "population_density", 
+                   "gdp_per_capita"))
+
+covid_deaths_imputed <- covid_deaths_imputed_raw %>%
+  select(continent:long)
+
+summarizeColumns(covid_deaths_imputed)
+```
+
+There are no missing values after imputation as seen from the **na** column, and no zero values were imputed when compared to the previous summary table from the **min** column.
+
 ### Distribution
 
-```{r fig.height=10, fig.width=10}
+The distributions are examined from the density curves of the variables using ```ggplot()```. Both the distributions from before and after imputation of missing values are compared.
+
+```{r results='hide', fig.height=10, fig.width=10}
 check_distribution <- covid_deaths %>%
-  select(!year_personnel) %>%
   pivot_longer(cols = total_cases:annual_intl_arrivals_thousands,
                names_to = "variable",
                values_to = "value") %>%
   ggplot(aes(x=value)) +
-    geom_density() +
-    facet_wrap(~variable, nrow = 5, ncol = 4, scales = "free") +
-    theme_minimal() +
-    theme(panel.border = element_rect(colour="grey60", fill = NA))
+  geom_density() +
+  facet_wrap(~variable, nrow = 5, ncol = 4, scales = "free") +
+  ggtitle("Distribution before imputation") +
+  theme_minimal() +
+  theme(panel.border = element_rect(colour="grey60", fill = NA),
+        strip.background = element_rect(fill = "grey80"))
 
 check_distribution
 ```
+```{r results='hide', fig.height=10, fig.width=10}
+check_distribution_imputed <- covid_deaths_imputed %>%
+  pivot_longer(cols = total_cases:annual_intl_arrivals_thousands,
+               names_to = "variable",
+               values_to = "value") %>%
+  ggplot(aes(x=value)) +
+  geom_density() +
+  facet_wrap(~variable, nrow = 5, ncol = 4, scales = "free") +
+  ggtitle("Distribution after imputation") +
+  theme_minimal() +
+  theme(panel.border = element_rect(colour="grey60", fill = NA),
+        strip.background = element_rect(fill = "grey80"))
+
+check_distribution_imputed
+```
+```{r echo=FALSE, fig.height=10, fig.width=20}
+grid.arrange(check_distribution, check_distribution_imputed, ncol=2)
+```
+
+The distributions after imputation is similar to that before imputation, except for *handwashing_facilities* as it has the most missing values. We need to take note of this and explicitly mention it in the visualisation.
 
 ### Outliers
 
-```{r fig.height=10, fig.width=15}
+The outliers are also examined using ```ggplot()```.
 
-check_outlier <- covid_deaths %>%
-  select(!year_personnel) %>%
+```{r fig.height=10, fig.width=15}
+check_outlier <- covid_deaths_imputed %>%
   pivot_longer(cols = total_cases:annual_intl_arrivals_thousands,
                names_to = "variable",
                values_to = "value") %>%
@@ -311,64 +400,73 @@ check_outlier <- covid_deaths %>%
 check_outlier
 ```
 
+Most of the outliers are valid as there are countries with very large numbers due to its population sizes. No further action is taken to treat outliers.
+
 ### Correlation
 
-```{r}
-check_correlation <- correlate(covid_deaths %>%
-                                 select(-c(iso_code, 
-                                           continent,
-                                           location,
-                                           last_updated_date,
-                                           year_personnel,
-                                           lat,
-                                           long)))
+Variables that are correlated are highlighted with the below code chunk.
 
-rplot(check_correlation) +
+```{r}
+check_correlation <- correlate(covid_deaths_imputed %>%
+                                 select(total_cases:annual_intl_arrivals_thousands))
+
+rplot(check_correlation,
+      print_cor = TRUE) +
   scale_size_continuous(range = c(0,4)) +
   theme(axis.text.x = element_text(size=7, angle=45, hjust=0.95),
         axis.text.y = element_text(size=7))
 ```
 
+We observe that *total_cases*, *total_deaths* and *total_tests* are positively correlated, as they are logically inter-dependent. Interestingly, *0_to_14(%)* and *human_development_index* are strongly negatively correlated. The Human Development Index (HDI) is a summary measure of four indicators: (1) life expectancy; (2) expected years of schooling; (3) mean of years of schooling; and (4) gross national income per capita. Another notable negative correlation is that between *handwashing_facilities* and *0_to_14(%)*. However, as the former is mostly imputed, the correlation may not reflect the true correlation.
+
+Again, no further action to handle the high correlation as this is an exploratory analysis.
+
+```{r echo=FALSE}
+rm(list = setdiff(ls(), "covid_deaths_imputed"))
+```
 # Prototype
+
+The next step would be to explore the packages to build the needed plots. Interactivity is also explored for each type of plot.
 
 ## Scatterplot
 
-### Use *ggstatsplot::ggscatterstats*
+Three methods will be explored for the scatterplot
 
-Available options: marginal distribution and statistical tests. No option for smoothing.
+### 1) Use *ggstatsplot::ggscatterstats*
+
+There are two key options that are available for users to select: the type of marginal distribution and the statistical test to be performed. The code chunk below shows the options for marginal distribution.
 
 ```{r fig.height=8, fig.width=10}
-
-scatter_ggscatterstats_histogram <- ggscatterstats(covid_deaths,
-                                                   x = handwashing_facilities,
+scatter_ggscatterstats_histogram <- ggscatterstats(covid_deaths_imputed,
+                                                   x = hospital_beds_per_thousand,
                                                    y = total_deaths,
                                                    marginal.type = "histogram",
                                                    title = "Histogram",
                                                    ggplot.component = list(scale_y_log10()))
 
-scatter_ggscatterstats_density <- ggscatterstats(covid_deaths,
-                                                 x = handwashing_facilities,
+scatter_ggscatterstats_density <- ggscatterstats(covid_deaths_imputed,
+                                                 x = hospital_beds_per_thousand,
                                                  y = total_deaths,
                                                  marginal.type = "density",
                                                  title = "Density",
                                                  ggplot.component = list(scale_y_log10()))
 
-scatter_ggscatterstats_densigram <- ggscatterstats(covid_deaths,
-                                                   x = handwashing_facilities,
+scatter_ggscatterstats_densigram <- ggscatterstats(covid_deaths_imputed,
+                                                   x = hospital_beds_per_thousand,
                                                    y = total_deaths,
                                                    marginal.type = "densigram",
                                                    title = "Density + Histogram",
                                                    ggplot.component = list(scale_y_log10()))
 
-scatter_ggscatterstats_boxplot <- ggscatterstats(covid_deaths,
-                                                 x = handwashing_facilities,
+scatter_ggscatterstats_boxplot <- ggscatterstats(covid_deaths_imputed,
+                                                 x = hospital_beds_per_thousand,
                                                  y = total_deaths,
                                                  marginal.type = "boxplot",
                                                  title = "Boxplot",
                                                  ggplot.component = list(scale_y_log10()))
 
-scatter_ggscatterstats_violin <- ggscatterstats(covid_deaths,
-                                                x = handwashing_facilities,
+scatter_ggscatterstats_violin <- ggscatterstats(covid_deaths_imputed,
+                                                x = hospital_beds_per_thousand,
                                                 y = total_deaths,
                                                 marginal.type = "violin",
                                                 title = "Violin",
@@ -383,34 +481,35 @@ combine_plots(plotlist = list(scatter_ggscatterstats_histogram,
               plotgrid.args = list(nrow=2))
 ```
 
+The next block of code lists the options for the statistical tests to be performed.
 
 ```{r fig.height=8, fig.width=10}
-scatter_ggscatterstats_parametric <- ggscatterstats(covid_deaths,
-                                                    x = handwashing_facilities,
+scatter_ggscatterstats_parametric <- ggscatterstats(covid_deaths_imputed,
+                                                    x = hospital_beds_per_thousand,
                                                     y = total_deaths,
                                                     type = "parametric",
                                                     marginal.type = "boxplot",
                                                     title = "Parametric: Pearson's correlation coefficient",
                                                     ggplot.component = list(scale_y_log10()))
 
-scatter_ggscatterstats_nonparametric <- ggscatterstats(covid_deaths,
-                                                       x = handwashing_facilities,
+scatter_ggscatterstats_nonparametric <- ggscatterstats(covid_deaths_imputed,
+                                                       x = hospital_beds_per_thousand,
                                                        y = total_deaths,
                                                        type = "non-parametric",
                                                        marginal.type = "boxplot",
                                                        title = "Non-parametric: Spearman's rank correlation coefficient",
                                                        ggplot.component = list(scale_y_log10()))
 
-scatter_ggscatterstats_robust <- ggscatterstats(covid_deaths,
-                                                x = handwashing_facilities,
+scatter_ggscatterstats_robust <- ggscatterstats(covid_deaths_imputed,
+                                                x = hospital_beds_per_thousand,
                                                 y = total_deaths,
                                                 type = "robust",
                                                 marginal.type = "boxplot",
                                                 title = "Robust: Winsorized Pearson correlation coefficient",
                                                 ggplot.component = list(scale_y_log10()))
 
-scatter_ggscatterstats_bayes <- ggscatterstats(covid_deaths,
-                                               x = handwashing_facilities,
+scatter_ggscatterstats_bayes <- ggscatterstats(covid_deaths_imputed,
+                                               x = hospital_beds_per_thousand,
                                                y = total_deaths,
                                                type = "bayes",
                                                marginal.type = "boxplot",
@@ -425,202 +524,193 @@ combine_plots(plotlist = list(scatter_ggscatterstats_parametric,
               plotgrid.args = list(nrow=2))
 ```
 
+The above graphs are visually appealing in terms of the usage of aesthetic features such as position, colour and opacity. Little effort is needed to customise the plots. The plots are also informative to the more statistically-inclined. Another nice feature of the package is that it has a simple to use function to combine the plots into a grid.
 
-```{r eval=FALSE, message=TRUE}
-ggplotly(scatter_ggscatterstats)
-```
+However, there is no support for interactivity for the output of ```ggscatterstats()```, despite claims from the authors that the *ggstatplot* functions are compatible with the *plotly* package.
 
-```{r}
+### 2) Use *car::scatterplot*
 
-```
+Unlike *ggstatsplot*, the key options for users to select includes the method for the regression line and smoothing. ```scatterplot()``` supports the display of marginal distribution but is limited to the boxplot only. Users can however select the axis in which the marginal boxplot is to be displayed. 
 
-
-Unable to make interactive as not compatible.
-
-
-### Use *car::scatterplot*
+The code chunk below shows the scatterplots with marginal boxplot for different regression line methods. Much customisation can be done within the function, but they are limited. For example, we can add labels to the data points by setting ```id=TRUE```, but only for the top two values.
 
 ```{r message=FALSE, eval=FALSE, echo=TRUE}
-x_variable <- covid_deaths$handwashing_facilities
-y_variable <- covid_deaths$total_deaths
+x_variable <- covid_deaths_imputed$hospital_beds_per_thousand
+y_variable <- covid_deaths_imputed$total_deaths
 
 scatter_scatterplot_lm <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths,
+                                   covid_deaths_imputed,
                                    boxplots = "xy",
                                    id = TRUE,
                                    log = "y",
                                    pch=16,
                                    main = "regression line method: lm",
-                                   xlab = "handwashing_facilities",
-                                   ylab = "total_deaths",
+                                   xlab = "hospital beds per thousand",
+                                   ylab = "total deaths",
                                    regLine = list(method=lm, lty=1, lwd=1),
                                    smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
 
 scatter_scatterplot_loess <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths,
+                                   covid_deaths_imputed,
                                    boxplots = "xy",
                                    id = TRUE,
                                    log = "y",
                                    pch=16,
                                    main = "regression line method: loess",
-                                   xlab = "handwashing_facilities",
-                                   ylab = "total_deaths",
+                                   xlab = "hospital beds per thousand",
+                                   ylab = "total deaths",
                                    regLine = list(method=loess, lty=1, lwd=1),
                                    smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
 ```
 ```{r eval=TRUE, echo=FALSE}
-x_variable <- covid_deaths$handwashing_facilities
-y_variable <- covid_deaths$total_deaths
+x_variable <- covid_deaths_imputed$hospital_beds_per_thousand
+y_variable <- covid_deaths_imputed$total_deaths
 
 scatter_scatterplot_lm <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths,
+                                   covid_deaths_imputed,
                                    boxplots = "xy",
                                    id = TRUE,
                                    log = "y",
                                    pch=16,
                                    main = "regression line method: lm",
-                                   xlab = "handwashing_facilities",
-                                   ylab = "total_deaths",
+                                   xlab = "hospital beds per thousand",
+                                   ylab = "total deaths",
                                    regLine = list(method=lm, lty=1, lwd=1),
                                    smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
 
 scatter_scatterplot_loess <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths,
+                                   covid_deaths_imputed,
                                    boxplots = "xy",
                                    id = TRUE,
                                    log = "y",
                                    pch=16,
                                    main = "regression line method: loess",
-                                   xlab = "handwashing_facilities",
+                                   xlab = "hospital beds per thousand",
                                    ylab = "total_deaths",
                                    regLine = list(method=loess, lty=1, lwd=1),
                                    smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
 ```
 
+The options available for the different smoothing methods are shown below.
 
 ```{r eval=FALSE, echo=TRUE}
 scatter_scatterplot_loessline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths,
+                                   covid_deaths_imputed,
                                    boxplots = "xy",
                                    id = TRUE,
                                    log = "y",
                                    pch=16,
                                    main = "smoother: loessLine",
-                                   xlab = "handwashing_facilities",
+                                   xlab = "hospital beds per thousand",
                                    ylab = "total_deaths",
                                    regLine = list(method=loess, lty=1, lwd=0.5),
                                    smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
 
 scatter_scatterplot_gamline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths,
+                                   covid_deaths_imputed,
                                    boxplots = "xy",
                                    id = TRUE,
                                    log = "y",
                                    pch=16,
                                    main = "smoother: gamLine",
-                                   xlab = "handwashing_facilities",
-                                   ylab = "total_deaths",
+                                   xlab = "hospital beds per thousand",
+                                   ylab = "total deaths",
                                    regLine = list(method=mgcv::gam, lty=1, lwd=0.5),
                                    smooth = list(smoother=gamLine,lty.var=2, lwd.var=0.5))
 
 scatter_scatterplot_quantregline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths,
+                                   covid_deaths_imputed,
                                    boxplots = "xy",
                                    id = TRUE,
                                    log = "y",
                                    pch=16,
                                    main = "smoother: quantregLine",
-                                   xlab = "handwashing_facilities",
-                                   ylab = "total_deaths",
+                                   xlab = "hospital beds per thousand",
+                                   ylab = "total deaths",
                                    regLine = list(method=quantreg::rqss, lty=1, lwd=0.5),
                                    smooth = list(smoother=quantregLine,lty.var=2, lwd.var=0.5))
 ```
 ```{r eval=TRUE, echo=FALSE}
 scatter_scatterplot_loessline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths,
+                                   covid_deaths_imputed,
                                    boxplots = "xy",
                                    id = TRUE,
                                    log = "y",
                                    pch=16,
                                    main = "smoother: loessLine",
-                                   xlab = "handwashing_facilities",
-                                   ylab = "total_deaths",
+                                   xlab = "hospital beds per thousand",
+                                   ylab = "total deaths",
                                    regLine = list(method=loess, lty=1, lwd=0.5),
                                    smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
 
 scatter_scatterplot_gamline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths,
+                                   covid_deaths_imputed,
                                    boxplots = "xy",
                                    id = TRUE,
                                    log = "y",
                                    pch=16,
                                    main = "smoother: gamLine",
-                                   xlab = "handwashing_facilities",
-                                   ylab = "total_deaths",
+                                   xlab = "hospital beds per thousand",
+                                   ylab = "total deaths",
                                    regLine = list(method=mgcv::gam, lty=1, lwd=0.5),
                                    smooth = list(smoother=gamLine,lty.var=2, lwd.var=0.5))
 
 scatter_scatterplot_quantregline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths,
+                                   covid_deaths_imputed,
                                    boxplots = "xy",
                                    id = TRUE,
                                    log = "y",
                                    pch=16,
                                    main = "smoother: quantregLine",
-                                   xlab = "handwashing_facilities",
-                                   ylab = "total_deaths",
+                                   xlab = "hospital beds per thousand",
+                                   ylab = "total deaths",
                                    regLine = list(method=quantreg::rqss, lty=1, lwd=0.5),
                                    smooth = list(smoother=quantregLine,lty.var=2, lwd.var=0.5))
 ```
+The regression line and smoother options are useful.
 
-able to choose different smoothers and methods to draw the best fit line
+The plots created from the *car* package are less appealing than from *ggstatsplot*. Although much flexibility is given to customise the plots, it requires much effort to make the changes. Similar to ```ggscatterstats()```, there is no interactivity support for the output from ```scatterplot()```, either within the package itself or from external interactivity packages.
 
-limited customisations to the plot aesthetics
-
-unable to make plot interactive
-
-
-
-### Draw from scratch with *ggplot*
+### 3) Draw from scratch with *ggplot*
 
 ```{r warning=FALSE}
 
-x_variable <- covid_deaths$handwashing_facilities
-y_variable <- covid_deaths$total_deaths
+x_variable <- covid_deaths_imputed$hospital_beds_per_thousand
+y_variable <- covid_deaths_imputed$total_deaths
 
-scatter_ggplot_loess <- ggplot(covid_deaths, 
+scatter_ggplot_loess <- ggplot(covid_deaths_imputed, 
                                aes(x=x_variable, y=y_variable, size=population)) +
                           geom_point(aes(colour=continent)) +
                           scale_y_log10() +
                           ggtitle("loess") +
-                          xlab("handwashing facilities") +
+                          xlab("hospital beds per thousand") +
                           ylab("total deaths") +
                           geom_smooth(method = "loess")
 
-scatter_ggplot_lm <- ggplot(covid_deaths, 
+scatter_ggplot_lm <- ggplot(covid_deaths_imputed, 
                             aes(x=x_variable, y=y_variable, size=population)) +
                       geom_point(aes(colour=continent)) +
                       scale_y_log10() +
                       ggtitle("lm") +
-                      xlab("handwashing facilities") +
+                      xlab("hospital beds per thousand") +
                       ylab("total deaths") +
                       geom_smooth(method = "lm")
 
-scatter_ggplot_glm <- ggplot(covid_deaths, 
+scatter_ggplot_glm <- ggplot(covid_deaths_imputed, 
                              aes(x=x_variable, y=y_variable, size=population)) +
                         geom_point(aes(colour=continent)) +
                         scale_y_log10() +
                         ggtitle("glm") +
-                        xlab("handwashing facilities") +
+                        xlab("hospital beds per thousand") +
                         ylab("total deaths") +
                         geom_smooth(method = "glm")
 
-scatter_ggplot_gam <- ggplot(covid_deaths, 
+scatter_ggplot_gam <- ggplot(covid_deaths_imputed, 
                              aes(x=x_variable, y=y_variable, size=population)) +
                         geom_point(aes(colour=continent)) +
                         scale_y_log10() +
                         ggtitle("gam") +
-                        xlab("handwashing facilities") +
+                        xlab("hospital beds per thousand") +
                         ylab("total deaths") +
                         geom_smooth(method = "gam")
 
@@ -633,11 +723,11 @@ combine_plots(plotlist = list(scatter_ggplot_loess,
 ```
 
 ```{r fig.height=5, fig.width=15}
-scatter_ggplot_base <- ggplot(covid_deaths, 
+scatter_ggplot_base <- ggplot(covid_deaths_imputed, 
                               aes(x=x_variable, y=y_variable, size=population)) +
                         geom_point(aes(colour=continent)) +
                         scale_y_log10() +
-                        xlab("handwashing facilities") +
+                        xlab("hospital beds per thousand") +
                         ylab("total deaths") +
                         geom_smooth() +
                         theme(legend.position = "none")
@@ -667,37 +757,24 @@ combine_plots(plotlist = list(scatter_ggplot_histogram,
 ggplotly(scatter_ggplot_lm)
 ```
 
-```{r warning=FALSE}
-scatter_ggplot_miss <- ggplot(covid_deaths, 
-                              aes(x=x_variable, y=y_variable, colour = continent)) +
-                          geom_miss_point() +
-                          scale_y_log10()
-
-scatter_ggplot_miss
-```
-
-
-```{r fig.height=3, fig.width=5}
-ggplotly(scatter_ggplot_miss)
-```
 
 ### Summary of R packages for scatterplot
 
-```{r fig.height=5, fig.width=10}
+```{r echo=FALSE, fig.height=5, fig.width=10}
 
-scatter_ggstatsplot <- ggscatterstats(covid_deaths,
-                                      x = handwashing_facilities,
+scatter_ggstatsplot <- ggscatterstats(covid_deaths_imputed,
+                                      x = hospital_beds_per_thousand,
                                       y = total_deaths,
                                       marginal.type = "densigram",
                                       title = "ggstatsplot::ggscatterstats with densigram",
                                       ggplot.component = list(scale_y_log10()))
 
-scatter_ggplot_base <- ggplot(covid_deaths, 
+scatter_ggplot_base <- ggplot(covid_deaths_imputed, 
                               aes(x=x_variable, y=y_variable, size=population)) +
                         geom_point(aes(colour=continent)) +
                         scale_y_log10() +
                         ggtitle("ggplot with marginal boxplot") +
-                        xlab("handwashing facilities") +
+                        xlab("hospital beds per thousand") +
                         ylab("total deaths") +
                         geom_smooth() +
                         theme(legend.position = "none")
@@ -710,29 +787,173 @@ combine_plots(plotlist = list(scatter_ggstatsplot,
               plotgrid.args = list(nrow=1))
 
 ```
-```{r eval=TRUE, echo=FALSE}
+```{r eval=TRUE, echo=FALSE, fig.height=5}
 scatter_scatterplot_loessline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths,
+                                   covid_deaths_imputed,
                                    boxplots = "xy",
                                    id = TRUE,
                                    log = "y",
                                    pch=16,
-                                   main = "smoother: loessLine",
-                                   xlab = "handwashing_facilities",
-                                   ylab = "total_deaths",
+                                   main = "car::scatterplot with marginal boxplot",
+                                   xlab = "hospital beds per thousand",
+                                   ylab = "total deaths",
                                    regLine = list(method=loess, lty=1, lwd=0.5),
                                    smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
 ```
 
+Criteria:
+Ease of use
+Ease of understanding
+Interactivity
+Shiny app integration
 
+
+
+Good practice to clear the environment before the next phase.
+```{r}
+rm(list = setdiff(ls(), "covid_deaths_imputed"))
+```
 ## Funnel Plot
+
+### Use *FunnelPlotR::funnel_plot*
+
+
+```{r}
+covid_deaths_fpR <- funnel_plot(numerator = covid_deaths_imputed$total_deaths,
+                                denominator = covid_deaths_imputed$total_cases,
+                                group = covid_deaths_imputed$location,
+                                data_type = "PR",
+                                limit = 99,
+                                label_outliers = TRUE,
+                                Poisson_limits = TRUE,
+                                title = "Case Fatality Rate by Total Number of COVID-19 Cases",
+                                x_label = "Total Number of COVID-19 Cases",
+                                y_label = "Case Fatality Rate",
+                                xrange = c(0, 32000000),
+                                yrange = c(0, 0.25))
+```
+
+### Use *funnelR::funplot*
+ 
+
+```{r eval=FALSE, echo=TRUE}
+
+covid_deaths_fR <- covid_deaths_imputed %>% 
+                          rename(n = total_deaths, d = total_cases) %>% 
+                          select(continent, location, n, d) %>%
+                          filter(continent == "South America")
+
+funnelR_limits <- fundata(input = covid_deaths_fR,
+                          alpha = 0.95,
+                          method = 'approximate', # exact or approximate
+                          )
+
+funplot(covid_deaths_funnelR, funnelR_limits)
+```
+```> Error: memory exhausted (limit reached?)```
+```> Error: cannot allocate vector of size 91.3 Mb```
+
+### 
+
+
+```{r}
+location <- covid_deaths_imputed$location
+rate <- covid_deaths_imputed$case_fatality_rate
+number <- log(covid_deaths_imputed$total_cases)
+
+rate.se <- sqrt((rate*(1-rate)) / (number))
+df <- data.frame(location, rate, number, rate.se)
+
+# common effect (fixed effect model)
+rate.fem <- weighted.mean(rate, 1/rate.se^2)
+
+# lower and upper limits for 95% and 99.9% CI
+number.seq <- seq(1, max(number), 1)
+number.ll95 <- rate.fem - 1.96 * sqrt((rate.fem*(1-rate.fem)) / (number.seq)) 
+number.ul95 <- rate.fem + 1.96 * sqrt((rate.fem*(1-rate.fem)) / (number.seq)) 
+number.ll999 <- rate.fem - 3.29 * sqrt((rate.fem*(1-rate.fem)) / (number.seq)) 
+number.ul999 <- rate.fem + 3.29 * sqrt((rate.fem*(1-rate.fem)) / (number.seq)) 
+dfCI <- data.frame(number.ll95, number.ul95, number.ll999, number.ul999, number.seq, rate.fem)
+
+# draw plot
+fp <- ggplot(aes(x = number, y = rate), data = df) +
+    geom_point(shape = 1) +
+    geom_line(aes(x = number.seq, y = number.ll95), data = dfCI) +
+    geom_line(aes(x = number.seq, y = number.ul95), data = dfCI) +
+    geom_line(aes(x = number.seq, y = number.ll999), linetype = "dashed", data = dfCI) +
+    geom_line(aes(x = number.seq, y = number.ul999), linetype = "dashed", data = dfCI) +
+    geom_hline(aes(yintercept = rate.fem), data = dfCI) +
+    geom_text(aes(label=ifelse(rate>0.08, location,'')),hjust=-0.2, vjust=-0.5)+
+    scale_x_continuous(labels = scales::comma) +
+    xlab("Total Number of COVID-19 Cases") + ylab("Case Fatality Rate") 
+
+fp
+```
 
 
 
 
 ## Multivariate Analysis
 
-## Interactivity
+There is a Shiny app for the *mlr* package available.
+
+### Using *olsrr*
+
+```{r}
+model1 <- ols_regress(total_deaths ~ total_cases + positive_rate + hospital_beds_per_thousand, data = covid_deaths_imputed)
+
+model1
+```
+
+```{r}
+
+covid_deaths_mlr <- covid_deaths_imputed %>% select(-c(continent,
+                                               location,
+                                               case_fatality_rate,
+                                               lat,
+                                               long))
+
+model <- lm(total_deaths ~., data = covid_deaths_mlr)
+
+mlr_model <- ols_step_both_p(model)
+
+mlr_model
+```
+
+```{r}
+plot(mlr_model)
+```
+
+Able to choose variable selection methods:
+
+* ols_step_all_possible()
+* ols_step_best_subset()
+* ols_step_forward_p()
+* ols_step_backward_p()
+* ols_step_both_p()
+* ols_step_forward_aic()
+* ols_step_backward_aic()
+* ols_step_both_aic()
+
+Collinearity assessment
+
+* ols_vif_tol()
+
+have plots to assess model fit
+* ols_plot_resid_fit_spread()
+
+also have plots for residual diagnostics
+
+* ols_plot_resid_qq()
+* ols_test_normality() and ols_plot_resid_hist()
+* ols_plot_resid_fit()
+
+
+
+```{r}
+
+```
+
 
 
 # Storyboard
