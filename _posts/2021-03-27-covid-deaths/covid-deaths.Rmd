@@ -8,6 +8,10 @@ date: 04-11-2021
 output:
   distill::distill_article:
     self_contained: false
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    
 ---
 
 ```{r setup, include=FALSE}
@@ -83,8 +87,8 @@ All data extraction and wrangling are done in R using the *tidyverse* suite of p
 ## Install and load all necessary packages
 
 ```{r}
-packages = c('tidyverse', 'UpSetR', 'visdat', 'naniar',
-             'ggstatsplot', 'car',
+packages = c('tidyverse', 'naniar', 'corrr',
+             'ggstatsplot', 'car', 'ggExtra',
              'FunnelPlotR', 'metafor', 'metaviz', 'funnelR',
              'mlr', 'olsrr',
              'plotly', 'ggvis')
@@ -208,6 +212,7 @@ covid_deaths <- covid %>%
   left_join(health_personnel_phy, by=c("location" = "region/country/area")) %>%
   left_join(health_exp_cleaned, by=c("location" = "region/country/area")) %>%
   left_join(geo_lookup, by=c("iso_code" = "iso3")) %>%
+  mutate(case_fatality_rate = total_deaths/total_cases) %>%
   filter(!is.na(continent))
 ```
 
@@ -215,7 +220,7 @@ We will reorder the columns to group similar variables.
 
 ```{r}
 col_order <- c("iso_code", "continent", "location", "last_updated_date",
-               "total_cases", "total_deaths", "total_tests", "positive_rate",
+               "total_cases", "total_deaths", "case_fatality_rate", "total_tests", "positive_rate",
                "hospital_beds_per_thousand", "num_physicians_per_thousand",
                "year_personnel", "handwashing_facilities",
                "gdp_per_capita", "current_health_exp_%gdp", "domestic_govt_health_exp_%totalgovtexp",
@@ -229,7 +234,9 @@ covid_deaths <- covid_deaths[, col_order]
 glimpse(covid_deaths)
 ```
 
-## Check the data for missing values
+## Explore the data
+
+### Missingness
 
 ```{r}
 missing_values <- covid_deaths %>%
@@ -258,30 +265,474 @@ percentage_plot <- missing_values %>%
 
 percentage_plot
 ```
-```{r}
-vis_miss(covid_deaths)
+
+```{r fig.height=10}
+gg_miss_upset(covid_deaths, 
+              nsets = n_var_miss(covid_deaths), 
+              nintersects = NA, 
+              text.scale = c(2,2,2,2,1.5,2),
+              set_size.show = TRUE,
+              set_size.numbers_size = 4)
 ```
 
+### Distribution
 
+```{r fig.height=10, fig.width=10}
+check_distribution <- covid_deaths %>%
+  select(!year_personnel) %>%
+  pivot_longer(cols = total_cases:annual_intl_arrivals_thousands,
+               names_to = "variable",
+               values_to = "value") %>%
+  ggplot(aes(x=value)) +
+    geom_density() +
+    facet_wrap(~variable, nrow = 5, ncol = 4, scales = "free") +
+    theme_minimal() +
+    theme(panel.border = element_rect(colour="grey60", fill = NA))
 
-```{r}
-gg_miss_upset(covid_deaths, nsets = n_var_miss(covid_deaths), nintersects = NA)
+check_distribution
 ```
 
+### Outliers
 
+```{r fig.height=10, fig.width=15}
 
+check_outlier <- covid_deaths %>%
+  select(!year_personnel) %>%
+  pivot_longer(cols = total_cases:annual_intl_arrivals_thousands,
+               names_to = "variable",
+               values_to = "value") %>%
+  ggplot(aes(x=variable, y=value)) +
+    geom_boxplot() +
+    facet_wrap(~variable, ncol = 7, scales = "free") +
+    theme_minimal() +
+    theme(panel.border = element_rect(colour="grey60", fill = NA),
+          axis.text.x.bottom = element_blank())
 
+check_outlier
+```
 
+### Correlation
+
+```{r}
+check_correlation <- correlate(covid_deaths %>%
+                                 select(-c(iso_code, 
+                                           continent,
+                                           location,
+                                           last_updated_date,
+                                           year_personnel,
+                                           lat,
+                                           long)))
+
+rplot(check_correlation) +
+  scale_size_continuous(range = c(0,4)) +
+  theme(axis.text.x = element_text(size=7, angle=45, hjust=0.95),
+        axis.text.y = element_text(size=7))
+```
 
 # Prototype
 
+## Scatterplot
+
+### Use *ggstatsplot::ggscatterstats*
+
+Available options: marginal distribution and statistical tests. No option for smoothing.
+
+```{r fig.height=8, fig.width=10}
+
+scatter_ggscatterstats_histogram <- ggscatterstats(covid_deaths,
+                                                   x = handwashing_facilities,
+                                                   y = total_deaths,
+                                                   marginal.type = "histogram",
+                                                   title = "Histogram",
+                                                   ggplot.component = list(scale_y_log10()))
+
+scatter_ggscatterstats_density <- ggscatterstats(covid_deaths,
+                                                 x = handwashing_facilities,
+                                                 y = total_deaths,
+                                                 marginal.type = "density",
+                                                 title = "Density",
+                                                 ggplot.component = list(scale_y_log10()))
+
+scatter_ggscatterstats_densigram <- ggscatterstats(covid_deaths,
+                                                   x = handwashing_facilities,
+                                                   y = total_deaths,
+                                                   marginal.type = "densigram",
+                                                   title = "Density + Histogram",
+                                                   ggplot.component = list(scale_y_log10()))
+
+scatter_ggscatterstats_boxplot <- ggscatterstats(covid_deaths,
+                                                 x = handwashing_facilities,
+                                                 y = total_deaths,
+                                                 marginal.type = "boxplot",
+                                                 title = "Boxplot",
+                                                 ggplot.component = list(scale_y_log10()))
+
+scatter_ggscatterstats_violin <- ggscatterstats(covid_deaths,
+                                                x = handwashing_facilities,
+                                                y = total_deaths,
+                                                marginal.type = "violin",
+                                                title = "Violin",
+                                                ggplot.component = list(scale_y_log10()))
+
+combine_plots(plotlist = list(scatter_ggscatterstats_histogram,
+                              scatter_ggscatterstats_density,
+                              scatter_ggscatterstats_densigram,
+                              scatter_ggscatterstats_boxplot,
+                              scatter_ggscatterstats_violin),
+              annotation.args = list(title="Comparing types of marginal distribution"),
+              plotgrid.args = list(nrow=2))
+```
+
+
+```{r fig.height=8, fig.width=10}
+scatter_ggscatterstats_parametric <- ggscatterstats(covid_deaths,
+                                                    x = handwashing_facilities,
+                                                    y = total_deaths,
+                                                    type = "parametric",
+                                                    marginal.type = "boxplot",
+                                                    title = "Parametric: Pearson's correlation coefficient",
+                                                    ggplot.component = list(scale_y_log10()))
+
+scatter_ggscatterstats_nonparametric <- ggscatterstats(covid_deaths,
+                                                       x = handwashing_facilities,
+                                                       y = total_deaths,
+                                                       type = "non-parametric",
+                                                       marginal.type = "boxplot",
+                                                       title = "Non-parametric: Spearman's rank correlation coefficient",
+                                                       ggplot.component = list(scale_y_log10()))
+
+scatter_ggscatterstats_robust <- ggscatterstats(covid_deaths,
+                                                x = handwashing_facilities,
+                                                y = total_deaths,
+                                                type = "robust",
+                                                marginal.type = "boxplot",
+                                                title = "Robust: Winsorized Pearson correlation coefficient",
+                                                ggplot.component = list(scale_y_log10()))
+
+scatter_ggscatterstats_bayes <- ggscatterstats(covid_deaths,
+                                               x = handwashing_facilities,
+                                               y = total_deaths,
+                                               type = "bayes",
+                                               marginal.type = "boxplot",
+                                               title = "Bayesian: Pearson's correlation coefficient",
+                                               ggplot.component = list(scale_y_log10()))
+
+combine_plots(plotlist = list(scatter_ggscatterstats_parametric,
+                              scatter_ggscatterstats_nonparametric,
+                              scatter_ggscatterstats_robust,
+                              scatter_ggscatterstats_bayes),
+              annotation.args = list(title="Comparing types of test"),
+              plotgrid.args = list(nrow=2))
+```
+
+
+```{r eval=FALSE, message=TRUE}
+ggplotly(scatter_ggscatterstats)
+```
+
+```{r}
+
+```
+
+
+Unable to make interactive as not compatible.
+
+
+### Use *car::scatterplot*
+
+```{r message=FALSE, eval=FALSE, echo=TRUE}
+x_variable <- covid_deaths$handwashing_facilities
+y_variable <- covid_deaths$total_deaths
+
+scatter_scatterplot_lm <- scatterplot(y_variable ~ x_variable,
+                                   covid_deaths,
+                                   boxplots = "xy",
+                                   id = TRUE,
+                                   log = "y",
+                                   pch=16,
+                                   main = "regression line method: lm",
+                                   xlab = "handwashing_facilities",
+                                   ylab = "total_deaths",
+                                   regLine = list(method=lm, lty=1, lwd=1),
+                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
+
+scatter_scatterplot_loess <- scatterplot(y_variable ~ x_variable,
+                                   covid_deaths,
+                                   boxplots = "xy",
+                                   id = TRUE,
+                                   log = "y",
+                                   pch=16,
+                                   main = "regression line method: loess",
+                                   xlab = "handwashing_facilities",
+                                   ylab = "total_deaths",
+                                   regLine = list(method=loess, lty=1, lwd=1),
+                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
+```
+```{r eval=TRUE, echo=FALSE}
+x_variable <- covid_deaths$handwashing_facilities
+y_variable <- covid_deaths$total_deaths
+
+scatter_scatterplot_lm <- scatterplot(y_variable ~ x_variable,
+                                   covid_deaths,
+                                   boxplots = "xy",
+                                   id = TRUE,
+                                   log = "y",
+                                   pch=16,
+                                   main = "regression line method: lm",
+                                   xlab = "handwashing_facilities",
+                                   ylab = "total_deaths",
+                                   regLine = list(method=lm, lty=1, lwd=1),
+                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
+
+scatter_scatterplot_loess <- scatterplot(y_variable ~ x_variable,
+                                   covid_deaths,
+                                   boxplots = "xy",
+                                   id = TRUE,
+                                   log = "y",
+                                   pch=16,
+                                   main = "regression line method: loess",
+                                   xlab = "handwashing_facilities",
+                                   ylab = "total_deaths",
+                                   regLine = list(method=loess, lty=1, lwd=1),
+                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
+```
+
+
+```{r eval=FALSE, echo=TRUE}
+scatter_scatterplot_loessline <- scatterplot(y_variable ~ x_variable,
+                                   covid_deaths,
+                                   boxplots = "xy",
+                                   id = TRUE,
+                                   log = "y",
+                                   pch=16,
+                                   main = "smoother: loessLine",
+                                   xlab = "handwashing_facilities",
+                                   ylab = "total_deaths",
+                                   regLine = list(method=loess, lty=1, lwd=0.5),
+                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
+
+scatter_scatterplot_gamline <- scatterplot(y_variable ~ x_variable,
+                                   covid_deaths,
+                                   boxplots = "xy",
+                                   id = TRUE,
+                                   log = "y",
+                                   pch=16,
+                                   main = "smoother: gamLine",
+                                   xlab = "handwashing_facilities",
+                                   ylab = "total_deaths",
+                                   regLine = list(method=mgcv::gam, lty=1, lwd=0.5),
+                                   smooth = list(smoother=gamLine,lty.var=2, lwd.var=0.5))
+
+scatter_scatterplot_quantregline <- scatterplot(y_variable ~ x_variable,
+                                   covid_deaths,
+                                   boxplots = "xy",
+                                   id = TRUE,
+                                   log = "y",
+                                   pch=16,
+                                   main = "smoother: quantregLine",
+                                   xlab = "handwashing_facilities",
+                                   ylab = "total_deaths",
+                                   regLine = list(method=quantreg::rqss, lty=1, lwd=0.5),
+                                   smooth = list(smoother=quantregLine,lty.var=2, lwd.var=0.5))
+```
+```{r eval=TRUE, echo=FALSE}
+scatter_scatterplot_loessline <- scatterplot(y_variable ~ x_variable,
+                                   covid_deaths,
+                                   boxplots = "xy",
+                                   id = TRUE,
+                                   log = "y",
+                                   pch=16,
+                                   main = "smoother: loessLine",
+                                   xlab = "handwashing_facilities",
+                                   ylab = "total_deaths",
+                                   regLine = list(method=loess, lty=1, lwd=0.5),
+                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
+
+scatter_scatterplot_gamline <- scatterplot(y_variable ~ x_variable,
+                                   covid_deaths,
+                                   boxplots = "xy",
+                                   id = TRUE,
+                                   log = "y",
+                                   pch=16,
+                                   main = "smoother: gamLine",
+                                   xlab = "handwashing_facilities",
+                                   ylab = "total_deaths",
+                                   regLine = list(method=mgcv::gam, lty=1, lwd=0.5),
+                                   smooth = list(smoother=gamLine,lty.var=2, lwd.var=0.5))
+
+scatter_scatterplot_quantregline <- scatterplot(y_variable ~ x_variable,
+                                   covid_deaths,
+                                   boxplots = "xy",
+                                   id = TRUE,
+                                   log = "y",
+                                   pch=16,
+                                   main = "smoother: quantregLine",
+                                   xlab = "handwashing_facilities",
+                                   ylab = "total_deaths",
+                                   regLine = list(method=quantreg::rqss, lty=1, lwd=0.5),
+                                   smooth = list(smoother=quantregLine,lty.var=2, lwd.var=0.5))
+```
+
+able to choose different smoothers and methods to draw the best fit line
+
+limited customisations to the plot aesthetics
+
+unable to make plot interactive
+
+
+
+### Draw from scratch with *ggplot*
 
 ```{r warning=FALSE}
-ggplot(covid_deaths, aes(x=total_cases, y=total_deaths, colour = continent)) +
-  geom_point() +
-  scale_x_log10() +
-  scale_y_log10() +
-  theme(legend.position = "none")
+
+x_variable <- covid_deaths$handwashing_facilities
+y_variable <- covid_deaths$total_deaths
+
+scatter_ggplot_loess <- ggplot(covid_deaths, 
+                               aes(x=x_variable, y=y_variable, size=population)) +
+                          geom_point(aes(colour=continent)) +
+                          scale_y_log10() +
+                          ggtitle("loess") +
+                          xlab("handwashing facilities") +
+                          ylab("total deaths") +
+                          geom_smooth(method = "loess")
+
+scatter_ggplot_lm <- ggplot(covid_deaths, 
+                            aes(x=x_variable, y=y_variable, size=population)) +
+                      geom_point(aes(colour=continent)) +
+                      scale_y_log10() +
+                      ggtitle("lm") +
+                      xlab("handwashing facilities") +
+                      ylab("total deaths") +
+                      geom_smooth(method = "lm")
+
+scatter_ggplot_glm <- ggplot(covid_deaths, 
+                             aes(x=x_variable, y=y_variable, size=population)) +
+                        geom_point(aes(colour=continent)) +
+                        scale_y_log10() +
+                        ggtitle("glm") +
+                        xlab("handwashing facilities") +
+                        ylab("total deaths") +
+                        geom_smooth(method = "glm")
+
+scatter_ggplot_gam <- ggplot(covid_deaths, 
+                             aes(x=x_variable, y=y_variable, size=population)) +
+                        geom_point(aes(colour=continent)) +
+                        scale_y_log10() +
+                        ggtitle("gam") +
+                        xlab("handwashing facilities") +
+                        ylab("total deaths") +
+                        geom_smooth(method = "gam")
+
+combine_plots(plotlist = list(scatter_ggplot_loess,
+                              scatter_ggplot_lm,
+                              scatter_ggplot_glm,
+                              scatter_ggplot_gam),
+              annotation.args = list(title="Comparing types of smoothing method"),
+              plotgrid.args = list(nrow=2))
 ```
+
+```{r fig.height=5, fig.width=15}
+scatter_ggplot_base <- ggplot(covid_deaths, 
+                              aes(x=x_variable, y=y_variable, size=population)) +
+                        geom_point(aes(colour=continent)) +
+                        scale_y_log10() +
+                        xlab("handwashing facilities") +
+                        ylab("total deaths") +
+                        geom_smooth() +
+                        theme(legend.position = "none")
+
+scatter_ggplot_histogram <- ggMarginal(scatter_ggplot_base, 
+                                       type="histogram",
+                                       fill="lightblue")
+
+scatter_ggplot_density <- ggMarginal(scatter_ggplot_base, 
+                                       type="density")
+
+scatter_ggplot_boxplot <- ggMarginal(scatter_ggplot_base, 
+                                       type="boxplot")
+
+combine_plots(plotlist = list(scatter_ggplot_histogram,
+                              scatter_ggplot_density,
+                              scatter_ggplot_boxplot),
+              annotation.args = list(title="Comparing types of marginal distribution"),
+              plotgrid.args = list(nrow=1))
+
+```
+
+
+
+
+```{r warning=FALSE}
+ggplotly(scatter_ggplot_lm)
+```
+
+```{r warning=FALSE}
+scatter_ggplot_miss <- ggplot(covid_deaths, 
+                              aes(x=x_variable, y=y_variable, colour = continent)) +
+                          geom_miss_point() +
+                          scale_y_log10()
+
+scatter_ggplot_miss
+```
+
+
+```{r fig.height=3, fig.width=5}
+ggplotly(scatter_ggplot_miss)
+```
+
+### Summary of R packages for scatterplot
+
+```{r fig.height=5, fig.width=10}
+
+scatter_ggstatsplot <- ggscatterstats(covid_deaths,
+                                      x = handwashing_facilities,
+                                      y = total_deaths,
+                                      marginal.type = "densigram",
+                                      title = "ggstatsplot::ggscatterstats with densigram",
+                                      ggplot.component = list(scale_y_log10()))
+
+scatter_ggplot_base <- ggplot(covid_deaths, 
+                              aes(x=x_variable, y=y_variable, size=population)) +
+                        geom_point(aes(colour=continent)) +
+                        scale_y_log10() +
+                        ggtitle("ggplot with marginal boxplot") +
+                        xlab("handwashing facilities") +
+                        ylab("total deaths") +
+                        geom_smooth() +
+                        theme(legend.position = "none")
+
+scatter_ggplot <- ggMarginal(scatter_ggplot_base, type = "boxplot")
+                        
+combine_plots(plotlist = list(scatter_ggstatsplot,
+                              scatter_ggplot),
+              annotation.args = list(title="Comparison of scatterplots"),
+              plotgrid.args = list(nrow=1))
+
+```
+```{r eval=TRUE, echo=FALSE}
+scatter_scatterplot_loessline <- scatterplot(y_variable ~ x_variable,
+                                   covid_deaths,
+                                   boxplots = "xy",
+                                   id = TRUE,
+                                   log = "y",
+                                   pch=16,
+                                   main = "smoother: loessLine",
+                                   xlab = "handwashing_facilities",
+                                   ylab = "total_deaths",
+                                   regLine = list(method=loess, lty=1, lwd=0.5),
+                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
+```
+
+
+## Funnel Plot
+
+
+
+
+## Multivariate Analysis
+
+## Interactivity
+
 
 # Storyboard
