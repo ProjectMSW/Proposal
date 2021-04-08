@@ -1,9 +1,9 @@
 ---
-title: "covid-confirmed-cases"
+title: "Exploring the Temporal Evolution of COVID-19 Cases"
 description: |
-  A short description of the post.
+  In this assignment, the purpose is to investigate the spread of Coronavirus (COVID-19) over time for different countries and building models to forecast the near-future case load in each country, using the Johns Hopkins COVID-19 dataset.
 author:
-  - name: amanda
+  - name: Siow Mun Chai
     url: {}
 date: 04-09-2021
 output:
@@ -13,11 +13,98 @@ output:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Distill is a publication format for scientific and technical writing, native to the web.
+# Overview
+The purpose of this assignment is to provides estimates of COVID-19 near-future case load in each country, based on global data collated by Johns Hopkins University. Beside allowing users to visualise the forecasted result, the users are also allowed to visualise the time-series data (EDA).
 
-Learn more about using Distill at <https://rstudio.github.io/distill>.
+
+Before we proceed to do the forecasting models, we will first do EDA on the data. We should allow the users to visualise:
+1) Distribution of the data 
+2) Trend, Seasonality and correlation of the data
+3) Any Anomalies in the data
+4) stationarity of the data
+
+All these factors will affect the outcome of the forecasting models.
+
+# Data Source
+The COVID-19 dataset is a timeseries dataset (with observations recorded daily). The dataset used is sourced from the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University. CSSE had collated the location and number of confirmed COVID-19 cases, deaths, and recoveries for all affected countries. It was developed to provide researchers, public health authorities, and the general public with a user-friendly tool to track the outbreak as it unfolds. The data used for this assignment is the cumulative confirmed daily cases for all affected countries and can be downloaded at https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv.
 
 
+## Installing and launching R packages
+A list of packages are required for this assignment. This code chunk installs the required packages and loads them onto RStudio environment.
+
+```{r message=FALSE, warning=FALSE}
+
+packages = c('xgboost','tidymodels','modeltime','tidyverse','lubridate','timetk','earth','tseries','forecast',
+             'viridis','plotly','tidyverse','tsibble','tsintermittent','randomForest',
+             'fpp3','Metrics','gghighlight')
+
+
+
+for(p in packages){
+  if(!require(p, character.only = T)){
+    install.packages(p)
+  }
+  library(p, character.only = T)
+}
+
+```
+
+## Loading the dataset onto R
+Data import was accomplished using read_csv() from readr package.
+
+
+```{r message=FALSE, warning=FALSE}
+confirmed_cases_raw <- read_csv("data/time_series_covid19_confirmed_global.csv") 
+confirmed_cases_raw
+
+```
+
+The following are observed from the dataset:
+
+* The date are recorded as variables and number of cases are recorded as observations, there is a need to collect all the date variables into a single date variable. 
+
+* The date variable is currently in "double" format. Need to recode into Date format.
+
+* The dataset contained cases at
+  - the province level in China 
+  - the city level in the USA, Australia, and Canada 
+  - the country level otherwise
+there is a need to amalgamate the province/state, city level into Country/Region.
+
+# Data Cleaning
+
+The following code helps to convert the data to the correct format for subsequently analysis.
+
+* confirmed_cases_country_level to store cumulative confirmed cases for the country (amalgamating the province/state, city level)
+
+* We are interested in the daily new confirmed cases, using lag function to do.
+
+* Selecting only Country, Date, TotalCases and daily_new_cases to be stored.
+
+
+```{r message=FALSE, warning=FALSE }
+confirmed_cases_country_level <- confirmed_cases_raw %>%
+  gather(Date,Total_Cases,-'Province/State',-'Country/Region',-Lat,-Long) %>%    #collecting all the date variables into a single date variable.
+  group_by(`Country/Region`,Date) %>%
+  summarize(total = sum(Total_Cases)) %>% 
+     select(`Country/Region`, Date, total) %>%
+     set_names(c("Country", "Date", "TotalCases")) %>%   #rename the variables
+  ungroup()
+
+confirmed_cases_country_level$Date <- as.Date(confirmed_cases_country_level$Date,format="%m/%d/%y")  #converting the Date variable to Date format
+
+# finding the daily new confirmed cases.
+confirmed_cases_country_level <- confirmed_cases_country_level %>%
+  group_by(Country) %>%
+  arrange(Country,Date)%>%
+  mutate(Daily_new_cases = TotalCases - lag(TotalCases, n =1))%>%
+  drop_na()
+
+confirmed_cases_country_level
+
+#tk_summary_diagnostics(confirmed_cases_country_level)
+ 
+```
