@@ -17,6 +17,23 @@
     "input_file": "covid-deaths.utf8.md"
   },
   {
+    "path": "posts/2021-04-09-covid-confirmed-cases/",
+    "title": "covid-confirmed-cases",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "amanda",
+        "url": {}
+      }
+    ],
+    "date": "2021-04-09",
+    "categories": [],
+    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-04-09T00:22:44+08:00",
+    "input_file": "covid-confirmed-cases.utf8.md"
+  },
+  {
     "path": "posts/welcome/",
     "title": "Welcome to My Blog",
     "description": "Welcome to our new blog, My Blog. We hope you enjoy \nreading what we have to say!",
