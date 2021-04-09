@@ -75,7 +75,7 @@ The following R packages will be explored:
 
 | Visualisation | Packages |
 |---------------|----------|
-| Scatterplot   | *ggstatsplot*, *car*, *ggplot* |
+| Scatterplot   | *ggstatsplot*, *car* |
 | Funnel Plot   | *FunnelPlotR*, *funnelR*, *ggplot* |
 | Multivariate Analysis | *olsrr* |
 | Interactivity | *plotly* |
@@ -93,7 +93,7 @@ Besides the mentioned packages, the following packages are also loaded:
 * *VIM*: for imputation of missing values with ```kNN()```
 * *gridExtra*: for handling of multiple plots with ```grid.arrange()```
 * *corrr*: for visualisation of correlation with ```correlate()``` and ```rplot()```
-* *ggExtra* : for 
+* *ggExtra*: for plotting of marginal distributions with ```ggMarginal()```
 
 The code chunk below is used to install and load the packages.
 
@@ -313,11 +313,12 @@ percentage_plot
 
 From the above plot, **handwashing facilities** has the highest percentage of missing values, followed by **total tests** and **positive rate**. We can also use *gg_miss_upset* plot to understand how missing values are linked across variables.
 
-```{r fig.height=10}
+```{r fig.height=5}
 gg_miss_upset(covid_deaths, 
               nsets = n_var_miss(covid_deaths), 
               nintersects = NA, 
-              text.scale = c(2,2,2,2,1.5,2),
+              text.scale = c(1,1,1,1,0.8,1), 
+              # intersection title, intersection tick labels, set title, set tick labels, set names, numbers above bars
               set_size.show = TRUE,
               set_size.numbers_size = 4)
 ```
@@ -357,8 +358,6 @@ check_distribution <- covid_deaths %>%
   theme_minimal() +
   theme(panel.border = element_rect(colour="grey60", fill = NA),
         strip.background = element_rect(fill = "grey80"))
-
-check_distribution
 ```
 ```{r results='hide', fig.height=10, fig.width=10}
 check_distribution_imputed <- covid_deaths_imputed %>%
@@ -372,8 +371,6 @@ check_distribution_imputed <- covid_deaths_imputed %>%
   theme_minimal() +
   theme(panel.border = element_rect(colour="grey60", fill = NA),
         strip.background = element_rect(fill = "grey80"))
-
-check_distribution_imputed
 ```
 ```{r echo=FALSE, fig.height=10, fig.width=20}
 grid.arrange(check_distribution, check_distribution_imputed, ncol=2)
@@ -426,448 +423,295 @@ rm(list = setdiff(ls(), "covid_deaths_imputed"))
 ```
 # Prototype
 
-The next step would be to explore the packages to build the needed plots. Interactivity is also explored for each type of plot.
+The next step would be to explore the packages to build the needed plots. The criteria to evaluate the plots are:
+
+* Level of customisation available
+* Ease of use and implementation of customisation in functions
+* Ease of understanding and interpretation of the plot (clarity and aesthetic)
+* Interactivity
+
+There are mainly two types of interactivity to consider: (1) able to render plot object interactive; and (2) degree to which users can interact with the plot via changing the plot arguments in a Shiny app, with the least complexity in the code.
 
 ## Scatterplot
 
-Three methods will be explored for the scatterplot
+Two packages *ggstatsplot* and *car* will be explored for the scatterplot.
 
-### 1) Use *ggstatsplot::ggscatterstats*
+### Use *ggstatsplot::ggscatterstats*
 
-There are two key options that are available for users to select: the type of marginal distribution and the statistical test to be performed. The code chunk below shows the options for marginal distribution.
+The *ggstatsplot* package is an extension of the *ggplot* package, making it easier to tie in with other functions from the *tidyverse* family. *ggplot* functions can be called within ```ggscatterstats()```, but the output of the function is not further modifiable with *ggplot* unless the marginal distributions are not plotted.
 
-```{r fig.height=8, fig.width=10}
-scatter_ggscatterstats_histogram <- ggscatterstats(covid_deaths_imputed,
-                                                   x = hospital_beds_per_thousand,
-                                                   y = total_deaths,
-                                                   marginal.type = "histogram",
-                                                   title = "Histogram",
-                                                   ggplot.component = list(scale_y_log10()))
+There are a few key arguments that are available in the function for customisation:
 
-scatter_ggscatterstats_density <- ggscatterstats(covid_deaths_imputed,
-                                                 x = hospital_beds_per_thousand,
-                                                 y = total_deaths,
-                                                 marginal.type = "density",
-                                                 title = "Density",
-                                                 ggplot.component = list(scale_y_log10()))
+* `type`: statistical test to be performed (parametric, non-parametric, robust and bayesian)
+* `conf.level`: confidence level (value between 0 to 1)
+* `results.subtitle`: option to display statistical test
+* `label.` arguments: set label parameters
+* `point.args`: customisation to the point plot
+* `marginal.type`: type of marginal distribution (histogram, density, densigram, boxplot and violin plot)
+* Under `ggplot.component`: Smooth line to display (from geom_smooth: "loess", "lm", "glm" and "gam")
+* Other aesthetic components such as graph title, axes scale etc.
 
-scatter_ggscatterstats_densigram <- ggscatterstats(covid_deaths_imputed,
-                                                   x = hospital_beds_per_thousand,
-                                                   y = total_deaths,
-                                                   marginal.type = "densigram",
-                                                   title = "Density + Histogram",
-                                                   ggplot.component = list(scale_y_log10()))
+The code chunk below generates a scatterplot of total deaths by hospital beds per thousand.
 
-scatter_ggscatterstats_boxplot <- ggscatterstats(covid_deaths_imputed,
-                                                 x = hospital_beds_per_thousand,
-                                                 y = total_deaths,
-                                                 marginal.type = "boxplot",
-                                                 title = "Boxplot",
-                                                 ggplot.component = list(scale_y_log10()))
-
-scatter_ggscatterstats_violin <- ggscatterstats(covid_deaths_imputed,
-                                                x = hospital_beds_per_thousand,
-                                                y = total_deaths,
-                                                marginal.type = "violin",
-                                                title = "Violin",
-                                                ggplot.component = list(scale_y_log10()))
-
-combine_plots(plotlist = list(scatter_ggscatterstats_histogram,
-                              scatter_ggscatterstats_density,
-                              scatter_ggscatterstats_densigram,
-                              scatter_ggscatterstats_boxplot,
-                              scatter_ggscatterstats_violin),
-              annotation.args = list(title="Comparing types of marginal distribution"),
-              plotgrid.args = list(nrow=2))
-```
-
-The next block of code lists the options for the statistical tests to be performed.
-
-```{r fig.height=8, fig.width=10}
-scatter_ggscatterstats_parametric <- ggscatterstats(covid_deaths_imputed,
-                                                    x = hospital_beds_per_thousand,
-                                                    y = total_deaths,
-                                                    type = "parametric",
-                                                    marginal.type = "boxplot",
-                                                    title = "Parametric: Pearson's correlation coefficient",
-                                                    ggplot.component = list(scale_y_log10()))
-
-scatter_ggscatterstats_nonparametric <- ggscatterstats(covid_deaths_imputed,
-                                                       x = hospital_beds_per_thousand,
-                                                       y = total_deaths,
-                                                       type = "non-parametric",
-                                                       marginal.type = "boxplot",
-                                                       title = "Non-parametric: Spearman's rank correlation coefficient",
-                                                       ggplot.component = list(scale_y_log10()))
-
-scatter_ggscatterstats_robust <- ggscatterstats(covid_deaths_imputed,
-                                                x = hospital_beds_per_thousand,
-                                                y = total_deaths,
-                                                type = "robust",
-                                                marginal.type = "boxplot",
-                                                title = "Robust: Winsorized Pearson correlation coefficient",
-                                                ggplot.component = list(scale_y_log10()))
-
-scatter_ggscatterstats_bayes <- ggscatterstats(covid_deaths_imputed,
-                                               x = hospital_beds_per_thousand,
-                                               y = total_deaths,
-                                               type = "bayes",
-                                               marginal.type = "boxplot",
-                                               title = "Bayesian: Pearson's correlation coefficient",
-                                               ggplot.component = list(scale_y_log10()))
-
-combine_plots(plotlist = list(scatter_ggscatterstats_parametric,
-                              scatter_ggscatterstats_nonparametric,
-                              scatter_ggscatterstats_robust,
-                              scatter_ggscatterstats_bayes),
-              annotation.args = list(title="Comparing types of test"),
-              plotgrid.args = list(nrow=2))
-```
-
-The above graphs are visually appealing in terms of the usage of aesthetic features such as position, colour and opacity. Little effort is needed to customise the plots. The plots are also informative to the more statistically-inclined. Another nice feature of the package is that it has a simple to use function to combine the plots into a grid.
-
-However, there is no support for interactivity for the output of ```ggscatterstats()```, despite claims from the authors that the *ggstatplot* functions are compatible with the *plotly* package.
-
-### 2) Use *car::scatterplot*
-
-Unlike *ggstatsplot*, the key options for users to select includes the method for the regression line and smoothing. ```scatterplot()``` supports the display of marginal distribution but is limited to the boxplot only. Users can however select the axis in which the marginal boxplot is to be displayed. 
-
-The code chunk below shows the scatterplots with marginal boxplot for different regression line methods. Much customisation can be done within the function, but they are limited. For example, we can add labels to the data points by setting ```id=TRUE```, but only for the top two values.
-
-```{r message=FALSE, eval=FALSE, echo=TRUE}
-x_variable <- covid_deaths_imputed$hospital_beds_per_thousand
-y_variable <- covid_deaths_imputed$total_deaths
-
-scatter_scatterplot_lm <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths_imputed,
-                                   boxplots = "xy",
-                                   id = TRUE,
-                                   log = "y",
-                                   pch=16,
-                                   main = "regression line method: lm",
-                                   xlab = "hospital beds per thousand",
-                                   ylab = "total deaths",
-                                   regLine = list(method=lm, lty=1, lwd=1),
-                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
-
-scatter_scatterplot_loess <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths_imputed,
-                                   boxplots = "xy",
-                                   id = TRUE,
-                                   log = "y",
-                                   pch=16,
-                                   main = "regression line method: loess",
-                                   xlab = "hospital beds per thousand",
-                                   ylab = "total deaths",
-                                   regLine = list(method=loess, lty=1, lwd=1),
-                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
-```
-```{r eval=TRUE, echo=FALSE}
-x_variable <- covid_deaths_imputed$hospital_beds_per_thousand
-y_variable <- covid_deaths_imputed$total_deaths
-
-scatter_scatterplot_lm <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths_imputed,
-                                   boxplots = "xy",
-                                   id = TRUE,
-                                   log = "y",
-                                   pch=16,
-                                   main = "regression line method: lm",
-                                   xlab = "hospital beds per thousand",
-                                   ylab = "total deaths",
-                                   regLine = list(method=lm, lty=1, lwd=1),
-                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
-
-scatter_scatterplot_loess <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths_imputed,
-                                   boxplots = "xy",
-                                   id = TRUE,
-                                   log = "y",
-                                   pch=16,
-                                   main = "regression line method: loess",
-                                   xlab = "hospital beds per thousand",
-                                   ylab = "total_deaths",
-                                   regLine = list(method=loess, lty=1, lwd=1),
-                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
-```
-
-The options available for the different smoothing methods are shown below.
-
-```{r eval=FALSE, echo=TRUE}
-scatter_scatterplot_loessline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths_imputed,
-                                   boxplots = "xy",
-                                   id = TRUE,
-                                   log = "y",
-                                   pch=16,
-                                   main = "smoother: loessLine",
-                                   xlab = "hospital beds per thousand",
-                                   ylab = "total_deaths",
-                                   regLine = list(method=loess, lty=1, lwd=0.5),
-                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
-
-scatter_scatterplot_gamline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths_imputed,
-                                   boxplots = "xy",
-                                   id = TRUE,
-                                   log = "y",
-                                   pch=16,
-                                   main = "smoother: gamLine",
-                                   xlab = "hospital beds per thousand",
-                                   ylab = "total deaths",
-                                   regLine = list(method=mgcv::gam, lty=1, lwd=0.5),
-                                   smooth = list(smoother=gamLine,lty.var=2, lwd.var=0.5))
-
-scatter_scatterplot_quantregline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths_imputed,
-                                   boxplots = "xy",
-                                   id = TRUE,
-                                   log = "y",
-                                   pch=16,
-                                   main = "smoother: quantregLine",
-                                   xlab = "hospital beds per thousand",
-                                   ylab = "total deaths",
-                                   regLine = list(method=quantreg::rqss, lty=1, lwd=0.5),
-                                   smooth = list(smoother=quantregLine,lty.var=2, lwd.var=0.5))
-```
-```{r eval=TRUE, echo=FALSE}
-scatter_scatterplot_loessline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths_imputed,
-                                   boxplots = "xy",
-                                   id = TRUE,
-                                   log = "y",
-                                   pch=16,
-                                   main = "smoother: loessLine",
-                                   xlab = "hospital beds per thousand",
-                                   ylab = "total deaths",
-                                   regLine = list(method=loess, lty=1, lwd=0.5),
-                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
-
-scatter_scatterplot_gamline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths_imputed,
-                                   boxplots = "xy",
-                                   id = TRUE,
-                                   log = "y",
-                                   pch=16,
-                                   main = "smoother: gamLine",
-                                   xlab = "hospital beds per thousand",
-                                   ylab = "total deaths",
-                                   regLine = list(method=mgcv::gam, lty=1, lwd=0.5),
-                                   smooth = list(smoother=gamLine,lty.var=2, lwd.var=0.5))
-
-scatter_scatterplot_quantregline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths_imputed,
-                                   boxplots = "xy",
-                                   id = TRUE,
-                                   log = "y",
-                                   pch=16,
-                                   main = "smoother: quantregLine",
-                                   xlab = "hospital beds per thousand",
-                                   ylab = "total deaths",
-                                   regLine = list(method=quantreg::rqss, lty=1, lwd=0.5),
-                                   smooth = list(smoother=quantregLine,lty.var=2, lwd.var=0.5))
-```
-The regression line and smoother options are useful.
-
-The plots created from the *car* package are less appealing than from *ggstatsplot*. Although much flexibility is given to customise the plots, it requires much effort to make the changes. Similar to ```ggscatterstats()```, there is no interactivity support for the output from ```scatterplot()```, either within the package itself or from external interactivity packages.
-
-### 3) Draw from scratch with *ggplot*
-
-```{r warning=FALSE}
-
-x_variable <- covid_deaths_imputed$hospital_beds_per_thousand
-y_variable <- covid_deaths_imputed$total_deaths
-
-scatter_ggplot_loess <- ggplot(covid_deaths_imputed, 
-                               aes(x=x_variable, y=y_variable, size=population)) +
-                          geom_point(aes(colour=continent)) +
-                          scale_y_log10() +
-                          ggtitle("loess") +
-                          xlab("hospital beds per thousand") +
-                          ylab("total deaths") +
-                          geom_smooth(method = "loess")
-
-scatter_ggplot_lm <- ggplot(covid_deaths_imputed, 
-                            aes(x=x_variable, y=y_variable, size=population)) +
-                      geom_point(aes(colour=continent)) +
-                      scale_y_log10() +
-                      ggtitle("lm") +
-                      xlab("hospital beds per thousand") +
-                      ylab("total deaths") +
-                      geom_smooth(method = "lm")
-
-scatter_ggplot_glm <- ggplot(covid_deaths_imputed, 
-                             aes(x=x_variable, y=y_variable, size=population)) +
-                        geom_point(aes(colour=continent)) +
-                        scale_y_log10() +
-                        ggtitle("glm") +
-                        xlab("hospital beds per thousand") +
-                        ylab("total deaths") +
-                        geom_smooth(method = "glm")
-
-scatter_ggplot_gam <- ggplot(covid_deaths_imputed, 
-                             aes(x=x_variable, y=y_variable, size=population)) +
-                        geom_point(aes(colour=continent)) +
-                        scale_y_log10() +
-                        ggtitle("gam") +
-                        xlab("hospital beds per thousand") +
-                        ylab("total deaths") +
-                        geom_smooth(method = "gam")
-
-combine_plots(plotlist = list(scatter_ggplot_loess,
-                              scatter_ggplot_lm,
-                              scatter_ggplot_glm,
-                              scatter_ggplot_gam),
-              annotation.args = list(title="Comparing types of smoothing method"),
-              plotgrid.args = list(nrow=2))
-```
-
-```{r fig.height=5, fig.width=15}
-scatter_ggplot_base <- ggplot(covid_deaths_imputed, 
-                              aes(x=x_variable, y=y_variable, size=population)) +
-                        geom_point(aes(colour=continent)) +
-                        scale_y_log10() +
-                        xlab("hospital beds per thousand") +
-                        ylab("total deaths") +
-                        geom_smooth() +
-                        theme(legend.position = "none")
-
-scatter_ggplot_histogram <- ggMarginal(scatter_ggplot_base, 
-                                       type="histogram",
-                                       fill="lightblue")
-
-scatter_ggplot_density <- ggMarginal(scatter_ggplot_base, 
-                                       type="density")
-
-scatter_ggplot_boxplot <- ggMarginal(scatter_ggplot_base, 
-                                       type="boxplot")
-
-combine_plots(plotlist = list(scatter_ggplot_histogram,
-                              scatter_ggplot_density,
-                              scatter_ggplot_boxplot),
-              annotation.args = list(title="Comparing types of marginal distribution"),
-              plotgrid.args = list(nrow=1))
-
-```
-
-
-
-
-```{r warning=FALSE}
-ggplotly(scatter_ggplot_lm)
-```
-
-
-### Summary of R packages for scatterplot
-
-```{r echo=FALSE, fig.height=5, fig.width=10}
-
-scatter_ggstatsplot <- ggscatterstats(covid_deaths_imputed,
-                                      x = hospital_beds_per_thousand,
-                                      y = total_deaths,
-                                      marginal.type = "densigram",
-                                      title = "ggstatsplot::ggscatterstats with densigram",
-                                      ggplot.component = list(scale_y_log10()))
-
-scatter_ggplot_base <- ggplot(covid_deaths_imputed, 
-                              aes(x=x_variable, y=y_variable, size=population)) +
-                        geom_point(aes(colour=continent)) +
-                        scale_y_log10() +
-                        ggtitle("ggplot with marginal boxplot") +
-                        xlab("hospital beds per thousand") +
-                        ylab("total deaths") +
-                        geom_smooth() +
-                        theme(legend.position = "none")
-
-scatter_ggplot <- ggMarginal(scatter_ggplot_base, type = "boxplot")
-                        
-combine_plots(plotlist = list(scatter_ggstatsplot,
-                              scatter_ggplot),
-              annotation.args = list(title="Comparison of scatterplots"),
-              plotgrid.args = list(nrow=1))
-
-```
-```{r eval=TRUE, echo=FALSE, fig.height=5}
-scatter_scatterplot_loessline <- scatterplot(y_variable ~ x_variable,
-                                   covid_deaths_imputed,
-                                   boxplots = "xy",
-                                   id = TRUE,
-                                   log = "y",
-                                   pch=16,
-                                   main = "car::scatterplot with marginal boxplot",
-                                   xlab = "hospital beds per thousand",
-                                   ylab = "total deaths",
-                                   regLine = list(method=loess, lty=1, lwd=0.5),
-                                   smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5))
-```
-
-Criteria:
-Ease of use
-Ease of understanding
-Interactivity
-Shiny app integration
-
-
-
-Good practice to clear the environment before the next phase.
 ```{r}
-rm(list = setdiff(ls(), "covid_deaths_imputed"))
+sp_ggstatsplot_marginal <- 
+  ggscatterstats(covid_deaths_imputed,
+                 x = hospital_beds_per_thousand, # independent variable
+                 y = total_deaths, # dependent variable
+                 type = "robust", # statistical test
+                 conf.level = 0.95, # confidence level
+                 results.subtitle = TRUE, # set to FALSE to NOT display the statistical tests
+                 ggplot.component = list(geom_smooth(method = "loess", size =0.05), # regression line
+                                         scale_y_log10()), # change axes scale
+                 label.var = location, # define label to show location
+                 label.expression = continent == "Asia", # criteria to display labels
+                 point.args = list(aes(colour=continent, # set colour scale for points
+                                       size=population), # set size scale for points
+                                       alpha = 0.4), # set size scale for point
+                 smooth.line.args = list(color = NA, 
+                                         se = FALSE), # remove default regression line
+                 marginal.type = "densigram", # marginal distribution
+                 title = "Scatterplot using ggstatsplot package") # graph title
+                                 
+
+sp_ggstatsplot_marginal
 ```
+
+### Use *car::scatterplot*
+
+The *car* package uses basic R graphics to generate the scatterplot. The key arguments available in the function for customisation are:
+
+* `boxplot`: axis to display marginal boxplot (x, y, xy)
+* `regLine`: regression line to display (lm, loess, mgcv::gam, quantreg::rqss)
+* `id`: criteria and number of points to display labels
+* `ellipse`: add ellipse (to use cov.trob function in the MASS package or not, CI of ellipse)
+* `smooth`: Smooth line to display (loessLine, gamline, quantregLine)
+* Other aesthetic components such as graph title, axis labels, axes scale, shape etc.
+
+A ```scatterplot``` implementation of the plot from ```ggscatterstats()``` (as close as possible) is shown below.
+
+```{r}
+sp_car <- scatterplot(total_deaths ~ hospital_beds_per_thousand | continent, # group by continent
+                      covid_deaths_imputed,
+                      boxplots = "xy", # axis for marginal boxplot
+                      regLine = list(method=lm, 
+                                     lty=1, 
+                                     lwd=1), # regression line to display and customisation
+                      id = list(method="mahal", n=5), # label customisation
+                      ellipse = list(levels=c(.5, .95), 
+                                     robust=TRUE, 
+                                     fill=TRUE, 
+                                     fill.alpha=0.2), # ellipse customisation
+                      smooth = list(smoother=loessLine,
+                                    lty.var=2, 
+                                    lwd.var=0.5), # smooth line to display and customisation
+                      by.groups = TRUE, # unable to change to FALSE when group is defined
+                      xlab = "hospital beds per thousand", # x-axis label
+                      ylab = "total deaths", # y-axis label
+                      log = "y", # change scale of y axis to log
+                      main = "Scatterplot using car package" # graph title
+                      )
+```
+
+### Evaluation
+
+#### Level of customisation and ease of use
+
+Both packages allow for a wide variety of options for customisation, with *car::scatterplot* having an added feature of plotting ellipses. For *ggstatsplot::ggscatterstats*, most *ggplot* functions such as ```geom_smooth``` and ```scale_``` functions are supported, which makes it also fairly easy to implement for someone with basic knowledge of ggplot.
+
+Although some flexibility is given to customise the plots, it requires much effort to make the changes with *car::scatterplot* due to the many "hidden" lists within the arguments. There are also some limitations to the arguments, such as the marginal distribution is limited to the boxplot and the display of data labels is limited to the values.
+
+#### Clarity and aesthetic
+
+The statistical test in the *ggstatsplot::ggscatterstats* scatterplot is informative to the more statistically inclined, with an option for the non-statistically inclined to turn off the statistical results. The graph is also visually appealing with the default settings for position, colour and data point opacity, thus little customisation to the aesthetics need to be done. 
+
+On the other hand, the scatterplot from *car::scatterplot* is visually overwhelming as the ellipses, regression lines and smooth lines are plotted by groups, i.e. continent. When the group is defined, the plots by group cannot be turned off by setting the argument ```by.groups``` to ```FALSE```. In addition, the shape scale is automatically added which adds visual clutter to the plot. There is a need to explicitly amend ```pch``` to standardise the shape. The location of the marginal boxplot is near the axes labels at the bottom and left of plot, which does not give attention to the marginal boxplots.
+
+In general, the scatterplot created using the *car* package is not as visually appealing than that from the *ggstatsplot* package. 
+
+#### Interactivity
+
+There is no support for plot interactivity for both packages, despite claims from the authors of *ggstatplot* that the functions in the package are compatible with the *plotly* package, a package for rendering interactive graphics.
+
+Another option is to build the scatterplot from scratch using ```ggplot()```, which can be passed into ```ggplotly()``` to make the plot interactive. 
+
+```{r}
+# base ggplot
+sp_ggplot_base <- ggplot(covid_deaths_imputed, 
+                    aes(x=hospital_beds_per_thousand, y=total_deaths, size=population)) +
+  geom_point(aes(colour=continent)) +
+  scale_y_log10() +
+  ggtitle("ggplot Scatterplot") +
+  xlab("hospital beds per thousand") +
+  ylab("total deaths") +
+  geom_smooth(method = "loess") + 
+  theme(legend.position = "none")
+
+# ggplot with marginal distribution
+sp_ggplot_marginal <- ggMarginal(sp_ggplot_base, 
+                                 type="histogram",
+                                 fill="lightblue")
+
+combine_plots(plotlist = list(sp_ggplot_base,
+                              sp_ggplot_marginal),
+              annotation.args = list(title="ggplot_base and ggplot_marginal"),
+              plotgrid.args = list(nrow=1))
+
+# interactive base ggplot
+sp_ggplotly_base <- ggplotly(sp_ggplot_base)
+
+sp_ggplotly_base
+```
+
+However, an error message is encountered when rendering the plot with marginal distributions, added to the *ggplot* object with the use of ```ggMarginal()``` from the *ggExtra* package.
+
+```{r eval=FALSE}
+ggplotly(sp_ggplot_marginal)
+```
+```
+Error in UseMethod("ggplotly", p) : no applicable method for 'ggplotly' applied 
+to an object of class "c('ggExtraPlot', 'gtable', 'gTree', 'grob', 'gDesc')"
+```
+
+The arguments in the ```ggscatterstats()``` functions can mostly be manipulated at the first level, whereas the ```scatterplot()``` function utilises lists embedded in its arguments for more customisations e.g. ```smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5)```. This makes the former easier to code parameters to be passed into the function as arguments in the Shiny app. The same goes for the ```ggplot()``` function.
+
+#### Conclusion
+
+As the aim of the assignment is for users to explore and compare the number of COVID-19 deaths across countries, interactivity is an important consideration, which is provided by *ggplot*. The trade-off is the lost of information provided by the statistical tests and marginal distributions.
+
+```ggscatterstats()``` provide a nice visualisation with statistical analysis, and is able to sufficiently provide customisation for the user to interact with in a Shiny app. However, it is not supported by existing packages that renders interactive graphics. The key purpose of providing interactivity here is to allow users to compare and discover patterns between countries, and this would be achieved mainly through the identification of locations in a scatterplot with many data points. An alternative to the desired interactivity would be to provide options for users to select countries or continent to display static labels on the graph. As such, ```ggscatterstats()``` is chosen as the function to plot the scatterplot in the final product.
+
 ## Funnel Plot
+
+Two packages *FunnelPlotR* and *funnelR* will be explored to plot a funnel plot of case fatality rate (defined as the total number of deaths divided by the total number of cases) against total number of cases. Other rates can possibly be plotted using the funnel plot.
 
 ### Use *FunnelPlotR::funnel_plot*
 
+The *FunnelPlotR* package uses *ggplot* to generate funnel plots. It requires a numerator (events of interest), denominator (population to be considered) and group. The key arguments available in the function for customisation are:
+
+* `limit`: plot limits (95 or 99)
+* `label_outliers`: to label outliers (true or false)
+* `Poisson_limits`: to add Poisson limits to the plot
+* `xrange` and `yrange`: to specify the range to display for axes, acts like a zoom function
+* Other aesthetic components such as graph title, axis labels etc.
+
+The code chunk below plots a funnel plot. Two points to note here:
+
+* ```group``` in this function is different from the scatterplot. Here, it defines the basic unit to be plotted. 
+* There are no arguments available to customise the funnel plot using *ggplot* functions
 
 ```{r}
-covid_deaths_fpR <- funnel_plot(numerator = covid_deaths_imputed$total_deaths,
-                                denominator = covid_deaths_imputed$total_cases,
-                                group = covid_deaths_imputed$location,
-                                data_type = "PR",
-                                limit = 99,
-                                label_outliers = TRUE,
-                                Poisson_limits = TRUE,
-                                title = "Case Fatality Rate by Total Number of COVID-19 Cases",
-                                x_label = "Total Number of COVID-19 Cases",
-                                y_label = "Case Fatality Rate",
-                                xrange = c(0, 32000000),
-                                yrange = c(0, 0.25))
+fp_funnelplotR <- funnel_plot(numerator = covid_deaths_imputed$total_deaths,
+                              denominator = covid_deaths_imputed$total_cases,
+                              group = covid_deaths_imputed$location,
+                              data_type = "PR", # to plot proportions
+                              limit = 99,
+                              label_outliers = TRUE,
+                              Poisson_limits = TRUE,
+                              title = "Case Fatality Rate by Total Number of COVID-19 Cases",
+                              x_label = "Total Number of COVID-19 Cases",
+                              y_label = "Case Fatality Rate",
+                              xrange = c(0, 32000000),
+                              yrange = c(0, 0.25))
+fp_funnelplotR
+```
+
+The above plot is highly skewed due to the presence of outliers in the data. 
+
+```{r}
+class(fp_funnelplotR)
+```
+
+As the output is a "funnelplot" object, it cannot be passed to ggplotly to render the plot interactive so as to allow user to take a closer look at the plot area with high concentration of data points. An alternative will be to express the total deaths and cases in thousands so as to reduce the x-axis range.
+
+```{r}
+covid_deaths_fp <- covid_deaths_imputed %>%
+  mutate(total_deaths=total_deaths/100000,
+         total_cases=total_cases/100000)
+
+fp_funnelplotR_div <- funnel_plot(numerator = covid_deaths_fp$total_deaths,
+                              denominator = covid_deaths_fp$total_cases,
+                              group = covid_deaths_fp$location,
+                              data_type = "PR", # to plot proportions
+                              limit = 99,
+                              label_outliers = TRUE,
+                              Poisson_limits = TRUE,
+                              title = "Case Fatality Rate by Total Number of COVID-19 Cases",
+                              x_label = "Total Number of COVID-19 Cases (hundred thousands)",
+                              y_label = "Case Fatality Rate",
+                              xrange = c(0, 330),
+                              yrange = c(0, 0.25)
+                              )
+
+fp_funnelplotR_div
+```
+
+We can also change `xrange` to create the zoom-in effect, with the following code chunk.
+
+```{r}
+fp_funnelplotR_div_zoom <- funnel_plot(numerator = covid_deaths_fp$total_deaths,
+                              denominator = covid_deaths_fp$total_cases,
+                              group = covid_deaths_fp$location,
+                              data_type = "PR", # to plot proportions
+                              limit = 99,
+                              label_outliers = TRUE,
+                              Poisson_limits = TRUE,
+                              title = "Case Fatality Rate by Total Number of COVID-19 Cases",
+                              x_label = "Total Number of COVID-19 Cases (hundred thousands)",
+                              y_label = "Case Fatality Rate",
+                              xrange = c(0, 50),
+                              yrange = c(0, 0.25)
+                              )
+fp_funnelplotR_div_zoom
 ```
 
 ### Use *funnelR::funplot*
- 
 
-```{r eval=FALSE, echo=TRUE}
+The *funnelR* package plots funnel plot using a simple two-step process: (1) calculate limits with ```fundata()```; and (2) plot the funnel plot with ```funplot()```. It requires specifically for the numerator to be named *n* and the denominator to be named *d* in the data frame.
 
-covid_deaths_fR <- covid_deaths_imputed %>% 
-                          rename(n = total_deaths, d = total_cases) %>% 
-                          select(continent, location, n, d) %>%
-                          filter(continent == "South America")
-
-funnelR_limits <- fundata(input = covid_deaths_fR,
-                          alpha = 0.95,
-                          method = 'approximate', # exact or approximate
-                          )
-
-funplot(covid_deaths_funnelR, funnelR_limits)
-```
-```> Error: memory exhausted (limit reached?)```
-```> Error: cannot allocate vector of size 91.3 Mb```
-
-### 
-
+The code chunk below shows an attempt to plot a funnel plot with the *funnelR* package. We will use the same dataset covid_deaths_fp to prevent runtime errors.
 
 ```{r}
-location <- covid_deaths_imputed$location
-rate <- covid_deaths_imputed$case_fatality_rate
-number <- log(covid_deaths_imputed$total_cases)
+covid_deaths_fp_fR <- covid_deaths_fp %>% 
+  rename(n = total_deaths, d = total_cases)
+
+funnelR_limits <- fundata(input = covid_deaths_fp_fR,
+                          alpha = 0.95,
+                          alpha2 = 0.998,
+                          method = 'approximate', # exact or approximate: control limits smoothing 
+                          step = 1
+                          )
+
+fp_funnelR <- funplot(covid_deaths_fp_fR, funnelR_limits, "continent")
+
+fp_funnelR
+```
+
+There are no arguments within the function to customise the graph e.g. axes range and labels, opacity and size of points, title and legend. As ```funplot()``` returns a ggplot object, the funnel plot can be passed into ```ggplotly``` to render an interactive graphic.
+
+```{r}
+fp_funnelR_ggplotly <- ggplotly(fp_funnelR)
+
+fp_funnelR_ggplotly
+```
+
+However, the interactivity is also limited to the functionality of base ggplot object.
+
+### Drawing from scratch using *ggplot*
+
+An alternative is to draw the funnel plot using *ggplot*, with the code chunk below.
+
+```{r}
+rate <- covid_deaths_fp$case_fatality_rate
+number <- covid_deaths_fp$total_cases
 
 rate.se <- sqrt((rate*(1-rate)) / (number))
-df <- data.frame(location, rate, number, rate.se)
+df <- data.frame(rate, number, rate.se)
 
-# common effect (fixed effect model)
+# Calculate common effect (fixed effect model)
 rate.fem <- weighted.mean(rate, 1/rate.se^2)
 
-# lower and upper limits for 95% and 99.9% CI
+# Calculate lower and upper limits for 95% and 99.9% CI
 number.seq <- seq(1, max(number), 1)
 number.ll95 <- rate.fem - 1.96 * sqrt((rate.fem*(1-rate.fem)) / (number.seq)) 
 number.ul95 <- rate.fem + 1.96 * sqrt((rate.fem*(1-rate.fem)) / (number.seq)) 
@@ -875,23 +719,60 @@ number.ll999 <- rate.fem - 3.29 * sqrt((rate.fem*(1-rate.fem)) / (number.seq))
 number.ul999 <- rate.fem + 3.29 * sqrt((rate.fem*(1-rate.fem)) / (number.seq)) 
 dfCI <- data.frame(number.ll95, number.ul95, number.ll999, number.ul999, number.seq, rate.fem)
 
-# draw plot
-fp <- ggplot(aes(x = number, y = rate), data = df) +
-    geom_point(shape = 1) +
-    geom_line(aes(x = number.seq, y = number.ll95), data = dfCI) +
-    geom_line(aes(x = number.seq, y = number.ul95), data = dfCI) +
-    geom_line(aes(x = number.seq, y = number.ll999), linetype = "dashed", data = dfCI) +
-    geom_line(aes(x = number.seq, y = number.ul999), linetype = "dashed", data = dfCI) +
-    geom_hline(aes(yintercept = rate.fem), data = dfCI) +
-    geom_text(aes(label=ifelse(rate>0.08, location,'')),hjust=-0.2, vjust=-0.5)+
-    scale_x_continuous(labels = scales::comma) +
-    xlab("Total Number of COVID-19 Cases") + ylab("Case Fatality Rate") 
+# Draw funnel plot
+fp_ggplot <- ggplot(covid_deaths_fp, 
+                    aes(x = total_cases, y = case_fatality_rate)) +
+  geom_point(aes(colour=continent, 
+                 size=population, 
+                 label=location), # to add labels into interactive plot
+             alpha=0.4) +
+  geom_line(data = dfCI, aes(x = number.seq, y = number.ll95), 
+            size = 0.4, colour = "grey40", linetype = "dashed") +
+  geom_line(data = dfCI, aes(x = number.seq, y = number.ul95), 
+            size = 0.4, colour = "grey40", linetype = "dashed") +
+  geom_line(data = dfCI, aes(x = number.seq, y = number.ll999), 
+            size = 0.4, colour = "grey40") +
+  geom_line(data = dfCI, aes(x = number.seq, y = number.ul999), 
+            size = 0.4, colour = "grey40") +
+  geom_hline(data = dfCI, aes(yintercept = rate.fem), 
+             size = 0.4, colour = "grey40") +
+  annotate("text", x = 0, y = -0.05, label = "95%", size = 3, colour = "grey40") +
+  annotate("text", x = 20, y = -0.15, label = "99%", size = 3, colour = "grey40") +
+  xlab("Total Number of COVID-19 Cases") + 
+  ylab("Case Fatality Rate") 
 
-fp
+fp_ggplot
 ```
 
+The graph can also be made interactive with the following code chunk:
 
+```{r}
+fp_ggplotly <- ggplotly(fp_ggplot,
+                        tooltip = c("colour", "label", "x", "y"))
 
+fp_ggplotly
+```
+
+### Evaluation
+
+#### Level of customisation and ease of use
+
+Both *FunnelPlotR* and *funnelR* packages are easy to use. There are limited arguments that can be passed into the functions for both packages, with *FunnelPlotR* offering slightly more customisation e.g. able to indicate control limits to be plotted. However, one key point to note for *FunnelPlotR* is that vectors have to be passed in the numerator, denominator and group arguments, and there is no argument to take in a dataframe. This means that there is limited customisation that can be done to the plot to make it more informative. 
+
+On the other hand, drawing from scratch with *ggplot* is also relatively easy once the control limits are calculated and offers the most customisation.
+
+#### Clarity and aesthetic
+
+The funnel plot from *FunnelPlotR* provides more information (and thus clarity) than that from *funnelR*. As mentioned earlier, the function from *funnelR* does not allow customisation to improve the clarity and aesthetics of the graph, which is the reason for not choosing it for the final product.
+
+#### Interactivity
+*FunnelPlotR* does not return a ggplot object, whereas both *funnelR* and *ggplot* returns a ggplot object, as such, the funnel plots from *funnelR* and *ggplot* can be made interactive after passing the ggplot object through ```ggplotly()```.
+
+Generally, the arguments in all three functions are straightforward to use and there are limited parameters, other than the dependent and independent variables, in *FunnelPlotR* and *funnelR* that can be coded and passed as arguments into the functions.
+
+#### Conclusion
+
+Although *FunnelPlotR* is relatively easy to use, the function does not allow for more customisation due to its limitation of only taking in vectors for the key variables. In addition, it cannot be rendered into an interactive graphic, and the earlier limitation mentioned does not allow a workaround solution to use *FunnelPlotR*. As such, ```ggplot()``` is chosen to create the funnel plot in the final product.
 
 ## Multivariate Analysis
 
