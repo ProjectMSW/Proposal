@@ -17,16 +17,19 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Overview
-The purpose of this assignment is to provides estimates of COVID-19 near-future case load in each country, based on global data collated by Johns Hopkins University. Beside allowing users to visualise the forecasted result, the users are also allowed to visualise the time-series data (EDA).
+The purpose of this assignment is to provides estimates of COVID-19 near-future case load in each country, based on global data collated by Johns Hopkins University. Generally, the data is a sequence of observations stored in time orders. 
 
+Time series analysis attempt to analyze the time series data to extract meaningful characteristics of data and generate useful insights. For our case, we will attempt to forecast the near-future number of confirmed cases. Time series may have several characteristics that make their analysis different from other types of data.
 
-Before we proceed to do the forecasting models, we will first do EDA on the data. We should allow the users to visualise:
-1) Distribution of the data 
-2) Trend, Seasonality and correlation of the data
-3) Any Anomalies in the data
-4) stationarity of the data
+* The time series variable may have a trend over time.
+* The variable may exhibit cyclicity or seasonality. 
+* The data may have serial correlation between subsequent observations.
+* The data will almost always have an irregular component, which is referred to as the White Noise. This is the random variation not explained by any other factor. White Noise is a stationary process with a constant mean and variance.
 
-All these factors will affect the outcome of the forecasting models.
+These characteristics will affect the outcome of the forecasting models. Decomposing a time series into its components (trend, cycle, seasonality, and random (stationary)) is an important part of time series analysis because this is the primary assumption to forecast the time series in the future. This is generally done to help understand the time series better, but it can also be used to improve forecasts.
+
+Therefore, we should allow users to visualise the underlying "patterns" of the time series data.
+
 
 # Data Source
 The COVID-19 dataset is a timeseries dataset (with observations recorded daily). The dataset used is sourced from the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University. CSSE had collated the location and number of confirmed COVID-19 cases, deaths, and recoveries for all affected countries. It was developed to provide researchers, public health authorities, and the general public with a user-friendly tool to track the outbreak as it unfolds. The data used for this assignment is the cumulative confirmed daily cases for all affected countries and can be downloaded at https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv.
@@ -37,9 +40,7 @@ A list of packages are required for this assignment. This code chunk installs th
 
 ```{r message=FALSE, warning=FALSE}
 
-packages = c('xgboost','tidymodels','modeltime','tidyverse','lubridate','timetk','earth','tseries','forecast',
-             'viridis','plotly','tidyverse','tsibble','tsintermittent','randomForest',
-             'fpp3','Metrics','gghighlight')
+packages = c('xgboost','tidymodels','modeltime')
 
 
 
@@ -72,15 +73,15 @@ The following are observed from the dataset:
   - the province level in China 
   - the city level in the USA, Australia, and Canada 
   - the country level otherwise
-there is a need to amalgamate the province/state, city level into Country/Region.
+there is a need to aggregate the province/state, city level data into Country/Region.
 
 # Data Cleaning
 
 The following code helps to convert the data to the correct format for subsequently analysis.
 
-* confirmed_cases_country_level to store cumulative confirmed cases for the country (amalgamating the province/state, city level)
+* confirmed_cases_country_level to store cumulative confirmed cases for the country (aggregating the province/state, city level data to Country/Region)
 
-* We are interested in the daily new confirmed cases, using lag function to do.
+* We are interested in the daily new confirmed cases. Current data record the cumulative daily total. Need to calculate the daily new confirmed cases using the lag function.
 
 * Selecting only Country, Date, TotalCases and daily_new_cases to be stored.
 
@@ -167,7 +168,6 @@ EU%>%
 ### Europe - 15 Countries in 5 rows of 3 countries each
 
 Setting .facet_ncol =3 to have 5 rows of 3 countries.
-
 
 
 ```{r message=FALSE, warning=FALSE}
@@ -273,6 +273,8 @@ ggplot(SEA, aes(Date,Daily_new_cases, color=Country)) +
 ```
 Decomposing time series in Trend, Seasonality and Remainder.
 
+(the following code return an error: Error in decompose(.): time series has no or less than 2 periods)
+
 ```{r eval = FALSE}
 
 US_Confirmed_Cases %>%
@@ -281,7 +283,7 @@ US_Confirmed_Cases %>%
 
 ```
 
-## Obervations for EDA 
+## Obervations for Packages that support EDA
 Both the TIMETK and GGPLOT packages do have functions to support EDA.
 
 From the visualisation, the following can be observed:
@@ -292,7 +294,7 @@ From the visualisation, the following can be observed:
 
 * TIMETK allow Slider to be incorporated by a single arguement (.plotly_slider = TRUE). For ggplot, need to incorporate with plotly package. 
 
-* TIMETK package incorporated function to view the STL and Anomaly and are flexible with the amount of data. For ggplot, the time series need a minimun of 2 periods for the data to be shown.
+* TIMETK package incorporated function to view the STL and Anomaly and are flexible with the amount of data. For ggplot, the time series need a minimum of 2 periods for the data to be shown.
 
 In conclusion, TIMETK package is more customizable and flexible to be used. Therefore, we will be using the TIMETK package for EDA.
 
@@ -325,7 +327,9 @@ US_test_tbl
 
 ```
 
-### Fitting the Training data into the respective Models.
+### Fitting the Training data into the respective Models - FPP3 Packages.
+
+A total of 10 models are created, namely: NAIVE Model, SNAIVE Model, DRIFT Model, SES Model, Holt's Linear Model, Damped Holt's Linear Model, STL ETS Model, ARIMA, Dynamic Harmonic Regression Model and TSLM.
 
 ```{r message=FALSE, warning=FALSE}
 
@@ -392,8 +396,9 @@ accuracy_tbl <- forecast_tbl %>%
 
 For comparison, we will be building the Time Series Model using the ModelTime packages.
 
-Fitting the train data into different model.
+### Creating the Training and Test dataset
 
+SImilarly to previous model, we will create a Training and Test dataset.
 
 ```{r message=FALSE, warning=FALSE}
 US_train_data <- training(initial_time_split(US_Confirmed_Cases, prop = 0.8)) # 80% training and 20% test
@@ -406,6 +411,7 @@ US_train_tbl %>% mutate(type = "train") %>%
 
 ```
 
+### Fitting the Training data into the respective Models - ModelTime Packages.
 
 ```{r message=FALSE, warning=FALSE}
 
@@ -446,7 +452,7 @@ USmodel_fit_prophet
 
 USmodel_fit_lm <- linear_reg() %>%
     set_engine("lm") %>%
-    #fit(daily_change ~ as.numeric(Date) + factor(month(Date, label = TRUE), ordered = FALSE),
+    #fit(Daily_new_cases ~ as.numeric(Date) + factor(month(Date, label = TRUE), ordered = FALSE),
     fit(Daily_new_cases ~ as.numeric(Date),
         data = US_train_data)
 
@@ -513,7 +519,6 @@ USmodels_tbl
 ## Calibrate the model using test data
 
 
-
 ```{r message=FALSE, warning=FALSE}
 UScalibration_tbl <- USmodels_tbl %>%
     modeltime_calibrate(new_data = US_test_data)
@@ -541,3 +546,300 @@ From the result, it was observed that Forecast and Modeltime packages are able t
 
 
 Upon further investigation, it was observed that ModelTime packages included models from Forecast and Prophet packages. Therefore, ModelTime package would be able to support more models. It also integrated well with TimeTK package. Therefore, i will be using ModelTime package for the model building.
+
+
+
+## Doing forecast with the Test Data
+
+Fitting the forecast with the Test Data and plot the visualisation.
+```{r}
+UScalibration_tbl %>%
+    modeltime_forecast(
+        new_data    = US_test_data,
+        actual_data = US_Confirmed_Cases
+    ) %>%
+    plot_modeltime_forecast(
+      .interactive      = TRUE
+    )
+```
+
+
+## Forecasting US next 10 days of confirmed cases
+To re-calibrate the model using the full dataset and forecast the next 10 days of confirmed cases.
+
+```{r}
+
+USrefit_tbl <- UScalibration_tbl %>%
+    modeltime_refit(data = US_Confirmed_Cases)
+
+USrefit_tbl %>%
+    modeltime_forecast(h = "10 days", actual_data = US_Confirmed_Cases) %>%
+    plot_modeltime_forecast(
+      .legend_max_width = 25, # For mobile screens
+      .interactive      = TRUE,
+      .title = "US"
+    )
+
+USrefit_tbl %>%
+    modeltime_accuracy() %>%
+    table_modeltime_accuracy(
+        .interactive = TRUE,
+      .title = "US"
+    )
+```
+
+## Using Shorter Time Period for the Forecast.
+
+Observed that the US dataset have a spike of confirmed cases from Nov 2020 to Feb 2021. This "anomaly" might affect the accuracy of the forecast. Explore using only data from May 2020 to Oct 2020 to see if the forecast result improves.
+
+The following code choose only May 2020 to Oct 2020 US data. Subsequently, breaking the data into Training and Test Set.
+
+```{r}
+chosendata <- confirmed_cases_country_level%>%
+  filter(Country == "US")%>%
+  filter_by_time(Date, "2020-05", "2020-10")
+
+traindata <- training(initial_time_split(chosendata, prop = 0.8)) # 80% training and 20% test
+testdata <- testing(initial_time_split(chosendata, prop = 0.8))
+
+traindata %>% mutate(type = "train") %>%
+  bind_rows(testdata%>%mutate(type="test"))%>%
+  ggplot(aes(x=Date,y=Daily_new_cases,color=type)) +
+  geom_line() +  ggtitle("US")
+
+```
+### Fitting the Train Data into the Models
+
+
+```{r}
+
+ model_fit_arima_no_boost <- arima_reg() %>%
+    set_engine(engine = "auto_arima") %>%
+    fit(Daily_new_cases ~ Date, data = traindata)
+
+model_fit_arima_no_boost
+
+
+model_fit_arima_boosted <- arima_boost(
+    min_n = 2,
+    learn_rate = 0.015
+) %>%
+    set_engine(engine = "auto_arima_xgboost") %>%
+    fit(Daily_new_cases ~ Date + as.numeric(Date) + factor(month(Date, label = TRUE), ordered = F),
+        data = traindata)
+
+model_fit_arima_boosted
+
+
+model_fit_ets <- exp_smoothing() %>%
+    set_engine(engine = "ets") %>%
+    fit(Daily_new_cases ~ Date , data = traindata)
+
+model_fit_ets
+
+
+model_fit_prophet <- prophet_reg() %>%
+    set_engine(engine = "prophet") %>%
+    fit(Daily_new_cases ~ Date, data = traindata)
+
+model_fit_prophet
+
+
+
+
+model_spec_mars <- mars(mode = "regression") %>%
+   set_engine("earth") 
+
+recipe_spec <- recipe(Daily_new_cases ~ Date, data = traindata) %>%
+    step_date(Date, features = "month", ordinal = FALSE) %>%
+    step_mutate(date_num = as.numeric(Date)) %>%
+    step_normalize(date_num) %>%
+    step_rm(Date)
+  
+wflw_fit_mars <- workflow() %>%
+    add_recipe(recipe_spec) %>%
+    add_model(model_spec_mars) %>%
+    fit(traindata)
+
+wflw_fit_mars
+
+
+model_fit_lm <- linear_reg() %>%
+    set_engine("lm") %>%
+    #fit(Daily_new_cases ~ as.numeric(Date) + factor(month(Date, label = TRUE), ordered = FALSE),
+    fit(Daily_new_cases ~ as.numeric(Date),
+        data = traindata)
+
+model_fit_lm
+
+
+models_tbl <- modeltime_table(
+    model_fit_arima_no_boost,
+    model_fit_arima_boosted,
+    model_fit_ets,
+    model_fit_prophet,
+    model_fit_lm,
+    wflw_fit_mars
+)
+
+```
+
+```{r}
+
+calibration_tbl <- models_tbl %>%
+    modeltime_calibrate(new_data = testdata)
+
+
+
+
+calibration_tbl %>%
+    modeltime_forecast(
+        new_data    = testdata,
+        actual_data = chosendata
+    ) %>%
+    plot_modeltime_forecast(
+      .interactive      = TRUE
+    )
+
+ calibration_tbl %>%
+    modeltime_accuracy() %>%
+    table_modeltime_accuracy(
+        .interactive = TRUE,
+        .title = " Accuracy Table",
+        .searchable = FALSE
+    )
+```
+
+
+
+
+
+# Observations
+
+From the result, it suggested that the "anomaly" in the dataset do affect the forecasted result. For example, the Prophet result is 33675.32 (RMSE) for Jul to Oct 2020 dataset and result is 241226.03 (RMSE) for the full set of US data. To improve the accuracy of the models, the application should allow the users to choose the period to be used for the forecasting.
+
+# Explore other parameters within the Models.
+
+### Prophet Model
+
+Default setting
+
+```{r}
+model_fit_prophet <- prophet_reg() %>%
+    set_engine(engine = "prophet") %>%
+    fit(Daily_new_cases ~ Date, data = traindata)
+
+
+modeltime_table(
+    model_fit_prophet
+) %>%
+    modeltime_calibrate(new_data = testdata) %>%
+    modeltime_forecast(
+        new_data      = testdata,
+        actual_data   = chosendata,
+        conf_interval = 0.95
+    ) %>%
+    plot_modeltime_forecast(.interactive = FALSE)
+
+
+modeltime_table(
+    model_fit_prophet
+) %>%modeltime_calibrate(new_data = testdata) %>%
+    modeltime_accuracy() %>%
+    table_modeltime_accuracy(
+        .interactive = TRUE,
+        .title = " Accuracy Table",
+        .searchable = FALSE
+    )
+
+```
+Changing seasonality to Daily and change it to Multiplicative model.
+
+
+```{r}
+model_fit_prophet <- prophet_reg(seasonality_daily=TRUE,season = 'multiplicative') %>%
+    set_engine(engine = "prophet") %>%
+    fit(Daily_new_cases ~ Date, data = traindata)
+
+
+modeltime_table(
+    model_fit_prophet
+) %>%
+    modeltime_calibrate(new_data = testdata) %>%
+    modeltime_forecast(
+        new_data      = testdata,
+        actual_data   = chosendata,
+        conf_interval = 0.95
+    ) %>%
+    plot_modeltime_forecast(.interactive = FALSE)
+
+
+modeltime_table(
+    model_fit_prophet
+) %>%modeltime_calibrate(new_data = testdata) %>%
+    modeltime_accuracy() %>%
+    table_modeltime_accuracy(
+        .interactive = TRUE,
+        .title = " Accuracy Table",
+        .searchable = FALSE
+    )
+
+```
+
+
+
+
+
+```{r}
+model_spec <- automl_reg(mode = 'regression') %>%
+    set_engine(
+         engine                     = 'h2o',
+         max_runtime_secs           = 5, 
+         max_runtime_secs_per_model = 3,
+         max_models                 = 3,
+         nfolds                     = 5,
+         exclude_algos              = c("DeepLearning"),
+         verbosity                  = NULL,
+         seed                       = 786
+    ) 
+
+model_spec
+
+
+
+model_fitted <- model_spec %>%
+   fit(Daily_new_cases ~ Date, data = traindata)
+
+```
+
+
+
+
+*********************************
+
+
+```{r}
+ 
+refit_tbl <- calibration_tbl %>%
+    modeltime_refit(data = chosendata)
+
+refit_tbl %>%
+    modeltime_forecast(h = "10 days", actual_data = chosendata) %>%
+    plot_modeltime_forecast(
+      .legend_max_width = 25, # For mobile screens
+      .interactive      = TRUE,
+      .title = "US"
+    )
+
+refit_tbl %>%
+    modeltime_accuracy() %>%
+    table_modeltime_accuracy(
+        .interactive = TRUE,
+      .title = "US"
+    )
+
+
+
+
+```
+
