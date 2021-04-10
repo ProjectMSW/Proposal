@@ -34,6 +34,23 @@
     "input_file": "covid-confirmed-cases.utf8.md"
   },
   {
+    "path": "posts/2021-04-10-vaccines/",
+    "title": "Vaccines",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "amanda",
+        "url": {}
+      }
+    ],
+    "date": "2021-04-10",
+    "categories": [],
+    "contents": "\r\nTesting Testing\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-04-10T11:47:45+08:00",
+    "input_file": "vaccines.utf8.md"
+  },
+  {
     "path": "posts/welcome/",
     "title": "Welcome to My Blog",
     "description": "Welcome to our new blog, My Blog. We hope you enjoy \nreading what we have to say!",
