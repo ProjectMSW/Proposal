@@ -1,7 +1,7 @@
 ---
 title: "Receptivity of Countries towards COVID-19 Vaccination"
 description: |
-  A short description of the post.
+  This post is a sub-module of the project and focuses on analysing countries' attitudes towards COVID-19 vaccination. Data for the analyses is obtained from the Imperial College London YouGov Covid 19 Behaviour Tracker Data Hub.
 author:
   - name: Daniel Lin Yongyan
     url: https://daniel-lin-yy-data-viz.netlify.app/
@@ -336,6 +336,103 @@ Cat3
 
 ```
 
-
 [Return to Top](#Top)<br>
 
+
+<a name="Part3"></a>
+
+## 3. Review of visual analytic techniques
+
+### 3.1 Representation of Likert Scales
+
+For Likert responses, there are several ways in which they can be represented for visualization. The following are some ways.
+
+**3.1.1 Grouped Column / Bar Charts**
+One way is to group responses by questions (or other categories) and to represent the responses as column or bar charts in terms of the Likert scale as shown below.
+
+```{r pressure2, echo=FALSE, fig.cap="Grouped Bar Chart representing responses to a Likert Scale survey", out.width = '100%'}
+knitr::include_graphics("ColumnCharts.jpg")
+```
+While Bar Charts allow easy comparison on the count (frequency) of responses across the different Likert Scores, they do not allow the easy comparison of proportions of the responses (e.g., what is the proportion who strongly agree or agree to a question?)
+
+**3.1.2 Multiple Pie Charts**
+While Pie Charts depict the proportions of each type of response to a question (as shown below), it is difficult to compare and visualize the differences in proportion between the questions.
+
+```{r pressure3, echo=FALSE, fig.cap="Multiple Pie Charts representing responses to a Likert Scale survey", out.width = '100%'}
+knitr::include_graphics("PieChart.jpeg")
+```
+
+**3.1.3 Stacked Bar Charts**
+
+Stacked bar charts such as the below chart shows clearly the proportion of the various responses for each question asked in a survey. The use of different tones of colours (i.e. Light Green to Dark Green) provide the reader with an idea of increasing levels of responses (i.e. Agree to Strongly Agree). 
+
+```{r pressure1, echo=FALSE, fig.cap="Stacked Bar Charts representing responses to Likert Scale survey", out.width = '100%'}
+knitr::include_graphics("StackedBarCharts.jpg")
+```
+
+A benefit of Stacked Bar Charts is that it allows readers to compare different proportions across different bars since each set of stacked bar sums up to 100%. For the example above, it is evident that while a large proportion agreed that they liked the presentation, a lower proportion actually felt that theu learnt something from the presentation.
+
+**3.1.4 Diverging Stacked Bar Chart**
+
+Another way of representing responses to a Likert Scale survey is Diverging Stacked Bar Chart. This visualization is similar to the Stacked Bar Chart but differs in that the bars have a common vertical baseline located in the the centre of the diagram. The lengths of the segments of the bar charts are proportional to the number of responses for each value of the Likert scale for each question. Segments which represent favourable responses are usually on the right of the baseline while those that are unfavarouble are on the left. Neutral responses are located on the central baseline.
+
+```{r pressure4, echo=FALSE, fig.cap="Diverging Stacked Bar Charts representing responses to Likert Scale survey", out.width = '100%'}
+knitr::include_graphics("DivergingStackedBarChart.jpg")
+```
+The Diverging Stacked Bar Chart is most appropriate to represent responses from Likert Scale Surveys as it allows easy interpretation and comparison of multiple categories. 
+
+**3.1.5 Comparing the mean Likert Score
+While it may seem appropriate to compare the mean Likert Score of each category, there is a potential pitfall in doing so.
+
+Using the below column graph that depicts the responses to a survey on 3 different courses, it is evident that the responses for each of the 3 courses are very different. However when the mean score of responses is computed for each course, the mean appears similar.
+
+```{r pressure5, echo=FALSE, fig.cap="Column Bar Charts with responses for 3 different courses", out.width = '100%'}
+knitr::include_graphics("ColumnCharts.jpg")
+```
+Mean values of the above responses for each course are as shown.
+
+|Course   | Mean  |
+|:--------|:-----:|
+|Course_1 |2.84|
+|Course_2 |3.04|
+|Course_3 |3.00|
+
+To mitigate this issue, it would be better to find the proportion of responses that meet a certain value (e.g. proportion of respondents who gave a 4 or 5 score).
+
+### 3.2 Visualizing Uncertainty
+
+As the results of a survey are usually used to represent a population, the sample (survey) proportion should be represented with confidence intervals to allow readers an indication of the confidence level that the actual population proportion will be within the confidence interval.
+
+**3.2.1 Bar plots with Error Bars**
+
+One of the ways to represent the confidence intervals of sample data is with the use of error bars as shown below.
+
+```{r pressure6, echo=FALSE, fig.cap="Bar Plots with Error Bars", out.width = '100%'}
+knitr::include_graphics("BarPlotErrorBars.jpg")
+```
+
+### 3.3 Visualizing Correlation
+
+For surveys, it is useful to study the correlation and relationship between responses to understand if there are certain determinants or factors that affect the response of certain questions.
+
+For this project, while we examine the inclination of countries towards vaccination. It would be useful to investigate if that inclination is dependent on certain socio-demographical factors (e.g., age, gender, household size or number of children in the household) or certain attitudes or beliefs (e.g., confidence of vaccine efficacy, or concerns on the side effects of the vaccine).
+
+To visualize the correlation between factors, one of the methods usually used is to build a *correlation matrix* or *correlation scatterplot*. However this is usually used to depict the correlation between **continuous** variables. 
+
+```{r pressure7, echo=FALSE, fig.cap="Correlation Matrix", out.width = '100%'}
+knitr::include_graphics("CorrMatrix.jpg")
+```
+
+```{r pressure8, echo=FALSE, fig.cap="Correlation Scatterplot", out.width = '100%'}
+knitr::include_graphics("CorrPlot.jpg")
+```
+
+For correlations between **categorical** variables, one way to visualize correlation is via the use of the UpSet plot via the use of the UpSetR function (see next section).
+
+An UpSet plot (seen below) allows the reader to see how frequently each combination or intersection of different factors takes place. Combinations that occur more frequently indicate a stronger correlation between the factors in the combination.
+
+```{r pressure9, echo=FALSE, fig.cap="Upset plot", out.width = '100%'}
+knitr::include_graphics("UpsetPlot.jpg")
+```
+
+[Return to Top](#Top)<br>
