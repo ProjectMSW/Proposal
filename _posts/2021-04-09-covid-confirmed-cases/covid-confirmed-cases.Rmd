@@ -577,7 +577,7 @@ Upon further investigation, it was observed that ModelTime packages included mod
 
 ### Showing visualisation of the forecast (calibrate with Test Data)
 
-Fitting the forecast with the Test Data and plot the visualisation.
+Fitting the forecast with the Test Data and plot the visualisation. The visualisation allow users to choose the models it wish to view by clicking on the legend. It also allows users to zoom into the specific time period.
 
 ```{r}
 UScalibration_tbl %>%
@@ -592,7 +592,7 @@ UScalibration_tbl %>%
 
 
 ### Forecasting US next 10 days of confirmed cases
-To re-calibrate the model using the full dataset and forecast the next 10 days of confirmed cases.
+To re-calibrate the model using the full dataset and forecast the next 10 days of confirmed cases. The time series chart will show the forecast outcome and the accuracy table will show the values of each of the reading (MAE, MASE etc).
 
 ```{r}
 
@@ -741,6 +741,7 @@ calibration_tbl %>%
 
 To check if the models allow input of 1 month data only. May 2020 data is chosen for this test. 
 
+The outcome shows that the certain models (e.g SNAIVE) do require long date period to do the forecasting. As a result, it is unable to give any forecast. 
 
 ```{r}
 chosendata <- confirmed_cases_country_level%>%
@@ -851,7 +852,9 @@ calibration_tbl %>%
 
 ```
 
-To do forecast of next 10 days in Mar 2021, using the May 2020 dataset.
+To do forecast of next 10 days in Mar 2021, using the May 2020 dataset. 
+
+The outcome shows that the models require the date to be continuous. As seen from the plot, despite putting in the full US data set to predict the Mar 2021 data, the model calculated the outcome for Jun 2020. This will be limitation for the models. Users have to include the latest date in the period.
 
 
 ```{r}
@@ -998,7 +1001,7 @@ Changing the parameters for the model do change the forecast outcome. Users shou
 
 # Conclusion
 
-In this Sub-module, the Shiny App will allows users to (1) explore the dataset and (2) have different models for forecasting. We will be using the TimeTK and ModelTime packages for the development. For EDA, users will be able to view the time series plot, STL plot, Anomaly Plot and ACF/PACF plot. Using these plot, the users will have better understanding of the dataset and can choose the right time period and parameters for the forecast.
+In this Sub-module, the Shiny App will allows users to (1) explore the dataset and (2) have different models for forecasting. We will be using the TimeTK and ModelTime packages for the development. For EDA, users will be able to view the time series plot, STL plot, Anomaly Plot and ACF/PACF plot. Using these plots, the users will have better understanding of the dataset and can choose the right time period and parameters for the forecast.
 
 # StoryBoard
 
@@ -1023,7 +1026,7 @@ Page 1 will allow users to explore the time series dataset. Page 2 will show the
   - Users are able to zoom, pan the time series chart to compare the result of the different models.
   
   
-# References
+
 
 
 
