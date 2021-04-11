@@ -208,3 +208,134 @@ main_df <- main_df %>% replace_with_na(replace = list(vac5 = "99", vac6 = "99" )
 [Return to Top](#Top)<br>
 
 
+<a name="Part2"></a>
+
+## 2. Exploratory Data Analysis (EDA)
+
+After preparing the data, it would be timely to carry out EDA to further understand distribution of the variables, correlation and relationships between variables. This can be done using the *dlookr* package.
+
+### Univariate data EDA
+
+For the *main_df*, there is only 1 variable that is numerical, *age*. We use the *describe()* function to compute descriptive statistics for *age*.
+
+```{r}
+describe(main_df)
+```
+
+The density plot of *age* can also be plotted to investigate the mean age and age distribution of respondents who respondents to vac_1.
+
+```{r}
+a <- ggplot(main_df, aes(x=age))
+a + geom_density(aes(y=..count..), fill = "slategrey") +
+  geom_vline(aes(xintercept = mean(age)),
+             linetype = "dashed", size = 0.8,
+             color = "red")
+```
+To investigate the age distribution by country, we could use the package *ggridges* to do a comparison.
+
+```{r}
+# need to install ggridges package
+theme_set(theme_ridges())
+
+ggplot(main_df, aes(x = `age`, y = `country`)) +
+  geom_density_ridges_gradient(aes(fill = ..x..), scale = 3, size = 0.3) +  
+  scale_fill_gradientn(colours = c("#0D0887FF", "#CC4678FF", "#F0F921FF"),
+                       name = "Age")+
+  labs(title = 'Age Distribution by Country') 
+```
+From the plot, we observe that countries like Sweden, Israel and Finland had a greater proportion of younger respondents, whereas countries like Singapore, Norway and Netherlands had a relatively even distribution of respondents across all ages.
+
+```{r}
+
+main_df %>%
+  mutate(CountryFct = fct_rev(as.factor(country))) %>%
+  ggplot(aes(y = CountryFct)) +
+  geom_density_ridges(
+    aes(x = age, fill = paste(CountryFct, gender)), 
+    alpha = .5, color = "white", from = 0, to = 100) +
+  labs(x = "Age (years)",y = "Country",
+       title = "Age Distribution of Respondents by Gender and Country") +
+  scale_y_discrete(expand = c(0, 0)) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_fill_cyclical(
+    breaks = c("Male", "Female"),
+    labels = c(`Male` = "Male", `Female` = "Female"),
+    values = c("#ff0000", "#0000ff", "#ff8080", "#8080ff"),
+    name = "Gender", guide = "legend") +
+  coord_cartesian(clip = "off") +
+  theme_ridges(grid = FALSE)
+
+```
+From the plots, it is observed that in general, most countries have similar proportions of male and females (purple areas), except for Finland, France, Germany, Italy and Spain where there is a slightly higher proportion of female (red areas)at the older age bands.
+
+For Categorical data, we could use *table* to carry out Univariate EDA.
+
+```{r}
+table(main_df$vac_1)
+table(main_df$vac2_1)
+table(main_df$vac2_2)
+```
+
+### Bivariate EDA for Categorical Data
+
+For Bivariate Categorical EDA, we could use the following to find the frequencies or proportions between 2 categorical variables. 
+
+```{r}
+my_table_0 <- table(main_df$vac_1, main_df$gender)
+print.table(my_table_0)
+my_table_01 <- addmargins(my_table_0)
+print.table(my_table_01)
+```
+```{r}
+my_table_3 <- prop.table(my_table_0, margin = 2) %>% 
+  as.data.frame.matrix() 
+print.data.frame(my_table_3, digits = 2)
+
+```
+From the above, we are able to observe that males form a greater proportion of those who disagreed or strongly disagreed (responded 2 or 1) while females form a greater proportion of those who agreed or strongly agreed.
+
+### Bivariate EDA between categorical and continuous variable
+
+To investigate the relationship between a categorical and continuous variable, we can use the *relate* function as shown below. The user is able to select the 2 variables for investigation as shown.
+
+```{r}
+# User to select target variable and predictor numerical 
+# variables (i.e. vac_1, and Age)
+
+variable_selected <- "vac_1"   # to be selected by user
+pred_var <- "age"              # to be selected by user
+
+categ <- target_by(main_df, variable_selected)
+cat_num <- relate(categ, pred_var)
+cat_num
+plot(cat_num)
+```
+It can be observed that respondents who responded 2,3,4 or 5 have similar age distribution patterns. However, for those that strongly disagreed that they are keen on vaccination, a large proportion come from the older age groups.
+
+The above is a density plot that is plotted when a categorical variable is plotted with a continuous variable. For relationship between 2 categorical variables, the following would be a good plot for visualization.
+
+```{r}
+# User to select target variable and predictor numerical 
+# variables (i.e. vac_1, and vac2_1)
+
+variable_selected <- "vac_1"   # to be selected by user
+pred_var <- "vac2_1"              # to be selected by user
+
+categ <- target_by(main_df, variable_selected)
+cat_num <- relate(categ, pred_var)
+cat_num
+plot(cat_num)
+```
+It can be observed that a large proportion of respondents who responded 1 in *vac_1* also responded 1 for *vac2_1*. The same is observed for those who responded 5 in *vac_1*, where many of them also responded 5 for *vac2_1*.
+
+```{r}
+Cat3 <- main_df %>%                       
+  select(gender, vac_1, vac2_1, household_size) %>%             
+  ftable()                                            
+Cat3   
+
+```
+
+
+[Return to Top](#Top)<br>
+
