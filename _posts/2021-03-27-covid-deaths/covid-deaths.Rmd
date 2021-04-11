@@ -69,13 +69,13 @@ Although the intention of the assignment is an exploratory analysis, we can stil
 
 There are gaps in the current visualisations in supporting the intended analysis of this assignment. The majority of interactive visualisations are univariate presented on maps or in time series, while the bivariate and multivariate analysis of the country indicators and the number of deaths are largely static.
 
-In this assignment, we will attempt to create interactive visualisations for bivariate (scatterplot and funnel plot) and multivariate analysis (multiple linear regression) of the number of deaths due to COVID-19 with selected health-socio-economic indicators across countries.
+In this assignment, we will attempt to create interactive visualisations for bivariate (scatterplot and funnel plot) and multivariate analysis (multiple linear regression) of the number of deaths due to COVID-19 with selected health-socio-economic indicators across countries. The focus will be on the cumulative or total number of deaths, so that more meaningful relationships can be observed between the COVID-19 related data and national aggregate indicators.
 
 The following R packages will be explored:
 
 | Visualisation | Packages |
 |---------------|----------|
-| Scatterplot   | *ggstatsplot*, *car* |
+| Scatterplot   | *ggstatsplot*, *car*, *ggplot* |
 | Funnel Plot   | *FunnelPlotR*, *funnelR*, *ggplot* |
 | Multivariate Analysis | *olsrr* |
 | Interactivity | *plotly* |
@@ -88,16 +88,16 @@ All data extraction and wrangling are done in R using the *tidyverse* suite of p
 
 Besides the mentioned packages, the following packages are also loaded:
 
-* *mlr*: for data exploration with ```summarizeColumns()```
-* *naniar*: for visualisation of missing values with ```gg_miss_upset()```
-* *VIM*: for imputation of missing values with ```kNN()```
-* *gridExtra*: for handling of multiple plots with ```grid.arrange()```
-* *corrr*: for visualisation of correlation with ```correlate()``` and ```rplot()```
-* *ggExtra*: for plotting of marginal distributions with ```ggMarginal()```
+* *mlr*: for data exploration with `summarizeColumns()`
+* *naniar*: for visualisation of missing values with `gg_miss_upset()`
+* *VIM*: for imputation of missing values with `kNN()`
+* *gridExtra*: for handling of multiple plots with `grid.arrange()`
+* *corrr*: for visualisation of correlation with `correlate()` and `rplot()`
+* *ggExtra*: for plotting of scatterplot with marginal distribution with `ggMarginal()`
 
 The code chunk below is used to install and load the packages.
 
-```{r}
+```{r packages}
 packages = c('tidyverse', 'mlr', 'naniar','VIM', 'gridExtra', 'corrr',
              'ggstatsplot', 'car', 'ggExtra',
              'FunnelPlotR', 'funnelR',
@@ -123,9 +123,9 @@ Data by country is obtained from various sources, as shown in the following tabl
 | UNdata | Health expenditure, healthcare facilities and capacity indicators |
 | United Nations Development Programme (UNDP) | Human Development Index (HDI), international inbound tourists |
 
-The data is stored across eight files and ```read_csv()``` is used to import and extract the relevant columns from each file into R.
+The data is stored across eight files and `read_csv()` is used to import and extract the relevant columns from each file into R.
 
-```{r warning=FALSE}
+```{r import, warning=FALSE}
 covid <- read_csv("./data/owid-covid-latest.csv",
                          col_types = cols_only(
                            "iso_code" = "c",
@@ -184,28 +184,26 @@ geo_lookup <- read_csv("./data/UID_ISO_FIPS_LookUp_Table.csv",
 
 Before combining the data frames into one main data frame for analysis, we need to explore and prepare each data frame.
 
-```{r}
+```{r wrangle}
+# Population age structure data
 pop_prop_cleaned <- pivot_wider(pop_prop, names_from = "Indicator Name", values_from = "2019") %>%
   rename("0_to_14(%)" = "Population ages 0-14 (% of total population)",
          "15_to_64(%)" = "Population ages 15-64 (% of total population)",
          "65_and_above(%)" = "Population ages 65 and above (% of total population)")
-```
 
-```{r}
+# International inbound tourists arrival data
 intl_tourists_cleaned <- rename(intl_tourists,
                         "annual_intl_arrivals_thousands" = "2011-2018")
-```
 
-```{r}
+# Number of physicians data
 health_personnel_phy <- health_personnel %>%
   group_by(`region/country/area`, `series`) %>%
   slice(which.max(`year_personnel`)) %>%
   filter(`series` == "Health personnel: Physicians (per 1000 population)") %>%
   pivot_wider(names_from = "series", values_from = "value") %>%
   rename("num_physicians_per_thousand" = "Health personnel: Physicians (per 1000 population)")
-```
 
-```{r}
+# Health expenditure data
 health_exp_cleaned <- health_exp %>%
   group_by(`region/country/area`, `series`) %>%
   slice(which.max(`year_exp`)) %>%
@@ -216,7 +214,7 @@ health_exp_cleaned <- health_exp %>%
 
 After cleaning the individual data frames, we can now combine and store the data in a single data frame, and drop any unnecessary columns for subsequent analysis.
 
-```{r}
+```{r combine}
 covid_deaths <- covid %>%
   left_join(pop_prop_cleaned, by = c("location" = "Country Name")) %>%
   left_join(intl_tourists_cleaned, by=c("location" = "Country")) %>%
@@ -240,17 +238,17 @@ personnel_data <- covid_deaths %>%
 glimpse(personnel_data[,order(colnames(personnel_data))])
 ```
 
-We will reorder the columns to group similar variables.
+Next, we will reorder the columns to group similar variables.
 
-```{r}
+```{r reorder}
 col_order <- c("continent", "location",
+               "lat", "long",
                "total_cases", "total_deaths", "case_fatality_rate", "total_tests", "positive_rate",
                "hospital_beds_per_thousand", "num_physicians_per_thousand", "year_personnel", "handwashing_facilities",
                "gdp_per_capita", "current_health_exp_%gdp", "govt_health_exp_%totalgovtexp",
                "population", "population_density", "0_to_14(%)", "15_to_64(%)", "65_and_above(%)",
                "extreme_poverty", "human_development_index",
-               "annual_intl_arrivals_thousands",
-               "lat", "long")
+               "annual_intl_arrivals_thousands")
 
 covid_deaths <- covid_deaths[, col_order] %>% 
   select(-c("year_personnel"))
@@ -260,7 +258,7 @@ glimpse(covid_deaths)
 
 The base dataset is ready for the next step on data exploration. Before we move on to the next step, we will clear the R environment to free up memory space with the following code chunk:
 
-```{r}
+```{r remove}
 rm(list = setdiff(ls(), "covid_deaths"))
 ```
 
@@ -268,7 +266,7 @@ rm(list = setdiff(ls(), "covid_deaths"))
 
 Let us take a look at a summary of the data.
 
-```{r}
+```{r explore}
 summarizeColumns(covid_deaths)
 ```
 
@@ -277,12 +275,13 @@ Note that there are a number of variables with missing values. As it is challeng
 * Missingness
 * Distribution
 * Outliers
+* Correlation
 
 ### Missingness
 
 *ggplot* is used to visualise missing values in the dataset with the code chunk below:
 
-```{r}
+```{r missing}
 missing_values <- covid_deaths %>%
   gather(key = "key", value = "val") %>%
   mutate(isna = is.na(val)) %>%
@@ -313,7 +312,7 @@ percentage_plot
 
 From the above plot, **handwashing facilities** has the highest percentage of missing values, followed by **total tests** and **positive rate**. We can also use *gg_miss_upset* plot to understand how missing values are linked across variables.
 
-```{r fig.height=5}
+```{r missing-upset, fig.height=5}
 gg_miss_upset(covid_deaths, 
               nsets = n_var_miss(covid_deaths), 
               nintersects = NA, 
@@ -325,7 +324,7 @@ gg_miss_upset(covid_deaths,
 
 From the UpSet plot, 35 of the records have only missing values in handwashing facilities, while there is one record with missing values across all variables. As the missing values would pose a problem later in the analysis, the missing values are imputed using the k-Nearest Neighbour (kNN) imputation, where k = 5. Key indicators of a country, such as the population, population density and Gross Domestic Product (GDP) per capita are used to estimate the imputation value. The continent in which the country falls under is also considered.
 
-```{r}
+```{r impute}
 covid_deaths_imputed_raw <- covid_deaths %>% 
   drop_na(population) %>%
   kNN(k=5,
@@ -335,7 +334,7 @@ covid_deaths_imputed_raw <- covid_deaths %>%
                    "gdp_per_capita"))
 
 covid_deaths_imputed <- covid_deaths_imputed_raw %>%
-  select(continent:long)
+  select(continent:annual_intl_arrivals_thousands)
 
 summarizeColumns(covid_deaths_imputed)
 ```
@@ -344,9 +343,9 @@ There are no missing values after imputation as seen from the **na** column, and
 
 ### Distribution
 
-The distributions are examined from the density curves of the variables using ```ggplot()```. Both the distributions from before and after imputation of missing values are compared.
+The distributions are examined from the density curves of the variables using `ggplot()`. Let us compare the variable distributions before and after imputation.
 
-```{r results='hide', fig.height=10, fig.width=10}
+```{r distribution, results='hide', fig.height=10, fig.width=10}
 check_distribution <- covid_deaths %>%
   pivot_longer(cols = total_cases:annual_intl_arrivals_thousands,
                names_to = "variable",
@@ -359,7 +358,8 @@ check_distribution <- covid_deaths %>%
   theme(panel.border = element_rect(colour="grey60", fill = NA),
         strip.background = element_rect(fill = "grey80"))
 ```
-```{r results='hide', fig.height=10, fig.width=10}
+
+```{r distribution-imp, results='hide', fig.height=10, fig.width=10}
 check_distribution_imputed <- covid_deaths_imputed %>%
   pivot_longer(cols = total_cases:annual_intl_arrivals_thousands,
                names_to = "variable",
@@ -372,19 +372,52 @@ check_distribution_imputed <- covid_deaths_imputed %>%
   theme(panel.border = element_rect(colour="grey60", fill = NA),
         strip.background = element_rect(fill = "grey80"))
 ```
+
 ```{r echo=FALSE, fig.height=10, fig.width=20}
 grid.arrange(check_distribution, check_distribution_imputed, ncol=2)
 ```
 
-The distributions after imputation is similar to that before imputation, except for *handwashing_facilities* as it has the most missing values. We need to take note of this and explicitly mention it in the visualisation.
+The distributions after imputation is similar to that before imputation, except for *handwashing_facilities* as it has the most missing values.
+
+From the above distributions, we can see that the range of values differ greatly between groups of variables, which may result in issues at a later stage. We will rescale some of the data with large ranges by performing a log transformation. No variables were removed, as the transformed variables will only be used where appropriate, i.e. in regression analysis.
+
+```{r transform}
+covid_deaths_tidy <- covid_deaths_imputed %>%
+  mutate(total_cases_log = log(total_cases), 
+         total_deaths_log = log(total_deaths), 
+         total_tests_log = log(total_tests),
+         gdp_per_capita_log = log(gdp_per_capita),
+         population_log = log(population), 
+         population_density_log = log(population_density),
+         annual_intl_arrivals_thou_log = log(annual_intl_arrivals_thousands)
+         )
+```
+
+```{r fig.width=10}
+check_distribution_tidy <- covid_deaths_tidy %>%
+  pivot_longer(cols = total_cases:total_tests_log,
+               names_to = "variable",
+               values_to = "value") %>%
+  ggplot(aes(x=value)) +
+  geom_density() +
+  facet_wrap(~variable, nrow = 5, ncol = 5, scales = "free") +
+  ggtitle("Distribution after transformation") +
+  theme_minimal() +
+  theme(panel.border = element_rect(colour="grey60", fill = NA),
+        strip.background = element_rect(fill = "grey80"))
+
+check_distribution_tidy
+```
+
+The distributions of the log-transformed variables now approximates to the normal distribution.
 
 ### Outliers
 
 The outliers are also examined using ```ggplot()```.
 
-```{r fig.height=10, fig.width=15}
-check_outlier <- covid_deaths_imputed %>%
-  pivot_longer(cols = total_cases:annual_intl_arrivals_thousands,
+```{r outlier, fig.height=10, fig.width=15}
+check_outlier <- covid_deaths_tidy %>%
+  pivot_longer(cols = total_cases:annual_intl_arrivals_thou_log,
                names_to = "variable",
                values_to = "value") %>%
   ggplot(aes(x=variable, y=value)) +
@@ -397,15 +430,15 @@ check_outlier <- covid_deaths_imputed %>%
 check_outlier
 ```
 
-Most of the outliers are valid as there are countries with very large numbers due to its population sizes. No further action is taken to treat outliers.
+Most of the outliers are valid as there are countries with very large numbers due to its population sizes and land area. 
 
 ### Correlation
 
-Variables that are correlated are highlighted with the below code chunk.
+Correlation between the variables is calculated with the below code chunk.
 
-```{r}
-check_correlation <- correlate(covid_deaths_imputed %>%
-                                 select(total_cases:annual_intl_arrivals_thousands))
+```{r corr, fig.width=8, fig.height=5}
+check_correlation <- correlate(covid_deaths_tidy %>%
+                                 select(total_cases:annual_intl_arrivals_thou_log))
 
 rplot(check_correlation,
       print_cor = TRUE) +
@@ -414,16 +447,18 @@ rplot(check_correlation,
         axis.text.y = element_text(size=7))
 ```
 
-We observe that *total_cases*, *total_deaths* and *total_tests* are positively correlated, as they are logically inter-dependent. Interestingly, *0_to_14(%)* and *human_development_index* are strongly negatively correlated. The Human Development Index (HDI) is a summary measure of four indicators: (1) life expectancy; (2) expected years of schooling; (3) mean of years of schooling; and (4) gross national income per capita. Another notable negative correlation is that between *handwashing_facilities* and *0_to_14(%)*. However, as the former is mostly imputed, the correlation may not reflect the true correlation.
+We observe that *total_cases* and *total_deaths* are strongly positively-correlated, as they are logically inter-dependent. *human_development_index* is strongly positively-correlated with *handwashing_facilities* and *gdp_per_capita*, and strongly negatively-correlated with *0_to_14(%)*. The explanation for the correlation between the Human Development Index (HDI) with GDP per capita and age group below 14 years can be found in the definition of the HDI, which is a summary measure of four indicators: (1) life expectancy; (2) expected years of schooling; (3) mean of years of schooling; and (4) gross national income per capita.
 
-Again, no further action to handle the high correlation as this is an exploratory analysis.
+An interesting correlation is that between *0_to_14(%)* and *64_and_above(%)*, with correlation at -0.80. 
 
-```{r echo=FALSE}
-rm(list = setdiff(ls(), "covid_deaths_imputed"))
+No further action is taken to handle variables with high correlation values (>= 0.80) as this is an exploratory analysis.
+
+```{r remove2, echo=FALSE}
+rm(list = setdiff(ls(), "covid_deaths_tidy"))
 ```
 # Prototype
 
-The next step would be to explore the packages to build the needed plots. The criteria to evaluate the plots are:
+The next step would be to explore the packages to build the needed plots. When there are more than one package, the criteria to evaluate the plots are:
 
 * Level of customisation available
 * Ease of use and implementation of customisation in functions
@@ -436,33 +471,32 @@ There are mainly two types of interactivity to consider: (1) able to render plot
 
 Two packages *ggstatsplot* and *car* will be explored for the scatterplot.
 
-### Use *ggstatsplot::ggscatterstats*
+### Using *ggstatsplot::ggscatterstats*
 
-The *ggstatsplot* package is an extension of the *ggplot* package, making it easier to tie in with other functions from the *tidyverse* family. *ggplot* functions can be called within ```ggscatterstats()```, but the output of the function is not further modifiable with *ggplot* unless the marginal distributions are not plotted.
+The *ggstatsplot* package is an extension of the *ggplot* package, making it easier to tie in with other functions from the *tidyverse* family. *ggplot* functions can be called within `ggscatterstats()`, but the output of the function is not further modifiable with *ggplot* unless the marginal distributions are not plotted.
 
-There are a few key arguments that are available in the function for customisation:
+There are several key arguments that can be provided for user customisation:
 
 * `type`: statistical test to be performed (parametric, non-parametric, robust and bayesian)
 * `conf.level`: confidence level (value between 0 to 1)
 * `results.subtitle`: option to display statistical test
-* `label.` arguments: set label parameters
+* `label.` arguments: set label parameters and criteria for display
 * `point.args`: customisation to the point plot
 * `marginal.type`: type of marginal distribution (histogram, density, densigram, boxplot and violin plot)
 * Under `ggplot.component`: Smooth line to display (from geom_smooth: "loess", "lm", "glm" and "gam")
 * Other aesthetic components such as graph title, axes scale etc.
 
-The code chunk below generates a scatterplot of total deaths by hospital beds per thousand.
+The code chunk below generates a scatterplot of total deaths by hospital beds per thousand. We set some aesthetics for the points, which are coloured by continent and the size reflects the population number. Here, we use **total_deaths_log** to obtain a more proportionate graph.
 
-```{r}
+```{r sp1}
 sp_ggstatsplot_marginal <- 
-  ggscatterstats(covid_deaths_imputed,
+  ggscatterstats(covid_deaths_tidy,
                  x = hospital_beds_per_thousand, # independent variable
-                 y = total_deaths, # dependent variable
+                 y = total_deaths_log, # dependent variable
                  type = "robust", # statistical test
                  conf.level = 0.95, # confidence level
                  results.subtitle = TRUE, # set to FALSE to NOT display the statistical tests
-                 ggplot.component = list(geom_smooth(method = "loess", size =0.05), # regression line
-                                         scale_y_log10()), # change axes scale
+                 ggplot.component = list(geom_smooth(method = "loess", size =0.05)), # regression line
                  label.var = location, # define label to show location
                  label.expression = continent == "Asia", # criteria to display labels
                  point.args = list(aes(colour=continent, # set colour scale for points
@@ -470,16 +504,17 @@ sp_ggstatsplot_marginal <-
                                        alpha = 0.4), # set size scale for point
                  smooth.line.args = list(color = NA, 
                                          se = FALSE), # remove default regression line
-                 marginal.type = "densigram", # marginal distribution
+                 #marginal.type = "densigram", # marginal distribution
                  title = "Scatterplot using ggstatsplot package") # graph title
-                                 
 
 sp_ggstatsplot_marginal
 ```
 
-### Use *car::scatterplot*
+The output plots a scatterplot with marginal distribution, with the default set as 'densigram', a combination of density curve and histogram. The marginal distributions provides useful information on the distribution, spread, and outliers of the x and y variables.
 
-The *car* package uses basic R graphics to generate the scatterplot. The key arguments available in the function for customisation are:
+### Using *car::scatterplot*
+
+The *car* package uses basic R graphics to generate the scatterplot. The key arguments selected for customisation are:
 
 * `boxplot`: axis to display marginal boxplot (x, y, xy)
 * `regLine`: regression line to display (lm, loess, mgcv::gam, quantreg::rqss)
@@ -488,59 +523,59 @@ The *car* package uses basic R graphics to generate the scatterplot. The key arg
 * `smooth`: Smooth line to display (loessLine, gamline, quantregLine)
 * Other aesthetic components such as graph title, axis labels, axes scale, shape etc.
 
-A ```scatterplot``` implementation of the plot from ```ggscatterstats()``` (as close as possible) is shown below.
+A `scatterplot()` implementation of the same plot is shown below. Again, **total_deaths_log** is used to obtain a proportionate graph.
 
-```{r}
-sp_car <- scatterplot(total_deaths ~ hospital_beds_per_thousand | continent, # group by continent
-                      covid_deaths_imputed,
+```{r sp2}
+sp_car <- scatterplot(total_deaths_log ~ hospital_beds_per_thousand | continent, # group by continent
+                      covid_deaths_tidy,
                       boxplots = "xy", # axis for marginal boxplot
-                      regLine = list(method=lm, 
+                      regLine = list(method=lm, # regression line to display and customisation
                                      lty=1, 
-                                     lwd=1), # regression line to display and customisation
+                                     lwd=1),
                       id = list(method="mahal", n=5), # label customisation
-                      ellipse = list(levels=c(.5, .95), 
+                      ellipse = list(levels=c(.5, .95), # ellipse customisation
                                      robust=TRUE, 
                                      fill=TRUE, 
-                                     fill.alpha=0.2), # ellipse customisation
-                      smooth = list(smoother=loessLine,
+                                     fill.alpha=0.2),
+                      smooth = list(smoother=loessLine, # smooth line to display and customisation
                                     lty.var=2, 
-                                    lwd.var=0.5), # smooth line to display and customisation
+                                    lwd.var=0.5), 
                       by.groups = TRUE, # unable to change to FALSE when group is defined
                       xlab = "hospital beds per thousand", # x-axis label
                       ylab = "total deaths", # y-axis label
-                      log = "y", # change scale of y axis to log
                       main = "Scatterplot using car package" # graph title
                       )
 ```
+
+The grouping by continent results in individual regression lines, ellipses and smooth lines to be plotted for each continent group.
 
 ### Evaluation
 
 #### Level of customisation and ease of use
 
-Both packages allow for a wide variety of options for customisation, with *car::scatterplot* having an added feature of plotting ellipses. For *ggstatsplot::ggscatterstats*, most *ggplot* functions such as ```geom_smooth``` and ```scale_``` functions are supported, which makes it also fairly easy to implement for someone with basic knowledge of ggplot.
+Both packages allow for a wide variety of options for customisation, with *car::scatterplot* having an added feature of plotting ellipses. For *ggstatsplot::ggscatterstats*, most *ggplot* functions such as `geom_smooth` and `scale_` functions are supported, which makes it fairly easy to implement for someone with basic knowledge of *ggplot*.
 
-Although some flexibility is given to customise the plots, it requires much effort to make the changes with *car::scatterplot* due to the many "hidden" lists within the arguments. There are also some limitations to the arguments, such as the marginal distribution is limited to the boxplot and the display of data labels is limited to the values.
+There are some limitations to the arguments in *car::scatterplot*, such as the marginal distribution is limited to the boxplot and the display of data labels is limited to the values. In addition, it is not straightforward to make changes to the arguments due to the many "hidden" lists within the arguments. 
 
 #### Clarity and aesthetic
 
-The statistical test in the *ggstatsplot::ggscatterstats* scatterplot is informative to the more statistically inclined, with an option for the non-statistically inclined to turn off the statistical results. The graph is also visually appealing with the default settings for position, colour and data point opacity, thus little customisation to the aesthetics need to be done. 
+The statistical test in the *ggstatsplot::ggscatterstats* scatterplot is informative to the more statistically inclined, with an option to turn off the statistical results for the non-statistically inclined. The graph is also visually appealing with the default settings for position, colour and data point opacity, thus little customisation to the aesthetics need to be done. 
 
-On the other hand, the scatterplot from *car::scatterplot* is visually overwhelming as the ellipses, regression lines and smooth lines are plotted by groups, i.e. continent. When the group is defined, the plots by group cannot be turned off by setting the argument ```by.groups``` to ```FALSE```. In addition, the shape scale is automatically added which adds visual clutter to the plot. There is a need to explicitly amend ```pch``` to standardise the shape. The location of the marginal boxplot is near the axes labels at the bottom and left of plot, which does not give attention to the marginal boxplots.
+On the other hand, the scatterplot from *car::scatterplot* is visually overwhelming when groups are defined. The plots by group cannot be turned off by setting the argument `by.groups` to `FALSE`. In addition, the shape scale is automatically added which adds visual clutter to the plot. There is a need to explicitly amend `pch` to standardise the shape. The location of the marginal boxplot is near the axes labels at the bottom and left of plot, which does not give attention to the marginal boxplots.
 
-In general, the scatterplot created using the *car* package is not as visually appealing than that from the *ggstatsplot* package. 
+In general, the scatterplot created using the *car* package is not as visually appealing than that from the *ggstatsplot* package, and requires more customisation to improve the clarity and aesthetics.
 
 #### Interactivity
 
 There is no support for plot interactivity for both packages, despite claims from the authors of *ggstatplot* that the functions in the package are compatible with the *plotly* package, a package for rendering interactive graphics.
 
-Another option is to build the scatterplot from scratch using ```ggplot()```, which can be passed into ```ggplotly()``` to make the plot interactive. 
+Another option is to build the scatterplot from scratch using `ggplot()`, which can be passed into `ggplotly()` to make the plot interactive. The marginal distributions are added to the base ggplot using `ggMarginal()` from the *ggExtra* package.
 
-```{r}
+```{r sp3}
 # base ggplot
-sp_ggplot_base <- ggplot(covid_deaths_imputed, 
-                    aes(x=hospital_beds_per_thousand, y=total_deaths, size=population)) +
+sp_ggplot_base <- ggplot(covid_deaths_tidy, 
+                    aes(x=hospital_beds_per_thousand, y=total_deaths_log, size=population)) +
   geom_point(aes(colour=continent)) +
-  scale_y_log10() +
   ggtitle("ggplot Scatterplot") +
   xlab("hospital beds per thousand") +
   ylab("total deaths") +
@@ -556,14 +591,20 @@ combine_plots(plotlist = list(sp_ggplot_base,
                               sp_ggplot_marginal),
               annotation.args = list(title="ggplot_base and ggplot_marginal"),
               plotgrid.args = list(nrow=1))
+```
 
+The marginal distribution can also be customised.
+
+The code chunk below generates an interactive scatterplot.
+
+```{r sp4}
 # interactive base ggplot
 sp_ggplotly_base <- ggplotly(sp_ggplot_base)
 
 sp_ggplotly_base
 ```
 
-However, an error message is encountered when rendering the plot with marginal distributions, added to the *ggplot* object with the use of ```ggMarginal()``` from the *ggExtra* package.
+However, an error message is encountered when rendering the plot with marginal distributions.
 
 ```{r eval=FALSE}
 ggplotly(sp_ggplot_marginal)
@@ -572,47 +613,48 @@ ggplotly(sp_ggplot_marginal)
 Error in UseMethod("ggplotly", p) : no applicable method for 'ggplotly' applied 
 to an object of class "c('ggExtraPlot', 'gtable', 'gTree', 'grob', 'gDesc')"
 ```
-
-The arguments in the ```ggscatterstats()``` functions can mostly be manipulated at the first level, whereas the ```scatterplot()``` function utilises lists embedded in its arguments for more customisations e.g. ```smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5)```. This makes the former easier to code parameters to be passed into the function as arguments in the Shiny app. The same goes for the ```ggplot()``` function.
+From the angle of providing interactivity on the Shiny app, the arguments in the `ggscatterstats()` functions can mostly be manipulated at the first level, whereas the `scatterplot()` function utilises lists embedded in its arguments for more customisations e.g. `smooth = list(smoother=loessLine,lty.var=2, lwd.var=0.5)`. This makes the former easier to code parameters to be passed into the function as arguments in the Shiny app. The same goes for the `ggplot()` function.
 
 #### Conclusion
 
 As the aim of the assignment is for users to explore and compare the number of COVID-19 deaths across countries, interactivity is an important consideration, which is provided by *ggplot*. The trade-off is the lost of information provided by the statistical tests and marginal distributions.
 
-```ggscatterstats()``` provide a nice visualisation with statistical analysis, and is able to sufficiently provide customisation for the user to interact with in a Shiny app. However, it is not supported by existing packages that renders interactive graphics. The key purpose of providing interactivity here is to allow users to compare and discover patterns between countries, and this would be achieved mainly through the identification of locations in a scatterplot with many data points. An alternative to the desired interactivity would be to provide options for users to select countries or continent to display static labels on the graph. As such, ```ggscatterstats()``` is chosen as the function to plot the scatterplot in the final product.
+`ggscatterstats()` provide a nice visualisation with statistical analysis, and is able to sufficiently provide customisation for the user to interact with in a Shiny app. However, it is not supported by existing packages that renders interactive graphics. The key purpose of providing interactivity here is to allow users to compare and discover patterns between countries, and this would be achieved mainly through the identification of locations in a scatterplot with many data points. An alternative to the desired interactivity would be to provide options for users to select countries or continent to display static labels on the graph. As such, `ggscatterstats()` is chosen as the function to plot the scatterplot in the final product.
 
 ## Funnel Plot
 
-Two packages *FunnelPlotR* and *funnelR* will be explored to plot a funnel plot of case fatality rate (defined as the total number of deaths divided by the total number of cases) against total number of cases. Other rates can possibly be plotted using the funnel plot.
+Two packages *FunnelPlotR* and *funnelR* will be explored to plot a funnel plot of case fatality rate (defined as the total number of deaths divided by the total number of cases) against total number of cases. Other rates can possibly be plotted using the funnel plot, which can be provided by options for user to select in the Shiny app.
 
-### Use *FunnelPlotR::funnel_plot*
+### Using *FunnelPlotR::funnel_plot*
 
-The *FunnelPlotR* package uses *ggplot* to generate funnel plots. It requires a numerator (events of interest), denominator (population to be considered) and group. The key arguments available in the function for customisation are:
+The *FunnelPlotR* package uses *ggplot* to generate funnel plots. It requires a numerator (events of interest), denominator (population to be considered) and group. The key arguments selected for customisation are:
 
 * `limit`: plot limits (95 or 99)
 * `label_outliers`: to label outliers (true or false)
 * `Poisson_limits`: to add Poisson limits to the plot
+* `OD_adjust`: to add overdispersed limits to the plot
 * `xrange` and `yrange`: to specify the range to display for axes, acts like a zoom function
 * Other aesthetic components such as graph title, axis labels etc.
 
 The code chunk below plots a funnel plot. Two points to note here:
 
-* ```group``` in this function is different from the scatterplot. Here, it defines the basic unit to be plotted. 
+* `group` in this function is different from the scatterplot. Here, it defines the level of the points to be plotted i.e. location or continent. If continent is chosen, there are only six data points.  
 * There are no arguments available to customise the funnel plot using *ggplot* functions
 
-```{r}
-fp_funnelplotR <- funnel_plot(numerator = covid_deaths_imputed$total_deaths,
-                              denominator = covid_deaths_imputed$total_cases,
-                              group = covid_deaths_imputed$location,
+```{r fp1}
+fp_funnelplotR <- funnel_plot(numerator = covid_deaths_tidy$total_deaths, # dependent variable
+                              denominator = covid_deaths_tidy$total_cases, # independent variable
+                              group = covid_deaths_tidy$location, # level of plotted points
                               data_type = "PR", # to plot proportions
-                              limit = 99,
-                              label_outliers = TRUE,
-                              Poisson_limits = TRUE,
+                              limit = 99, # define CI limits
+                              label_outliers = TRUE, # to label outliers
+                              Poisson_limits = TRUE, # to show Poisson limits
+                              OD_adjust = TRUE, # to show overdispersion limits
                               title = "Case Fatality Rate by Total Number of COVID-19 Cases",
                               x_label = "Total Number of COVID-19 Cases",
                               y_label = "Case Fatality Rate",
-                              xrange = c(0, 32000000),
-                              yrange = c(0, 0.25))
+                              xrange = c(0, 32000000), # to change x-axis range
+                              yrange = c(0, 0.25)) # to change y-axis range
 fp_funnelplotR
 ```
 
@@ -622,88 +664,116 @@ The above plot is highly skewed due to the presence of outliers in the data.
 class(fp_funnelplotR)
 ```
 
-As the output is a "funnelplot" object, it cannot be passed to ggplotly to render the plot interactive so as to allow user to take a closer look at the plot area with high concentration of data points. An alternative will be to express the total deaths and cases in thousands so as to reduce the x-axis range.
+As the output is a "funnelplot" object, it cannot be passed to ggplotly to render the plot interactive so as to allow user to take a closer look at the plot area with high concentration of data points. We can change `xrange` and `yrange` to zoom-in on the cluster of points, with the following code chunk.
 
-```{r}
-covid_deaths_fp <- covid_deaths_imputed %>%
-  mutate(total_deaths=total_deaths/100000,
-         total_cases=total_cases/100000)
-
-fp_funnelplotR_div <- funnel_plot(numerator = covid_deaths_fp$total_deaths,
-                              denominator = covid_deaths_fp$total_cases,
-                              group = covid_deaths_fp$location,
+```{r fp2}
+fp_funnelplotR_zoom <- funnel_plot(numerator = covid_deaths_tidy$total_deaths, # dependent variable
+                              denominator = covid_deaths_tidy$total_cases, # independent variable
+                              group = covid_deaths_tidy$location, # level of plotted points
                               data_type = "PR", # to plot proportions
-                              limit = 99,
-                              label_outliers = TRUE,
-                              Poisson_limits = TRUE,
+                              limit = 99, # define CI limits
+                              label_outliers = TRUE, # to label outliers
+                              Poisson_limits = TRUE, # to show Poisson limits
+                              OD_adjust = TRUE, # to show overdispersion limits
                               title = "Case Fatality Rate by Total Number of COVID-19 Cases",
-                              x_label = "Total Number of COVID-19 Cases (hundred thousands)",
+                              x_label = "Total Number of COVID-19 Cases",
                               y_label = "Case Fatality Rate",
-                              xrange = c(0, 330),
-                              yrange = c(0, 0.25)
-                              )
-
-fp_funnelplotR_div
+                              xrange = c(0, 10000), # to change x-axis range
+                              yrange = c(0, 0.05)) # to change y-axis range
+fp_funnelplotR_zoom
 ```
 
-We can also change `xrange` to create the zoom-in effect, with the following code chunk.
+Zoom control can be provided to users by allowing users to change the `xrange` and `yrange` or via a button that changes the values by a fix amount.
 
-```{r}
-fp_funnelplotR_div_zoom <- funnel_plot(numerator = covid_deaths_fp$total_deaths,
-                              denominator = covid_deaths_fp$total_cases,
-                              group = covid_deaths_fp$location,
-                              data_type = "PR", # to plot proportions
-                              limit = 99,
-                              label_outliers = TRUE,
-                              Poisson_limits = TRUE,
-                              title = "Case Fatality Rate by Total Number of COVID-19 Cases",
-                              x_label = "Total Number of COVID-19 Cases (hundred thousands)",
-                              y_label = "Case Fatality Rate",
-                              xrange = c(0, 50),
-                              yrange = c(0, 0.25)
-                              )
-fp_funnelplotR_div_zoom
+An alternative will be to use the log transformed variables. This is proposed as the scale of the graph axes cannot be changed to a log scale explicitly in the arguments.
+
+```{r fp3}
+fp_funnelplotR_log <- funnel_plot(numerator = covid_deaths_tidy$total_deaths_log, # dependent variable
+                                  denominator = covid_deaths_tidy$total_cases_log, # independent variable
+                                  group = covid_deaths_tidy$location, # level of plotted points
+                                  data_type = "PR", # to plot proportions
+                                  limit = 99, # define CI limits
+                                  label_outliers = TRUE, # to label outliers
+                                  Poisson_limits = TRUE, # to show Poisson limits
+                                  OD_adjust = TRUE, # to show overdispersion limits
+                                  title = "Case Fatality Rate by Total Number of COVID-19 Cases",
+                                  x_label = "Total Number of COVID-19 Cases - log",
+                                  y_label = "Case Fatality Rate",
+                                  xrange = c(0, 20), # to change x-axis range
+                                  yrange = c(-2.5, 10) # to change y-axis range
+                                  )
+
+fp_funnelplotR_log
 ```
 
-### Use *funnelR::funplot*
+The scale on the x-axis is shorter now, but there is a point that has an extremely large **case_fatality_rate** value as seen from the top left corner of the plot area. We can also "zoom-in" on the cluster of points.
 
-The *funnelR* package plots funnel plot using a simple two-step process: (1) calculate limits with ```fundata()```; and (2) plot the funnel plot with ```funplot()```. It requires specifically for the numerator to be named *n* and the denominator to be named *d* in the data frame.
-
-The code chunk below shows an attempt to plot a funnel plot with the *funnelR* package. We will use the same dataset covid_deaths_fp to prevent runtime errors.
-
-```{r}
-covid_deaths_fp_fR <- covid_deaths_fp %>% 
-  rename(n = total_deaths, d = total_cases)
-
-funnelR_limits <- fundata(input = covid_deaths_fp_fR,
-                          alpha = 0.95,
-                          alpha2 = 0.998,
-                          method = 'approximate', # exact or approximate: control limits smoothing 
-                          step = 1
-                          )
-
-fp_funnelR <- funplot(covid_deaths_fp_fR, funnelR_limits, "continent")
-
-fp_funnelR
+```{r fp4}
+fp_funnelplotR_log_zoom <- funnel_plot(numerator = covid_deaths_tidy$total_deaths_log, # dependent variable
+                                      denominator = covid_deaths_tidy$total_cases_log, # independent variable
+                                      group = covid_deaths_tidy$location, # level of plotted points
+                                      data_type = "PR", # to plot proportions
+                                      limit = 99, # define CI limits
+                                      label_outliers = TRUE, # to label outliers
+                                      Poisson_limits = TRUE, # to show Poisson limits
+                                      OD_adjust = TRUE, # to show overdispersion limits
+                                      title = "Case Fatality Rate by Total Number of COVID-19 Cases",
+                                      x_label = "Total Number of COVID-19 Cases - log",
+                                      y_label = "Case Fatality Rate",
+                                      xrange = c(0, 18), # to change x-axis range
+                                      yrange = c(-0.5, 2) # to change y-axis range
+                                      )
+fp_funnelplotR_log_zoom
 ```
 
-There are no arguments within the function to customise the graph e.g. axes range and labels, opacity and size of points, title and legend. As ```funplot()``` returns a ggplot object, the funnel plot can be passed into ```ggplotly``` to render an interactive graphic.
+A checkbox can be provided to the user to select whether to use log transformation in the plot. 
 
-```{r}
-fp_funnelR_ggplotly <- ggplotly(fp_funnelR)
+### Using *funnelR::funplot*
 
-fp_funnelR_ggplotly
+The *funnelR* package plots funnel plot using a simple two-step process: (1) calculate limits with `fundata()`; and (2) plot the funnel plot with `funplot()`. It requires specifically for the numerator to be named *n* and the denominator to be named *d* in the data frame.
+
+The key arguments that are available for customisation are:
+
+* `alpha` and `alpha2`: confidence interval limits
+* `method`: specify the confidence interval limits smoothing (exact, approximate)
+
+There are no arguments within the function to customise the graph e.g. axes range and labels, opacity and size of points, title and legend.
+
+Let us plot the funnel plot. As the value of the untransformed variable is too large, thus resulting in runtime error, we will plot based on the log-transformed variables instead. 
+
+```{r fp5}
+# Rename variables
+covid_deaths_fR_log <- covid_deaths_tidy %>% 
+  rename(n = total_deaths_log, d = total_cases_log)
+
+funnelR_limits <- fundata(input = covid_deaths_fR_log,
+                          alpha = 0.95, # to define first limits
+                          alpha2 = 0.998, # to define second limits (optional)
+                          method = 'approximate') # to define limits smoothing
+
+fp_funnelR_log <- funplot(covid_deaths_fR_log, funnelR_limits, "continent")
+
+fp_funnelR_log
 ```
 
-However, the interactivity is also limited to the functionality of base ggplot object.
+The data points are now more spread out across the plot area, however there are some data points that are cut off towards the top left corner of the graph. As `funplot()` returns a ggplot object, the funnel plot can be passed into `ggplotly` to render an interactive graphic.
+
+```{r fp6}
+fp_funnelR_log_ggplotly <- ggplotly(fp_funnelR_log)
+
+fp_funnelR_log_ggplotly
+```
+
+With the interactive graph, we can pan to see the data points that were cut off.
 
 ### Drawing from scratch using *ggplot*
 
-An alternative is to draw the funnel plot using *ggplot*, with the code chunk below.
+To plot the funnel plot from scratch, the control limits needs to be calculated and overlaid on the base point plot. Similar to *funnelR*, runtime error is encountered when using the untransformed variables to plot the funnel plot using *ggplot*. Therefore, the log-transformed variables are also used here.
 
-```{r}
-rate <- covid_deaths_fp$case_fatality_rate
-number <- covid_deaths_fp$total_cases
+```{r fp7}
+# case_fatality rate is used directly as it is the same value as dividing the log-transformed deaths by cases
+rate <- covid_deaths_tidy$case_fatality_rate
+number <- covid_deaths_tidy$total_cases_log
 
 rate.se <- sqrt((rate*(1-rate)) / (number))
 df <- data.frame(rate, number, rate.se)
@@ -720,11 +790,11 @@ number.ul999 <- rate.fem + 3.29 * sqrt((rate.fem*(1-rate.fem)) / (number.seq))
 dfCI <- data.frame(number.ll95, number.ul95, number.ll999, number.ul999, number.seq, rate.fem)
 
 # Draw funnel plot
-fp_ggplot <- ggplot(covid_deaths_fp, 
-                    aes(x = total_cases, y = case_fatality_rate)) +
-  geom_point(aes(colour=continent, 
-                 size=population, 
-                 label=location), # to add labels into interactive plot
+fp_ggplot <- ggplot(covid_deaths_tidy, 
+                    aes(x = total_cases_log, y = case_fatality_rate)) +
+  geom_point(aes(colour=continent, # add colour aesthetic
+                 size=population, # add size aesthetic
+                 label=location), # add label aesthetic
              alpha=0.4) +
   geom_line(data = dfCI, aes(x = number.seq, y = number.ll95), 
             size = 0.4, colour = "grey40", linetype = "dashed") +
@@ -736,17 +806,21 @@ fp_ggplot <- ggplot(covid_deaths_fp,
             size = 0.4, colour = "grey40") +
   geom_hline(data = dfCI, aes(yintercept = rate.fem), 
              size = 0.4, colour = "grey40") +
-  annotate("text", x = 0, y = -0.05, label = "95%", size = 3, colour = "grey40") +
-  annotate("text", x = 20, y = -0.15, label = "99%", size = 3, colour = "grey40") +
-  xlab("Total Number of COVID-19 Cases") + 
-  ylab("Case Fatality Rate") 
+  annotate("text", x = 0, y = -0.05, label = "95%", size = 3, colour = "grey40") + # label 95% CI
+  annotate("text", x = 20, y = -0.15, label = "99%", size = 3, colour = "grey40") + # label 99% CI
+  ggtitle("Case Fatality Rate by Total Number of COVID-19 Cases") +
+  xlab("Total Number of COVID-19 Cases - log ") + 
+  ylab("Case Fatality Rate") +
+  theme_light() +
+  scale_size_continuous(guide = FALSE) + # remove size legend
+  scale_colour_discrete(name ="Continent") # rename colour legend title
 
 fp_ggplot
 ```
 
-The graph can also be made interactive with the following code chunk:
+The graph can be made interactive with `ggplotly()`.
 
-```{r}
+```{r fp8}
 fp_ggplotly <- ggplotly(fp_ggplot,
                         tooltip = c("colour", "label", "x", "y"))
 
@@ -759,53 +833,64 @@ fp_ggplotly
 
 Both *FunnelPlotR* and *funnelR* packages are easy to use. There are limited arguments that can be passed into the functions for both packages, with *FunnelPlotR* offering slightly more customisation e.g. able to indicate control limits to be plotted. However, one key point to note for *FunnelPlotR* is that vectors have to be passed in the numerator, denominator and group arguments, and there is no argument to take in a dataframe. This means that there is limited customisation that can be done to the plot to make it more informative. 
 
-On the other hand, drawing from scratch with *ggplot* is also relatively easy once the control limits are calculated and offers the most customisation.
+On the other hand, drawing from scratch with *ggplot* is relatively straightforward once the control limits are calculated, and offers the most customisation.
 
 #### Clarity and aesthetic
 
 The funnel plot from *FunnelPlotR* provides more information (and thus clarity) than that from *funnelR*. As mentioned earlier, the function from *funnelR* does not allow customisation to improve the clarity and aesthetics of the graph, which is the reason for not choosing it for the final product.
 
-#### Interactivity
-*FunnelPlotR* does not return a ggplot object, whereas both *funnelR* and *ggplot* returns a ggplot object, as such, the funnel plots from *funnelR* and *ggplot* can be made interactive after passing the ggplot object through ```ggplotly()```.
+Between *FunnelPlotR* and *ggplot*, the former allows plotting of control limits based on the Poisson distribution, and the latter provides more information i.e. colour by continent and size by population numbers.
 
-Generally, the arguments in all three functions are straightforward to use and there are limited parameters, other than the dependent and independent variables, in *FunnelPlotR* and *funnelR* that can be coded and passed as arguments into the functions.
+#### Interactivity
+
+Unlike the scatterplot, the interactive plot value-adds to the exploration analysis, and thus plays a crucial factor in the evaluation of the graphs. *FunnelPlotR* does not return a ggplot object, whereas both *funnelR* and *ggplot* returns a ggplot object. As such, the funnel plots from *funnelR* and *ggplot* can be made interactive after passing the ggplot object through `ggplotly()`. 
+
+Generally, the arguments in all three functions are straightforward to use and there are limited parameters in *FunnelPlotR* and *funnelR* that can be coded and passed as arguments into the functions.
 
 #### Conclusion
 
-Although *FunnelPlotR* is relatively easy to use, the function does not allow for more customisation due to its limitation of only taking in vectors for the key variables. In addition, it cannot be rendered into an interactive graphic, and the earlier limitation mentioned does not allow a workaround solution to use *FunnelPlotR*. As such, ```ggplot()``` is chosen to create the funnel plot in the final product.
+Although *FunnelPlotR* is relatively easy to use, the function does not allow for more customisation due to its limitation of only taking in vectors for the key variables. In addition, it cannot be rendered into an interactive graphic. As such, `ggplot()` is chosen to create the funnel plot in the final product.
 
 ## Multivariate Analysis
 
-There is a Shiny app for the *mlr* package available.
+The main analysis to explore in multivariate analysis is exploratory multiple linear regression (MLR). This assignment will explore the *olsrr* package in supporting and visualising MLR analysis.
 
-### Using *olsrr*
+There are two main parts to the *olsrr* package:
 
-```{r}
-model1 <- ols_regress(total_deaths ~ total_cases + positive_rate + hospital_beds_per_thousand, data = covid_deaths_imputed)
+1. Model building
+    * Least squares regression
+    * Variable selection methods
+2. Model diagnostics
+    * Model fit
+    * Residual Diagnostics
+    * Measure of influence
+    * Heteroskedasticity
+    * Collinearity
+    
+### Model Building
 
-model1
+MLR models can be built with two methods:
+
+1. `ols_regress()` based on least squares regression
+2. base R `lm()` and pass the model into the variable selection method functions
+
+#### Least squares regression
+
+The syntax to create the model using `ols_regress()` is simple. Users directly select the independent and dependent variables to include in the function call. There is an argument for users to indicate if there are interaction between variables in the model, in which the predictors will be scaled and centred before computing the standardised betas.
+
+```{r mlr1}
+model_lsr <- ols_regress(total_deaths ~ total_cases + positive_rate + hospital_beds_per_thousand,
+                      data = covid_deaths_tidy,
+                      iterm = FALSE) # if model includes interaction terms
+
+model_lsr
 ```
 
-```{r}
+The output of the function shows the statistical measures and parameter estimates of the model built.
 
-covid_deaths_mlr <- covid_deaths_imputed %>% select(-c(continent,
-                                               location,
-                                               case_fatality_rate,
-                                               lat,
-                                               long))
+#### Variable selection methods
 
-model <- lm(total_deaths ~., data = covid_deaths_mlr)
-
-mlr_model <- ols_step_both_p(model)
-
-mlr_model
-```
-
-```{r}
-plot(mlr_model)
-```
-
-Able to choose variable selection methods:
+The following variable selection methods are offered:
 
 * ols_step_all_possible()
 * ols_step_best_subset()
@@ -816,25 +901,73 @@ Able to choose variable selection methods:
 * ols_step_backward_aic()
 * ols_step_both_aic()
 
-Collinearity assessment
+These methods can be provided for users to choose in training the model. The key arguments that can be made available for user to select are:
 
-* ols_vif_tol()
+* `prem`: the p-value threshold for variable selection (only for methods that are based on p-value)
+* `progress`: to display the details of the model output (true or false)
 
-have plots to assess model fit
-* ols_plot_resid_fit_spread()
+In this method, users have to first build a model using `lm()` and pass the model into the functions. Users can select can all the relevant variables or select specific variables. A sample implementation of `ols_step_both_p()` using is shown below:
 
-also have plots for residual diagnostics
+```{r mlr2}
+# Remove categorical variables, lat-long and calculated variables
+covid_deaths_mlr <- covid_deaths_tidy %>% select(-c(continent,
+                                               location,
+                                               case_fatality_rate,
+                                               lat,
+                                               long,
+                                               total_deaths_log)) # remove the transformed counterpart
 
-* ols_plot_resid_qq()
-* ols_test_normality() and ols_plot_resid_hist()
-* ols_plot_resid_fit()
+model <- lm(total_deaths ~ total_cases + positive_rate + hospital_beds_per_thousand + gdp_per_capita, 
+            data = covid_deaths_mlr)
 
+model_mlr <- ols_step_both_p(model,
+                             prem = 0.05,
+                             progress = TRUE)
 
-
-```{r}
-
+model_mlr
 ```
 
+Similar to `ols_regress()`, the output shows the statistical measures, parameter estimates, and includes the stepwise selection summary. When `progress` is set to `TRUE`, the output will additionally have the "Stepwise Selection Method" section.
 
+There are plots to show the model summary results more visually at each step with the code below. Note that no arguments can be passed into the function to add clarity and aesthetics to the visualisation.
+
+```{r mlr3}
+plot(model_mlr)
+```
+
+#### Summary
+
+Users can be given the flexibility to select the variables (all or user-specified) and method (least squares or one of the variable selection methods), and have the option to have a graphical view of the model summary results. For the least squares method and the variable selection method using p-values, users have the additional option to indicate if there are interaction terms in the model and the p-value (defaulted to 0.05) respectively.
+
+### Model Diagnostics
+
+There are many plots and tests available to provide assessments of the model built. The plots can be called individually, or the `ols_plot_diagnostics()` function can be called to provide a collection of selected plots. The only input argument is the base model (before variable selection).
+
+```{r mlr4}
+ols_plot_diagnostics(model)
+```
+
+The 10 selected plots covers several key model diagnostics. The table below shows the common model diagnostics performed for MLR and the corresponding plot(s) that fulfils the task.
+
+|<img width=200> Diagnostics Tasks | <img width=350> Plots |
+|-------------------|-------|
+| Model fit assessment | Observed by Predicted, Residual Fit Spread Plots (fit-mean and residual) |
+| MLR assumptions validation <br>(linearity of data, normality of errors, homogeneity of residual variance, independent residual error terms) | Residual vs Predicted Values, Normal Q-Q Plot, Residual Fit Spread Plots (fit-mean and residual), Residual Histogram, Residual Box Plot |
+| Measures of influence | Outlier and Leverage Diagnostics, Deleted Studentized Residual vs Predicted Values, Cook's D Chart |
+| Collinearity | <none> |
+
+As there are no diagnostics for collinearity provided by `ols_plot_diagnostics()`, let us take a look at the specific collinearity tests provided by *olsrr*. 
+
+There are three collinearity diagnostics available in the package: (1) variance inflation factors (VIF); (2) tolerance; and (3) condition index. Each diagnostic can be called individually or collectively in the `ols_coll_diag()` function. For ease of user comparison, the collective function will be used.
+
+```{r mlr5}
+ols_coll_diag(model)
+```
+
+#### Summary
+
+Based on the model built, users can have the option to call the model diagnostics, which will include both the plots and the collinearity diagnostics.
 
 # Storyboard
+
+The final story board w
