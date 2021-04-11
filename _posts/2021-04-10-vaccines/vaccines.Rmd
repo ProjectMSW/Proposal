@@ -1,20 +1,210 @@
 ---
-title: "Vaccines"
+title: "Receptivity of Countries towards COVID-19 Vaccination"
 description: |
   A short description of the post.
 author:
-  - name: amanda
-    url: {}
-date: 04-10-2021
+  - name: Daniel Lin Yongyan
+    url: https://daniel-lin-yy-data-viz.netlify.app/
+date: 04-02-2021
 output:
   distill::distill_article:
     self_contained: false
 ---
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+<style>
+body {
+text-align: justify}
+</style>
+
+## Overview
+
+The project focuses on leveraging the richness of COVID-19 data available across various countries to glean interesting insights and analyses. Some of the key aspects of COVID-19 in focus include trends and patterns in new cases of COVID-19, deaths arising and attitudes towards vaccination, across the different countries.
+
+This post is a sub-module of the project and focuses on analysing countries' attitudes towards COVID-19 vaccination. Data for the analyses is obtained from the Imperial College London YouGov Covid 19 Behaviour Tracker Data Hub. 
+
+YouGov has partnered with the Institute of Global Health Innovation (IGHI) at Imperial College London to gather global insights on people’s behaviours in response to COVID-19. The survey covers 29 countries and interviews around 21,000 people each week and datasets can be obtained from https://github.com/YouGov-Data/covid-19-tracker/tree/master/data.
+
+Relevant questions relating to public's attitudes towards vaccination have been extracted for the analyses in this post. 
+
+<a name="Top"></a>
+
+The scope of this post is as follows.
+
+[1. Preparation of Data](#Part1)<br>
+[2. Exploratory Data Analysis](#Part2)<br>
+[2. Review of visual analytic techniques](#Part2)<br>
+[3. Evaluation of Packages for Visualization](#Part3)<br>
+[4. Storyboard for the Shiny Visual Analytics Application](#Part4)<br>
+
+<a name="Part1"></a>
+
+## 1. Exploration and Preparation of Data
+
+The following code is first input to define Global Settings for code chunks in this post.
+
+```{r setup, include=TRUE}
+
+knitr::opts_chunk$set(fig.retina=3,
+                      echo = TRUE,
+                      eval = TRUE,
+                      message = TRUE,
+                      warning = FALSE)
 ```
 
-Testing Testing
+### Installation and loading of required packages
+
+The relevant packages required in the analysis are then installed and loaded with the following code.
+
+```{r message=FALSE,warning=FALSE,echo=TRUE}
+packages = c('tidyverse','dplyr','readr','HH',
+             'plotly','UpSetR','ggplot2',
+             'naniar','dlookr','ggridges','forcats')
+for (p in packages){
+  if(!require(p, character.only = T)){
+  install.packages(p)
+  }
+  library(p,character.only = T)
+}
+```
+
+### Importing of datasets and creation of combined dataset
+
+The survey responses of the different countries were stored in separate csv files. Data for the first country was first imported to examine the available variables of interest. This was done with reference to the data dictionary for the datasets (available at https://github.com/YouGov-Data/covid-19-tracker/blob/master/codebook.xlsx).
+
+```{r}
+# Read in 1st csv (Australia)
+australia_df <- read_csv("data/australia.csv",col_types = cols(
+  age = col_integer(), .default = col_character()
+  ))
+
+head(australia_df,5)
+```
+
+While the dataset had 398 variables, only variables which were of interest (i.e.socio-demographic variables and variables related to vaccination attitudes) were retained.
+
+```{r}
+# Create main_df with selected variables from Australia dataset
+fieldNames <- c("endtime", "age", "gender", "household_size",
+                "household_children", "vac_1", "vac2_1", "vac2_2",
+                "vac2_3", "vac2_4", "vac2_5", "vac2_6", "vac_3",
+                "vac4", "vac5", "vac6", "vac7")
+
+main_df <- australia_df %>%
+  select(any_of(fieldNames)) %>%      # select required variables
+  mutate(country = "Australia") %>%   # Add column to store country name
+    drop_na(vac_1)                    # remove all records which did not 
+                                      # answer vac_1 - willing to take vaccine
+
+glimpse(main_df)
+```
+
+The other country datasets were then imported and merged to the main dataset created (*main_df*). 
+As the main focus of the sub-module is to gain insights on countries' attitudes towards vaccination, non-responses (NA) to vac_1 are excluded from *main_df*.
+
+```{r}
+countrylist <- c("Canada","Denmark","Finland",
+                 "France","Germany","Israel",
+                 "Italy","Japan","Netherlands",
+                 "Norway","Singapore","South-Korea",
+                 "Spain","Sweden","United-Kingdom",
+                 "United-States")
+
+for(ctry in countrylist){ 
+  # loop to read individual country datasets and append to main_df
+  fileName <- paste0("data/",ctry,".csv")
+  df <- read_csv(fileName,col_types = cols(
+    age = col_integer(),
+    .default = col_character() 
+  ))
+
+  tableName <- paste0(ctry,"_df")
+  tableName <- df %>%
+  select(any_of(fieldNames)) %>%
+  mutate(country = ctry) %>%
+    drop_na(vac_1)  
+  # main purpose of analysis is to look at vaccination attitudes
+  # so records with no response to vac_1 is filtered out
+  
+  main_df <- bind_rows(main_df,tableName)
+}
+```
+
+### Recoding of variables
+
+For some of the responses, recoding needs to be done to assign numerical values to allow for easier manipulation of the data. As the responses to the survey are categorical, the numerical values stored in the variables are recoded and stored as characters.
+
+
+
+
+```{r}
+#recode variables
+main_df <- main_df %>% mutate(vac_1 = case_when(
+  vac_1 == "1 - Strongly agree" ~ "1",
+  vac_1 == "5 – Strongly disagree" ~ "5",
+  TRUE ~ as.character(vac_1)))
+
+main_df <- main_df %>% mutate(vac2_1 = case_when(
+  vac2_1 == "1 - Strongly agree" ~ "1",
+  vac2_1 == "5 – Strongly disagree" ~ "5",
+  TRUE ~ as.character(vac2_1)))
+
+main_df <- main_df %>% mutate(vac2_2 = case_when(
+  vac2_2 == "1 - Strongly agree" ~ "1",
+  vac2_2 == "5 – Strongly disagree" ~ "5",
+  TRUE ~ as.character(vac2_2)))
+
+main_df <- main_df %>% mutate(vac2_3 = case_when(
+  vac2_3 == "1 - Strongly agree" ~ "1",
+  vac2_3 == "5 – Strongly disagree" ~ "5",
+  TRUE ~ as.character(vac2_3)))
+
+main_df <- main_df %>% mutate(vac2_4 = case_when(
+  vac2_4 == "1 - Strongly agree" ~ "1",
+  vac2_4 == "5 – Strongly disagree" ~ "5",
+  TRUE ~ as.character(vac2_4)))
+
+main_df <- main_df %>% mutate(vac2_5 = case_when(
+  vac2_5 == "1 - Strongly agree" ~ "1",
+  vac2_5 == "5 – Strongly disagree" ~ "5",
+  TRUE ~ as.character(vac2_5)))
+
+main_df <- main_df %>% mutate(vac2_6 = case_when(
+  vac2_6 == "1 - Strongly agree" ~ "1",
+  vac2_6 == "5 – Strongly disagree" ~ "5",
+  TRUE ~ as.character(vac2_6)))
+
+main_df <- main_df %>% mutate(vac_3 = case_when(
+  vac_3 == "1 - Strongly agree" ~ "1",
+  vac_3 == "5 – Strongly disagree" ~ "5",
+  TRUE ~ as.character(vac_3)))
+
+main_df <- main_df %>% mutate(vac4 = case_when(
+  vac4 == "Not at all important" ~ "1",
+  vac4 == "A little important" ~ "2",
+  vac4 == "Moderately important" ~ "3",
+  vac4 == "Very important" ~ "4"))
+
+main_df <- main_df %>% mutate(vac5 = case_when(
+  vac5 == "Yes" ~ "1",
+  vac5 == "No" ~ "2",
+  vac5 == "Not sure" ~ "99"))
+
+main_df <- main_df %>% mutate(vac6 = case_when(
+  vac6 == "Yes" ~ "1",
+  vac6 == "No" ~ "2",
+  vac6 == "Not sure" ~ "99"))
+
+main_df <- main_df %>% mutate(vac7 = case_when(
+  vac7 == "Not at all" ~ "1",
+  vac7 == "A little" ~ "2",
+  vac7 == "Moderately" ~ "3",
+  vac7 == "Very much" ~ "4"))
+
+main_df <- main_df %>% replace_with_na(replace = list(vac5 = "99", vac6 = "99" ))
+# declare responses with "Not Sure" as missing values
+```
+
+[Return to Top](#Top)<br>
+
 
