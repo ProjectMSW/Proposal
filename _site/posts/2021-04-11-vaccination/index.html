@@ -1,0 +1,3210 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+<title>My Blog: Receptivity of Countries towards COVID-19 Vaccination</title>
+
+<meta property="description" itemprop="description" content="This post is a sub-module of the project and focuses on analysing countries&#39; attitudes towards COVID-19 vaccination. Data for the analyses is obtained from the Imperial College London YouGov Covid 19 Behaviour Tracker Data Hub."/>
+
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2021-04-02"/>
+<meta property="article:created" itemprop="dateCreated" content="2021-04-02"/>
+<meta name="article:author" content="Daniel Lin Yongyan"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="My Blog: Receptivity of Countries towards COVID-19 Vaccination"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="This post is a sub-module of the project and focuses on analysing countries&#39; attitudes towards COVID-19 vaccination. Data for the analyses is obtained from the Imperial College London YouGov Covid 19 Behaviour Tracker Data Hub."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="My Blog"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="My Blog: Receptivity of Countries towards COVID-19 Vaccination"/>
+<meta property="twitter:description" content="This post is a sub-module of the project and focuses on analysing countries&#39; attitudes towards COVID-19 vaccination. Data for the analyses is obtained from the Imperial College London YouGov Covid 19 Behaviour Tracker Data Hub."/>
+
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Receptivity of Countries towards COVID-19 Vaccination"]},{"type":"character","attributes":{},"value":["This post is a sub-module of the project and focuses on analysing countries' attitudes towards COVID-19 vaccination. Data for the analyses is obtained from the Imperial College London YouGov Covid 19 Behaviour Tracker Data Hub."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Daniel Lin Yongyan"]},{"type":"character","attributes":{},"value":["https://daniel-lin-yy-data-viz.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["04-02-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["BarPlotErrorBars.jpg","ColumnCharts.jpg","CorrMatrix.jpg","CorrPlot.jpg","data/australia.csv","data/canada.csv","data/codebook.xlsx","data/denmark.csv","data/finland.csv","data/france.csv","data/germany.csv","data/israel.csv","data/italy.csv","data/japan.csv","data/netherlands.csv","data/norway.csv","data/singapore.csv","data/south-korea.csv","data/spain.csv","data/sweden.csv","data/united-kingdom.csv","data/united-states.csv","DivergingStackedBarChart.jpg","GroupedBarCharts.jpg","PieChart.jpeg","StackedBarCharts.jpg","UpsetPlot.jpg","vaccination_files/figure-html5/unnamed-chunk-13-1.png","vaccination_files/figure-html5/unnamed-chunk-14-1.png","vaccination_files/figure-html5/unnamed-chunk-21-1.png","vaccination_files/figure-html5/unnamed-chunk-26-1.png","vaccination_files/figure-html5/unnamed-chunk-30-1.png","vaccination_files/figure-html5/unnamed-chunk-34-1.png","vaccination_files/figure-html5/unnamed-chunk-36-1.png","vaccination_files/figure-html5/unnamed-chunk-37-1.png","vaccination_files/figure-html5/unnamed-chunk-7-1.png","vaccination_files/figure-html5/unnamed-chunk-8-1.png","vaccination_files/figure-html5/unnamed-chunk-9-1.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme
+  $('code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.7/header-attrs.js"></script>
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Receptivity of Countries towards COVID-19 Vaccination","description":"This post is a sub-module of the project and focuses on analysing countries' attitudes towards COVID-19 vaccination. Data for the analyses is obtained from the Imperial College London YouGov Covid 19 Behaviour Tracker Data Hub.","authors":[{"author":"Daniel Lin Yongyan","authorURL":"https://daniel-lin-yy-data-viz.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-04-02T00:00:00.000+08:00","citationText":"Yongyan, 2021"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a href="../../index.html" class="title">My Blog</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Receptivity of Countries towards COVID-19 Vaccination</h1>
+<!--radix_placeholder_categories-->
+<!--/radix_placeholder_categories-->
+<p><p>This post is a sub-module of the project and focuses on analysing countries’ attitudes towards COVID-19 vaccination. Data for the analyses is obtained from the Imperial College London YouGov Covid 19 Behaviour Tracker Data Hub.</p></p>
+</div>
+
+<div class="d-byline">
+  Daniel Lin Yongyan <a href="https://daniel-lin-yy-data-viz.netlify.app/" class="uri">https://daniel-lin-yy-data-viz.netlify.app/</a> 
+  
+<br/>04-02-2021
+</div>
+
+<div class="d-article">
+<style>
+body {
+text-align: justify}
+</style>
+<h2 id="overview">Overview</h2>
+<p>The project focuses on leveraging the richness of COVID-19 data available across various countries to glean interesting insights and analyses. Some of the key aspects of COVID-19 in focus include trends and patterns in new cases of COVID-19, deaths arising and attitudes towards vaccination, across the different countries.</p>
+<p>This post is a sub-module of the project and focuses on analysing countries’ attitudes towards COVID-19 vaccination. Data for the analyses is obtained from the Imperial College London YouGov Covid 19 Behaviour Tracker Data Hub.</p>
+<p>YouGov has partnered with the Institute of Global Health Innovation (IGHI) at Imperial College London to gather global insights on people’s behaviours in response to COVID-19. The survey covers 29 countries and interviews around 21,000 people each week and datasets can be obtained from <a href="https://github.com/YouGov-Data/covid-19-tracker/tree/master/data" class="uri">https://github.com/YouGov-Data/covid-19-tracker/tree/master/data</a>.</p>
+<p>Relevant questions relating to public’s attitudes towards vaccination have been extracted for the analyses in this post.</p>
+<p><a name="Top"></a></p>
+<p>The scope of this post is as follows.</p>
+<p><a href="#Part1">1. Preparation of Data</a><br> <a href="#Part2">2. Exploratory Data Analysis</a><br> <a href="#Part2">2. Review of visual analytic techniques</a><br> <a href="#Part3">3. Evaluation of Packages for Visualization</a><br> <a href="#Part4">4. Storyboard for the Shiny Visual Analytics Application</a><br></p>
+<p><a name="Part1"></a></p>
+<h2 id="exploration-and-preparation-of-data">1. Exploration and Preparation of Data</h2>
+<p>The following code is first input to define Global Settings for code chunks in this post.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>knitr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/knitr/man/opts_chunk.html'>opts_chunk</a></span><span class='op'>$</span><span class='fu'>set</span><span class='op'>(</span>fig.retina<span class='op'>=</span><span class='fl'>3</span>,
+                      echo <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                      eval <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                      message <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                      warning <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="installation-and-loading-of-required-packages">Installation and loading of required packages</h3>
+<p>The relevant packages required in the analysis are then installed and loaded with the following code.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>packages</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'tidyverse'</span>,<span class='st'>'dplyr'</span>,<span class='st'>'readr'</span>,<span class='st'>'HH'</span>,
+             <span class='st'>'plotly'</span>,<span class='st'>'UpSetR'</span>,<span class='st'>'ggplot2'</span>,
+             <span class='st'>'naniar'</span>,<span class='st'>'dlookr'</span>,<span class='st'>'ggridges'</span>,<span class='st'>'forcats'</span><span class='op'>)</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>p</span> <span class='kw'>in</span> <span class='va'>packages</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='kw'>if</span><span class='op'>(</span><span class='op'>!</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'>p</span>, character.only <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='va'>p</span><span class='op'>)</span>
+  <span class='op'>}</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>p</span>,character.only <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
+<span class='op'>}</span>
+</code></pre>
+</div>
+</div>
+<h3 id="importing-of-datasets-and-creation-of-combined-dataset">Importing of datasets and creation of combined dataset</h3>
+<p>The survey responses of the different countries were stored in separate csv files. Data for the first country was first imported to examine the available variables of interest. This was done with reference to the data dictionary for the datasets (available at <a href="https://github.com/YouGov-Data/covid-19-tracker/blob/master/codebook.xlsx" class="uri">https://github.com/YouGov-Data/covid-19-tracker/blob/master/codebook.xlsx</a>).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Read in 1st csv (Australia)</span>
+<span class='va'>australia_df</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"data/australia.csv"</span>,col_types <span class='op'>=</span> <span class='fu'>cols</span><span class='op'>(</span>
+  age <span class='op'>=</span> <span class='fu'>col_integer</span><span class='op'>(</span><span class='op'>)</span>, .default <span class='op'>=</span> <span class='fu'>col_character</span><span class='op'>(</span><span class='op'>)</span>
+  <span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>australia_df</span>,<span class='fl'>5</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 5 x 398
+  RecordNo endtime        household_children qweek i1_health i2_health
+  &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;              &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    
+1 310      01/04/2020 16~ 0                  week~ 1         1        
+2 311      01/04/2020 16~ 0                  week~ 0         6        
+3 312      01/04/2020 16~ 1                  week~ 0         0        
+4 313      01/04/2020 16~ 1                  week~ 2         20       
+5 314      01/04/2020 16~ 1                  week~ 2         0        
+# ... with 392 more variables: i7a_health &lt;chr&gt;, i3_health &lt;chr&gt;,
+#   i4_health &lt;chr&gt;, i5_health_1 &lt;chr&gt;, i5_health_2 &lt;chr&gt;,
+#   i5_health_3 &lt;chr&gt;, i5_health_4 &lt;chr&gt;, i5_health_5 &lt;chr&gt;,
+#   i5_health_99 &lt;chr&gt;, i5a_health &lt;chr&gt;, i6_health &lt;chr&gt;,
+#   i7b_health &lt;chr&gt;, i8_health &lt;chr&gt;, i9_health &lt;chr&gt;,
+#   i10_health &lt;chr&gt;, i11_health &lt;chr&gt;, i12_health_1 &lt;chr&gt;,
+#   i12_health_2 &lt;chr&gt;, i12_health_3 &lt;chr&gt;, i12_health_4 &lt;chr&gt;,
+#   i12_health_5 &lt;chr&gt;, i12_health_6 &lt;chr&gt;, i12_health_7 &lt;chr&gt;,
+#   i12_health_8 &lt;chr&gt;, i12_health_9 &lt;chr&gt;, i12_health_10 &lt;chr&gt;,
+#   i12_health_11 &lt;chr&gt;, i12_health_12 &lt;chr&gt;, i12_health_13 &lt;chr&gt;,
+#   i12_health_14 &lt;chr&gt;, i12_health_15 &lt;chr&gt;, i12_health_16 &lt;chr&gt;,
+#   i12_health_17 &lt;chr&gt;, i12_health_18 &lt;chr&gt;, i12_health_19 &lt;chr&gt;,
+#   i12_health_20 &lt;chr&gt;, i13_health &lt;chr&gt;, i14_health_1 &lt;chr&gt;,
+#   i14_health_2 &lt;chr&gt;, i14_health_3 &lt;chr&gt;, i14_health_4 &lt;chr&gt;,
+#   i14_health_5 &lt;chr&gt;, i14_health_6 &lt;chr&gt;, i14_health_7 &lt;chr&gt;,
+#   i14_health_8 &lt;chr&gt;, i14_health_9 &lt;chr&gt;, i14_health_10 &lt;chr&gt;,
+#   i14_health_96 &lt;chr&gt;, i14_health_98 &lt;chr&gt;, i14_health_99 &lt;chr&gt;,
+#   i14_health_other &lt;chr&gt;, d1_health_1 &lt;chr&gt;, d1_health_2 &lt;chr&gt;,
+#   d1_health_3 &lt;chr&gt;, d1_health_4 &lt;chr&gt;, d1_health_5 &lt;chr&gt;,
+#   d1_health_6 &lt;chr&gt;, d1_health_7 &lt;chr&gt;, d1_health_8 &lt;chr&gt;,
+#   d1_health_9 &lt;chr&gt;, d1_health_10 &lt;chr&gt;, d1_health_11 &lt;chr&gt;,
+#   d1_health_12 &lt;chr&gt;, d1_health_13 &lt;chr&gt;, d1_health_98 &lt;chr&gt;,
+#   d1_health_99 &lt;chr&gt;, weight &lt;chr&gt;, age &lt;int&gt;, gender &lt;chr&gt;,
+#   state &lt;chr&gt;, household_size &lt;chr&gt;, employment_status &lt;chr&gt;,
+#   WCRex2 &lt;chr&gt;, WCRV_4 &lt;chr&gt;, CORE_B2_4 &lt;chr&gt;,
+#   cantril_ladder &lt;chr&gt;, PHQ4_1 &lt;chr&gt;, PHQ4_2 &lt;chr&gt;, PHQ4_3 &lt;chr&gt;,
+#   PHQ4_4 &lt;chr&gt;, m1_1 &lt;chr&gt;, m1_2 &lt;chr&gt;, m1_3 &lt;chr&gt;, m1_4 &lt;chr&gt;,
+#   m2 &lt;chr&gt;, m3 &lt;chr&gt;, m4_1 &lt;chr&gt;, m4_2 &lt;chr&gt;, m4_3 &lt;chr&gt;,
+#   m4_4 &lt;chr&gt;, m4_96 &lt;chr&gt;, m4_99 &lt;chr&gt;, m4_other &lt;chr&gt;, m5_1 &lt;chr&gt;,
+#   m5_2 &lt;chr&gt;, m6_1 &lt;chr&gt;, m6_2 &lt;chr&gt;, m6_3 &lt;chr&gt;, m6_4 &lt;chr&gt;,
+#   m6_5 &lt;chr&gt;, ...</code></pre>
+</div>
+<p>While the dataset had 398 variables, only variables which were of interest (i.e.socio-demographic variables and variables related to vaccination attitudes) were retained.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Create main_df with selected variables from Australia dataset</span>
+<span class='va'>fieldNames</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"endtime"</span>, <span class='st'>"age"</span>, <span class='st'>"gender"</span>, <span class='st'>"household_size"</span>,
+                <span class='st'>"household_children"</span>, <span class='st'>"vac_1"</span>, <span class='st'>"vac2_1"</span>, <span class='st'>"vac2_2"</span>,
+                <span class='st'>"vac2_3"</span>, <span class='st'>"vac2_4"</span>, <span class='st'>"vac2_5"</span>, <span class='st'>"vac2_6"</span>, <span class='st'>"vac_3"</span>,
+                <span class='st'>"vac4"</span>, <span class='st'>"vac5"</span>, <span class='st'>"vac6"</span>, <span class='st'>"vac7"</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>australia_df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>select</span><span class='op'>(</span><span class='fu'>any_of</span><span class='op'>(</span><span class='va'>fieldNames</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>      <span class='co'># select required variables</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>country <span class='op'>=</span> <span class='st'>"Australia"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>   <span class='co'># Add column to store country name</span>
+    <span class='fu'>drop_na</span><span class='op'>(</span><span class='va'>vac_1</span><span class='op'>)</span>                    <span class='co'># remove all records which did not </span>
+                                      <span class='co'># answer vac_1 - willing to take vaccine</span>
+
+<span class='fu'>glimpse</span><span class='op'>(</span><span class='va'>main_df</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Rows: 7,761
+Columns: 18
+$ endtime            &lt;chr&gt; &quot;11/11/2020 11:51&quot;, &quot;11/11/2020 11:51&quot;, &quot;~
+$ age                &lt;int&gt; 69, 49, 70, 69, 48, 69, 20, 60, 69, 36, 2~
+$ gender             &lt;chr&gt; &quot;Male&quot;, &quot;Male&quot;, &quot;Female&quot;, &quot;Female&quot;, &quot;Male~
+$ household_size     &lt;chr&gt; &quot;2&quot;, &quot;2&quot;, &quot;1&quot;, &quot;2&quot;, &quot;5&quot;, &quot;1&quot;, &quot;4&quot;, &quot;1&quot;, &quot;~
+$ household_children &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;1&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;~
+$ vac_1              &lt;chr&gt; &quot;1 - Strongly agree&quot;, &quot;1 - Strongly agree~
+$ vac2_1             &lt;chr&gt; &quot;1 - Strongly agree&quot;, &quot;4&quot;, &quot;5 – Strongly ~
+$ vac2_2             &lt;chr&gt; &quot;3&quot;, &quot;3&quot;, &quot;5 – Strongly disagree&quot;, &quot;1 - S~
+$ vac2_3             &lt;chr&gt; &quot;1 - Strongly agree&quot;, &quot;2&quot;, &quot;1 - Strongly ~
+$ vac2_4             &lt;chr&gt; &quot;2&quot;, &quot;4&quot;, &quot;5 – Strongly disagree&quot;, &quot;4&quot;, &quot;~
+$ vac2_5             &lt;chr&gt; &quot;2&quot;, &quot;4&quot;, &quot;5 – Strongly disagree&quot;, &quot;5 – S~
+$ vac2_6             &lt;chr&gt; &quot;1 - Strongly agree&quot;, &quot;2&quot;, &quot;1 - Strongly ~
+$ vac_3              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
+$ vac4               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
+$ vac5               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
+$ vac6               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
+$ vac7               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
+$ country            &lt;chr&gt; &quot;Australia&quot;, &quot;Australia&quot;, &quot;Australia&quot;, &quot;A~</code></pre>
+</div>
+<p>The other country datasets were then imported and merged to the main dataset created (<em>main_df</em>). As the main focus of the sub-module is to gain insights on countries’ attitudes towards vaccination, non-responses (NA) to vac_1 are excluded from <em>main_df</em>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>countrylist</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Canada"</span>,<span class='st'>"Denmark"</span>,<span class='st'>"Finland"</span>,
+                 <span class='st'>"France"</span>,<span class='st'>"Germany"</span>,<span class='st'>"Israel"</span>,
+                 <span class='st'>"Italy"</span>,<span class='st'>"Japan"</span>,<span class='st'>"Netherlands"</span>,
+                 <span class='st'>"Norway"</span>,<span class='st'>"Singapore"</span>,<span class='st'>"South-Korea"</span>,
+                 <span class='st'>"Spain"</span>,<span class='st'>"Sweden"</span>,<span class='st'>"United-Kingdom"</span>,
+                 <span class='st'>"United-States"</span><span class='op'>)</span>
+
+<span class='kw'>for</span><span class='op'>(</span><span class='va'>ctry</span> <span class='kw'>in</span> <span class='va'>countrylist</span><span class='op'>)</span><span class='op'>{</span> 
+  <span class='co'># loop to read individual country datasets and append to main_df</span>
+  <span class='va'>fileName</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"data/"</span>,<span class='va'>ctry</span>,<span class='st'>".csv"</span><span class='op'>)</span>
+  <span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='va'>fileName</span>,col_types <span class='op'>=</span> <span class='fu'>cols</span><span class='op'>(</span>
+    age <span class='op'>=</span> <span class='fu'>col_integer</span><span class='op'>(</span><span class='op'>)</span>,
+    .default <span class='op'>=</span> <span class='fu'>col_character</span><span class='op'>(</span><span class='op'>)</span> 
+  <span class='op'>)</span><span class='op'>)</span>
+
+  <span class='va'>tableName</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>ctry</span>,<span class='st'>"_df"</span><span class='op'>)</span>
+  <span class='va'>tableName</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>select</span><span class='op'>(</span><span class='fu'>any_of</span><span class='op'>(</span><span class='va'>fieldNames</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>country <span class='op'>=</span> <span class='va'>ctry</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>drop_na</span><span class='op'>(</span><span class='va'>vac_1</span><span class='op'>)</span>  
+  <span class='co'># main purpose of analysis is to look at vaccination attitudes</span>
+  <span class='co'># so records with no response to vac_1 is filtered out</span>
+  
+  <span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='fu'>bind_rows</span><span class='op'>(</span><span class='va'>main_df</span>,<span class='va'>tableName</span><span class='op'>)</span>
+<span class='op'>}</span>
+</code></pre>
+</div>
+</div>
+<h3 id="recoding-of-variables">Recoding of variables</h3>
+<p>For some of the responses, recoding needs to be done to assign numerical values to allow for easier manipulation of the data. As the responses to the survey are categorical, the numerical values stored in the variables are recoded and stored as characters.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'>#recode variables</span>
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac_1 <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac_1</span> <span class='op'>==</span> <span class='st'>"1 - Strongly agree"</span> <span class='op'>~</span> <span class='st'>"1"</span>,
+  <span class='va'>vac_1</span> <span class='op'>==</span> <span class='st'>"5 – Strongly disagree"</span> <span class='op'>~</span> <span class='st'>"5"</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>vac_1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac2_1 <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac2_1</span> <span class='op'>==</span> <span class='st'>"1 - Strongly agree"</span> <span class='op'>~</span> <span class='st'>"1"</span>,
+  <span class='va'>vac2_1</span> <span class='op'>==</span> <span class='st'>"5 – Strongly disagree"</span> <span class='op'>~</span> <span class='st'>"5"</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>vac2_1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac2_2 <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac2_2</span> <span class='op'>==</span> <span class='st'>"1 - Strongly agree"</span> <span class='op'>~</span> <span class='st'>"1"</span>,
+  <span class='va'>vac2_2</span> <span class='op'>==</span> <span class='st'>"5 – Strongly disagree"</span> <span class='op'>~</span> <span class='st'>"5"</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>vac2_2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac2_3 <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac2_3</span> <span class='op'>==</span> <span class='st'>"1 - Strongly agree"</span> <span class='op'>~</span> <span class='st'>"1"</span>,
+  <span class='va'>vac2_3</span> <span class='op'>==</span> <span class='st'>"5 – Strongly disagree"</span> <span class='op'>~</span> <span class='st'>"5"</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>vac2_3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac2_4 <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac2_4</span> <span class='op'>==</span> <span class='st'>"1 - Strongly agree"</span> <span class='op'>~</span> <span class='st'>"1"</span>,
+  <span class='va'>vac2_4</span> <span class='op'>==</span> <span class='st'>"5 – Strongly disagree"</span> <span class='op'>~</span> <span class='st'>"5"</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>vac2_4</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac2_5 <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac2_5</span> <span class='op'>==</span> <span class='st'>"1 - Strongly agree"</span> <span class='op'>~</span> <span class='st'>"1"</span>,
+  <span class='va'>vac2_5</span> <span class='op'>==</span> <span class='st'>"5 – Strongly disagree"</span> <span class='op'>~</span> <span class='st'>"5"</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>vac2_5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac2_6 <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac2_6</span> <span class='op'>==</span> <span class='st'>"1 - Strongly agree"</span> <span class='op'>~</span> <span class='st'>"1"</span>,
+  <span class='va'>vac2_6</span> <span class='op'>==</span> <span class='st'>"5 – Strongly disagree"</span> <span class='op'>~</span> <span class='st'>"5"</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>vac2_6</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac_3 <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac_3</span> <span class='op'>==</span> <span class='st'>"1 - Strongly agree"</span> <span class='op'>~</span> <span class='st'>"1"</span>,
+  <span class='va'>vac_3</span> <span class='op'>==</span> <span class='st'>"5 – Strongly disagree"</span> <span class='op'>~</span> <span class='st'>"5"</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>vac_3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac4 <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac4</span> <span class='op'>==</span> <span class='st'>"Not at all important"</span> <span class='op'>~</span> <span class='st'>"1"</span>,
+  <span class='va'>vac4</span> <span class='op'>==</span> <span class='st'>"A little important"</span> <span class='op'>~</span> <span class='st'>"2"</span>,
+  <span class='va'>vac4</span> <span class='op'>==</span> <span class='st'>"Moderately important"</span> <span class='op'>~</span> <span class='st'>"3"</span>,
+  <span class='va'>vac4</span> <span class='op'>==</span> <span class='st'>"Very important"</span> <span class='op'>~</span> <span class='st'>"4"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac5 <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac5</span> <span class='op'>==</span> <span class='st'>"Yes"</span> <span class='op'>~</span> <span class='st'>"1"</span>,
+  <span class='va'>vac5</span> <span class='op'>==</span> <span class='st'>"No"</span> <span class='op'>~</span> <span class='st'>"2"</span>,
+  <span class='va'>vac5</span> <span class='op'>==</span> <span class='st'>"Not sure"</span> <span class='op'>~</span> <span class='st'>"99"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac6 <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac6</span> <span class='op'>==</span> <span class='st'>"Yes"</span> <span class='op'>~</span> <span class='st'>"1"</span>,
+  <span class='va'>vac6</span> <span class='op'>==</span> <span class='st'>"No"</span> <span class='op'>~</span> <span class='st'>"2"</span>,
+  <span class='va'>vac6</span> <span class='op'>==</span> <span class='st'>"Not sure"</span> <span class='op'>~</span> <span class='st'>"99"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac7 <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac7</span> <span class='op'>==</span> <span class='st'>"Not at all"</span> <span class='op'>~</span> <span class='st'>"1"</span>,
+  <span class='va'>vac7</span> <span class='op'>==</span> <span class='st'>"A little"</span> <span class='op'>~</span> <span class='st'>"2"</span>,
+  <span class='va'>vac7</span> <span class='op'>==</span> <span class='st'>"Moderately"</span> <span class='op'>~</span> <span class='st'>"3"</span>,
+  <span class='va'>vac7</span> <span class='op'>==</span> <span class='st'>"Very much"</span> <span class='op'>~</span> <span class='st'>"4"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>main_df</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span> <span class='fu'>replace_with_na</span><span class='op'>(</span>replace <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>vac5 <span class='op'>=</span> <span class='st'>"99"</span>, vac6 <span class='op'>=</span> <span class='st'>"99"</span> <span class='op'>)</span><span class='op'>)</span>
+<span class='co'># declare responses with "Not Sure" as missing values</span>
+</code></pre>
+</div>
+</div>
+<p><a href="#Top">Return to Top</a><br></p>
+<p><a name="Part2"></a></p>
+<h2 id="exploratory-data-analysis-eda">2. Exploratory Data Analysis (EDA)</h2>
+<p>After preparing the data, it would be timely to carry out EDA to further understand distribution of the variables, correlation and relationships between variables. This can be done using the <em>dlookr</em> package.</p>
+<h3 id="univariate-data-eda">Univariate data EDA</h3>
+<p>For the <em>main_df</em>, there is only 1 variable that is numerical, <em>age</em>. We use the <em>describe()</em> function to compute descriptive statistics for <em>age</em>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>describe</span><span class='op'>(</span><span class='va'>main_df</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 1 x 26
+  variable      n    na  mean    sd se_mean   IQR skewness kurtosis
+  &lt;chr&gt;     &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 age      103535     0  47.9  16.5  0.0512    27 -0.00853    -1.03
+# ... with 17 more variables: p00 &lt;dbl&gt;, p01 &lt;dbl&gt;, p05 &lt;dbl&gt;,
+#   p10 &lt;dbl&gt;, p20 &lt;dbl&gt;, p25 &lt;dbl&gt;, p30 &lt;dbl&gt;, p40 &lt;dbl&gt;, p50 &lt;dbl&gt;,
+#   p60 &lt;dbl&gt;, p70 &lt;dbl&gt;, p75 &lt;dbl&gt;, p80 &lt;dbl&gt;, p90 &lt;dbl&gt;, p95 &lt;dbl&gt;,
+#   p99 &lt;dbl&gt;, p100 &lt;dbl&gt;</code></pre>
+</div>
+<p>The density plot of <em>age</em> can also be plotted to investigate the mean age and age distribution of respondents who respondents to vac_1.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>main_df</span>, <span class='fu'>aes</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>age</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>a</span> <span class='op'>+</span> <span class='fu'>geom_density</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y<span class='op'>=</span><span class='va'>..count..</span><span class='op'>)</span>, fill <span class='op'>=</span> <span class='st'>"slategrey"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_vline</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>age</span><span class='op'>)</span><span class='op'>)</span>,
+             linetype <span class='op'>=</span> <span class='st'>"dashed"</span>, size <span class='op'>=</span> <span class='fl'>0.8</span>,
+             color <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="vaccination_files/figure-html5/unnamed-chunk-7-1.png" width="624" /></p>
+</div>
+<p>To investigate the age distribution by country, we could use the package <em>ggridges</em> to do a comparison.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># need to install ggridges package</span>
+<span class='fu'>theme_set</span><span class='op'>(</span><span class='fu'>theme_ridges</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>main_df</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>`age`</span>, y <span class='op'>=</span> <span class='va'>`country`</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_density_ridges_gradient</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>..x..</span><span class='op'>)</span>, scale <span class='op'>=</span> <span class='fl'>3</span>, size <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span> <span class='op'>+</span>  
+  <span class='fu'>scale_fill_gradientn</span><span class='op'>(</span>colours <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#0D0887FF"</span>, <span class='st'>"#CC4678FF"</span>, <span class='st'>"#F0F921FF"</span><span class='op'>)</span>,
+                       name <span class='op'>=</span> <span class='st'>"Age"</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>'Age Distribution by Country'</span><span class='op'>)</span> 
+</code></pre>
+</div>
+<pre><code>Picking joint bandwidth of 2.65</code></pre>
+<p><img src="vaccination_files/figure-html5/unnamed-chunk-8-1.png" width="624" /></p>
+</div>
+<p>From the plot, we observe that countries like Sweden, Israel and Finland had a greater proportion of younger respondents, whereas countries like Singapore, Norway and Netherlands had a relatively even distribution of respondents across all ages.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>main_df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>CountryFct <span class='op'>=</span> <span class='fu'>fct_rev</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>country</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>CountryFct</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_density_ridges</span><span class='op'>(</span>
+    <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>age</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>CountryFct</span>, <span class='va'>gender</span><span class='op'>)</span><span class='op'>)</span>, 
+    alpha <span class='op'>=</span> <span class='fl'>.5</span>, color <span class='op'>=</span> <span class='st'>"white"</span>, from <span class='op'>=</span> <span class='fl'>0</span>, to <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Age (years)"</span>,y <span class='op'>=</span> <span class='st'>"Country"</span>,
+       title <span class='op'>=</span> <span class='st'>"Age Distribution of Respondents by Gender and Country"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_y_discrete</span><span class='op'>(</span>expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_x_continuous</span><span class='op'>(</span>expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_fill_cyclical</span><span class='op'>(</span>
+    breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Male"</span>, <span class='st'>"Female"</span><span class='op'>)</span>,
+    labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>`Male` <span class='op'>=</span> <span class='st'>"Male"</span>, `Female` <span class='op'>=</span> <span class='st'>"Female"</span><span class='op'>)</span>,
+    values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#ff0000"</span>, <span class='st'>"#0000ff"</span>, <span class='st'>"#ff8080"</span>, <span class='st'>"#8080ff"</span><span class='op'>)</span>,
+    name <span class='op'>=</span> <span class='st'>"Gender"</span>, guide <span class='op'>=</span> <span class='st'>"legend"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>coord_cartesian</span><span class='op'>(</span>clip <span class='op'>=</span> <span class='st'>"off"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_ridges</span><span class='op'>(</span>grid <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Picking joint bandwidth of 3.04</code></pre>
+<p><img src="vaccination_files/figure-html5/unnamed-chunk-9-1.png" width="624" /></p>
+</div>
+<p>From the plots, it is observed that in general, most countries have similar proportions of male and females (purple areas), except for Finland, France, Germany, Italy and Spain where there is a slightly higher proportion of female (red areas)at the older age bands.</p>
+<p>For Categorical data, we could use <em>table</em> to carry out Univariate EDA.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>main_df</span><span class='op'>$</span><span class='va'>vac_1</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+    1     2     3     4     5 
+41528 11978 20280  9948 19801 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>main_df</span><span class='op'>$</span><span class='va'>vac2_1</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+    1     2     3     4     5 
+23943 22310 29635 15804 11843 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>main_df</span><span class='op'>$</span><span class='va'>vac2_2</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+    1     2     3     4     5 
+29117 21198 25083 16326 11811 </code></pre>
+</div>
+<h3 id="bivariate-eda-for-categorical-data">Bivariate EDA for Categorical Data</h3>
+<p>For Bivariate Categorical EDA, we could use the following to find the frequencies or proportions between 2 categorical variables.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>my_table_0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>main_df</span><span class='op'>$</span><span class='va'>vac_1</span>, <span class='va'>main_df</span><span class='op'>$</span><span class='va'>gender</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print.table</a></span><span class='op'>(</span><span class='va'>my_table_0</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>   
+    Female  Male
+  1  19896 21632
+  2   5899  6079
+  3  11010  9270
+  4   5354  4594
+  5  11353  8448</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>my_table_01</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/addmargins.html'>addmargins</a></span><span class='op'>(</span><span class='va'>my_table_0</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print.table</a></span><span class='op'>(</span><span class='va'>my_table_01</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>     
+      Female   Male    Sum
+  1    19896  21632  41528
+  2     5899   6079  11978
+  3    11010   9270  20280
+  4     5354   4594   9948
+  5    11353   8448  19801
+  Sum  53512  50023 103535</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>my_table_3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/proportions.html'>prop.table</a></span><span class='op'>(</span><span class='va'>my_table_0</span>, margin <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame.matrix</a></span><span class='op'>(</span><span class='op'>)</span> 
+<span class='fu'><a href='https://rdrr.io/r/base/print.dataframe.html'>print.data.frame</a></span><span class='op'>(</span><span class='va'>my_table_3</span>, digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>  Female  Male
+1   0.37 0.432
+2   0.11 0.122
+3   0.21 0.185
+4   0.10 0.092
+5   0.21 0.169</code></pre>
+</div>
+<p>From the above, we are able to observe that males form a greater proportion of those who disagreed or strongly disagreed (responded 2 or 1) while females form a greater proportion of those who agreed or strongly agreed.</p>
+<h3 id="bivariate-eda-between-categorical-and-continuous-variable">Bivariate EDA between categorical and continuous variable</h3>
+<p>To investigate the relationship between a categorical and continuous variable, we can use the <em>relate</em> function as shown below. The user is able to select the 2 variables for investigation as shown.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># User to select target variable and predictor numerical </span>
+<span class='co'># variables (i.e. vac_1, and Age)</span>
+
+<span class='va'>variable_selected</span> <span class='op'>&lt;-</span> <span class='st'>"vac_1"</span>   <span class='co'># to be selected by user</span>
+<span class='va'>pred_var</span> <span class='op'>&lt;-</span> <span class='st'>"age"</span>              <span class='co'># to be selected by user</span>
+
+<span class='va'>categ</span> <span class='op'>&lt;-</span> <span class='fu'>target_by</span><span class='op'>(</span><span class='va'>main_df</span>, <span class='va'>variable_selected</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Note: Using an external vector in selections is ambiguous.
+i Use `all_of(variable_selected)` instead of `variable_selected` to silence this message.
+i See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.
+This message is displayed once per session.</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>cat_num</span> <span class='op'>&lt;-</span> <span class='fu'>relate</span><span class='op'>(</span><span class='va'>categ</span>, <span class='va'>pred_var</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Note: Using an external vector in selections is ambiguous.
+i Use `all_of(pred_var)` instead of `pred_var` to silence this message.
+i See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.
+This message is displayed once per session.</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>cat_num</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 6 x 27
+  variable vac_1      n    na  mean    sd se_mean   IQR skewness
+  &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+1 age      1      41528     0  52.4  16.6  0.0814    26 -0.312  
+2 age      2      11978     0  46.3  16.2  0.148     28  0.0556 
+3 age      3      20280     0  44.3  15.6  0.110     26  0.190  
+4 age      4       9948     0  43.8  15.6  0.156     26  0.204  
+5 age      5      19801     0  45.2  15.5  0.110     26  0.154  
+6 age      total 103535     0  47.9  16.5  0.0512    27 -0.00853
+# ... with 18 more variables: kurtosis &lt;dbl&gt;, p00 &lt;dbl&gt;, p01 &lt;dbl&gt;,
+#   p05 &lt;dbl&gt;, p10 &lt;dbl&gt;, p20 &lt;dbl&gt;, p25 &lt;dbl&gt;, p30 &lt;dbl&gt;, p40 &lt;dbl&gt;,
+#   p50 &lt;dbl&gt;, p60 &lt;dbl&gt;, p70 &lt;dbl&gt;, p75 &lt;dbl&gt;, p80 &lt;dbl&gt;, p90 &lt;dbl&gt;,
+#   p95 &lt;dbl&gt;, p99 &lt;dbl&gt;, p100 &lt;dbl&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>cat_num</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="vaccination_files/figure-html5/unnamed-chunk-13-1.png" width="624" /></p>
+</div>
+<p>It can be observed that respondents who responded 2,3,4 or 5 have similar age distribution patterns. However, for those that strongly disagreed that they are keen on vaccination, a large proportion come from the older age groups.</p>
+<p>The above is a density plot that is plotted when a categorical variable is plotted with a continuous variable. For relationship between 2 categorical variables, the following would be a good plot for visualization.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># User to select target variable and predictor numerical </span>
+<span class='co'># variables (i.e. vac_1, and vac2_1)</span>
+
+<span class='va'>variable_selected</span> <span class='op'>&lt;-</span> <span class='st'>"vac_1"</span>   <span class='co'># to be selected by user</span>
+<span class='va'>pred_var</span> <span class='op'>&lt;-</span> <span class='st'>"vac2_1"</span>              <span class='co'># to be selected by user</span>
+
+<span class='va'>categ</span> <span class='op'>&lt;-</span> <span class='fu'>target_by</span><span class='op'>(</span><span class='va'>main_df</span>, <span class='va'>variable_selected</span><span class='op'>)</span>
+<span class='va'>cat_num</span> <span class='op'>&lt;-</span> <span class='fu'>relate</span><span class='op'>(</span><span class='va'>categ</span>, <span class='va'>pred_var</span><span class='op'>)</span>
+<span class='va'>cat_num</span>
+</code></pre>
+</div>
+<pre><code>     vac2_1
+vac_1     1     2     3     4     5
+    1 13213  9497 10309  5310  3199
+    2  2402  3805  3383  1803   585
+    3  3401  4284  8131  3093  1371
+    4  1482  2205  2996  2349   916
+    5  3445  2519  4816  3249  5772</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>cat_num</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="vaccination_files/figure-html5/unnamed-chunk-14-1.png" width="624" /></p>
+</div>
+<p>It can be observed that a large proportion of respondents who responded 1 in <em>vac_1</em> also responded 1 for <em>vac2_1</em>. The same is observed for those who responded 5 in <em>vac_1</em>, where many of them also responded 5 for <em>vac2_1</em>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>Cat3</span> <span class='op'>&lt;-</span> <span class='va'>main_df</span> <span class='op'>%&gt;%</span>                       
+  <span class='fu'>select</span><span class='op'>(</span><span class='va'>gender</span>, <span class='va'>vac_1</span>, <span class='va'>vac2_1</span>, <span class='va'>household_size</span><span class='op'>)</span> <span class='op'>%&gt;%</span>             
+  <span class='fu'><a href='https://rdrr.io/r/stats/ftable.html'>ftable</a></span><span class='op'>(</span><span class='op'>)</span>                                            
+<span class='va'>Cat3</span>   
+</code></pre>
+</div>
+<pre><code>                    household_size    1    2    3    4    5    6    7    8 8 or more Don&#39;t know Prefer not to say
+gender vac_1 vac2_1                                                                                              
+Female 1     1                     1455 2720 1261 1046  339  102   31    0        39         13                46
+             2                     1032 1741  686  579  178   55   22    2        12          2                21
+             3                     1245 1901  746  597  194   63   15    0        19          7                36
+             4                      586  790  325  262   90   23    4    0        13          3                12
+             5                      340  499  167  158   69   19    7    1         8          5                15
+       2     1                      249  462  290  248   90   35   11    0         4          6                12
+             2                      312  559  351  339  124   47   20    2        10          5                21
+             3                      322  507  296  299  102   35   12    1         9         10                16
+             4                      167  276  133  135   57   13    5    0         3          1                 3
+             5                       58   84   42   35   18    6    1    0         6          2                 2
+       3     1                      362  650  475  460  184   56   25    0        14          3                25
+             2                      359  696  504  482  189   43   12    0        10          9                37
+             3                      683 1133  812  792  336  107   41    1        23         77               113
+             4                      282  447  285  313  124   41   17    0         7         11                21
+             5                      141  209  116  114   45   16    7    0         4          4                 8
+       4     1                      156  276  209  175   69   33   10    0         2          2                 9
+             2                      216  352  260  226  115   28    4    0        10          4                19
+             3                      275  514  325  288  134   36   14    1         4          8                22
+             4                      214  322  207  207   81   36   19    0        11          8                16
+             5                       76  118   84   70   29   10    6    0         4          2                 2
+       5     1                      375  648  491  386  152   63   30    1         8          7                32
+             2                      268  459  312  256  103   26   11    1         5          5                12
+             3                      589  912  605  475  199   57   20    1        13         12                53
+             4                      412  542  360  282  115   41   15    2        10          9                22
+             5                      659  862  518  402  152   63   28    1        21         20                72
+Male   1     1                     1123 2138 1122  938  295  106   46    0        30         32                77
+             2                      997 2044  894  751  215   75   32    0         9          5                26
+             3                     1150 2310  805  729  220   73   18    1        16         13                34
+             4                      701 1334  472  416  137   30   11    0         7          4                13
+             5                      433  702  285  260   94   30    7    0        14          8                19
+       2     1                      143  266  245  208   65   24    9    2         5          0                16
+             2                      341  551  417  432  139   45   15    0         8         11                32
+             3                      326  490  344  344  135   48   15    0         6         12                26
+             4                      219  309  198  158   60   19    7    0         4          2                17
+             5                       82   99   57   47   25    7    2    0         2          3                 5
+       3     1                      159  318  256  227   87   35   10    0         8          8                18
+             2                      340  493  429  391  130   57   21    0        10          8                29
+             3                      698  891  772  846  354  121   32    2        23         93               134
+             4                      286  390  312  288  124   60   15    0        10         10                26
+             5                      151  198  134  118   47   15    7    0         5          9                11
+       4     1                       74  134  123  117   41   19    5    0         7          4                 8
+             2                      169  256  185  215   72   30    7    0         6          4                14
+             3                      235  363  246  290  116   53   18    0         5         11                21
+             4                      210  308  223  250  107   52   23    0        11          5                19
+             5                      121  139   84   89   32   19    1    1         4          3                 9
+       5     1                      220  349  272  213   87   17    6    0         8          4                28
+             2                      227  301  201  177   64   23    7    0         7          1                13
+             3                      393  539  349  328  113   33   11    0        11         11                36
+             4                      312  469  248  205   94   26   13    0         6          5                17
+             5                      805  809  461  426  161   54   22    3        27         40                87</code></pre>
+</div>
+<p><a href="#Top">Return to Top</a><br></p>
+<p><a name="Part3"></a></p>
+<h2 id="review-of-visual-analytic-techniques">3. Review of visual analytic techniques</h2>
+<h3 id="representation-of-likert-scales">3.1 Representation of Likert Scales</h3>
+<p>For Likert responses, there are several ways in which they can be represented for visualization. The following are some ways.</p>
+<p><strong>3.1.1 Grouped Column / Bar Charts</strong> One way is to group responses by questions (or other categories) and to represent the responses as column or bar charts in terms of the Likert scale as shown below.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure2"></span>
+<img src="ColumnCharts.jpg" alt="Grouped Bar Chart representing responses to a Likert Scale survey" width="100%" />
+<p class="caption">
+Figure 1: Grouped Bar Chart representing responses to a Likert Scale survey
+</p>
+</div>
+</div>
+<p>While Bar Charts allow easy comparison on the count (frequency) of responses across the different Likert Scores, they do not allow the easy comparison of proportions of the responses (e.g., what is the proportion who strongly agree or agree to a question?)</p>
+<p><strong>3.1.2 Multiple Pie Charts</strong> While Pie Charts depict the proportions of each type of response to a question (as shown below), it is difficult to compare and visualize the differences in proportion between the questions.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure3"></span>
+<img src="PieChart.jpeg" alt="Multiple Pie Charts representing responses to a Likert Scale survey" width="100%" />
+<p class="caption">
+Figure 2: Multiple Pie Charts representing responses to a Likert Scale survey
+</p>
+</div>
+</div>
+<p><strong>3.1.3 Stacked Bar Charts</strong></p>
+<p>Stacked bar charts such as the below chart shows clearly the proportion of the various responses for each question asked in a survey. The use of different tones of colours (i.e. Light Green to Dark Green) provide the reader with an idea of increasing levels of responses (i.e. Agree to Strongly Agree).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure1"></span>
+<img src="StackedBarCharts.jpg" alt="Stacked Bar Charts representing responses to Likert Scale survey" width="100%" />
+<p class="caption">
+Figure 3: Stacked Bar Charts representing responses to Likert Scale survey
+</p>
+</div>
+</div>
+<p>A benefit of Stacked Bar Charts is that it allows readers to compare different proportions across different bars since each set of stacked bar sums up to 100%. For the example above, it is evident that while a large proportion agreed that they liked the presentation, a lower proportion actually felt that theu learnt something from the presentation.</p>
+<p><strong>3.1.4 Diverging Stacked Bar Chart</strong></p>
+<p>Another way of representing responses to a Likert Scale survey is Diverging Stacked Bar Chart. This visualization is similar to the Stacked Bar Chart but differs in that the bars have a common vertical baseline located in the the centre of the diagram. The lengths of the segments of the bar charts are proportional to the number of responses for each value of the Likert scale for each question. Segments which represent favourable responses are usually on the right of the baseline while those that are unfavarouble are on the left. Neutral responses are located on the central baseline.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure4"></span>
+<img src="DivergingStackedBarChart.jpg" alt="Diverging Stacked Bar Charts representing responses to Likert Scale survey" width="100%" />
+<p class="caption">
+Figure 4: Diverging Stacked Bar Charts representing responses to Likert Scale survey
+</p>
+</div>
+</div>
+<p>The Diverging Stacked Bar Chart is most appropriate to represent responses from Likert Scale Surveys as it allows easy interpretation and comparison of multiple categories.</p>
+<p><strong>3.1.5 Comparing the mean Likert Score</strong></p>
+<p>While it may seem appropriate to compare the mean Likert Score of each category, there is a potential pitfall in doing so.</p>
+<p>Using the below column graph that depicts the responses to a survey on 3 different courses, it is evident that the responses for each of the 3 courses are very different. However when the mean score of responses is computed for each course, the mean appears similar.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure5"></span>
+<img src="ColumnCharts.jpg" alt="Column Bar Charts with responses for 3 different courses" width="100%" />
+<p class="caption">
+Figure 5: Column Bar Charts with responses for 3 different courses
+</p>
+</div>
+</div>
+<p>Mean values of the above responses for each course are as shown.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Course</th>
+<th style="text-align: center;">Mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Course_1</td>
+<td style="text-align: center;">2.84</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Course_2</td>
+<td style="text-align: center;">3.04</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Course_3</td>
+<td style="text-align: center;">3.00</td>
+</tr>
+</tbody>
+</table>
+<p>To mitigate this issue, it would be better to find the proportion of responses that meet a certain value (e.g. proportion of respondents who gave a 4 or 5 score).</p>
+<h3 id="visualizing-uncertainty">3.2 Visualizing Uncertainty</h3>
+<p>As the results of a survey are usually used to represent a population, the sample (survey) proportion should be represented with confidence intervals to allow readers an indication of the confidence level that the actual population proportion will be within the confidence interval.</p>
+<p><strong>3.2.1 Bar plots with Error Bars</strong></p>
+<p>One of the ways to represent the confidence intervals of sample data is with the use of error bars as shown below.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure6"></span>
+<img src="BarPlotErrorBars.jpg" alt="Bar Plots with Error Bars" width="100%" />
+<p class="caption">
+Figure 6: Bar Plots with Error Bars
+</p>
+</div>
+</div>
+<h3 id="visualizing-correlation">3.3 Visualizing Correlation</h3>
+<p>For surveys, it is useful to study the correlation and relationship between responses to understand if there are certain determinants or factors that affect the response of certain questions.</p>
+<p>For this project, while we examine the inclination of countries towards vaccination. It would be useful to investigate if that inclination is dependent on certain socio-demographical factors (e.g., age, gender, household size or number of children in the household) or certain attitudes or beliefs (e.g., confidence of vaccine efficacy, or concerns on the side effects of the vaccine).</p>
+<p>To visualize the correlation between factors, one of the methods usually used is to build a <em>correlation matrix</em> or <em>correlation scatterplot</em>. However this is usually used to depict the correlation between <strong>continuous</strong> variables.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure7"></span>
+<img src="CorrMatrix.jpg" alt="Correlation Matrix" width="100%" />
+<p class="caption">
+Figure 7: Correlation Matrix
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure8"></span>
+<img src="CorrPlot.jpg" alt="Correlation Scatterplot" width="100%" />
+<p class="caption">
+Figure 8: Correlation Scatterplot
+</p>
+</div>
+</div>
+<p>For correlations between <strong>categorical</strong> variables, one way to visualize correlation is via the use of the UpSet plot via the use of the UpSetR function (see next section).</p>
+<p>An UpSet plot (seen below) allows the reader to see how frequently each combination or intersection of different factors takes place. Combinations that occur more frequently indicate a stronger correlation between the factors in the combination.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure9"></span>
+<img src="UpsetPlot.jpg" alt="Upset plot" width="100%" />
+<p class="caption">
+Figure 9: Upset plot
+</p>
+</div>
+</div>
+<p><a href="#Top">Return to Top</a><br></p>
+<p><a name="Part4"></a></p>
+<h2 id="packages-and-functions-for-visualization">4. Packages and Functions for Visualization</h2>
+<h3 id="diverging-stacked-bar-chart">4.1 Diverging Stacked Bar Chart</h3>
+<p>As discussed in Section 3.1.4, a Diverging Stacked Bar Chart is the most suitable for visualization of the responses from a Likert Scale survey. The following steps involves steps needed to create a Diverging Stacked Bar Chart from the dataset created.</p>
+<p>To prepare the dataset for use by the <em>likert</em> function subsequently, the <em>gather</em> function is used to consolidate the variables and the corresponding responses into 2 columns.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Make the table long - Gather question data from columns to rows</span>
+<span class='va'>main_gathered</span> <span class='op'>&lt;-</span> <span class='fu'>gather</span><span class='op'>(</span><span class='va'>main_df</span>, <span class='va'>measure</span>, <span class='va'>response</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>6</span><span class='op'>:</span><span class='fl'>17</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>To see responses for the different questions, users will be able to select different variables for <em>qn_selected</em> in the eventual Shiny app. For now, we can manually change the values for <em>qn_selected</em> to simulate the selection.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Obtain dataset with only responses for selected question</span>
+
+<span class='va'>qn_selected</span> <span class='op'>&lt;-</span> <span class='st'>"vac_1"</span>    <span class='co'># variable of question selected</span>
+
+<span class='va'>vac_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>main_gathered</span>, <span class='va'>measure</span> <span class='op'>==</span> <span class='va'>qn_selected</span><span class='op'>)</span>
+
+<span class='co'># Obtain contingency table for vac_1</span>
+<span class='va'>vac_1_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>vac_1</span><span class='op'>$</span><span class='va'>country</span>,<span class='va'>vac_1</span><span class='op'>$</span><span class='va'>response</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame.matrix</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Change column names, now labelled as 1-5</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>vac_1_df</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Strongly Disagree"</span>,
+                        <span class='st'>"Disagree"</span>,
+                        <span class='st'>"Neutral"</span>,
+                        <span class='st'>"Agree"</span>,
+                        <span class='st'>"Strongly Agree"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>vac_1_df</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Australia"</span>,<span class='st'>"Canada"</span>,<span class='st'>"Denmark"</span>,
+                        <span class='st'>"Finland"</span>,<span class='st'>"France"</span>,<span class='st'>"Germany"</span>,
+                        <span class='st'>"Israel"</span>,<span class='st'>"Italy"</span>,<span class='st'>"Japan"</span>,
+                        <span class='st'>"Netherlands"</span>,<span class='st'>"Norway"</span>,<span class='st'>"Singapore"</span>,
+                        <span class='st'>"South Korea"</span>,<span class='st'>"Spain"</span>,<span class='st'>"Sweden"</span>,
+                        <span class='st'>"United Kingdom"</span>,<span class='st'>"United States"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Remove other columns containing other responses (for other questions)</span>
+<span class='va'>vac_1_df</span> <span class='op'>&lt;-</span> <span class='va'>vac_1_df</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>]</span>
+
+<span class='co'># Add a column with rownames</span>
+<span class='va'>vac_1_df</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/rownames.html'>rownames_to_column</a></span><span class='op'>(</span><span class='va'>vac_1_df</span>, var<span class='op'>=</span><span class='st'>"Country"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Matching appropriate graph titles to qn_selected</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac_1"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion who are willing to take vaccine"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac2_1"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion worried about getting COVID-19"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac2_2"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion worried about side effects of COVID-19 vaccines"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac2_3"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion confident government will provide effective COVID-19 vaccines"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac2_4"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion confident vaccine will completely protect recipients from health effects of COVID-19"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac2_5"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion confident vaccine will completely prevent transmission of COVID-19 from recipient to others"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac2_6"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion who feel they will regret if they do not take the vaccine"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac_3"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion who will take the vaccine if available in 1 year"</span>
+<span class='op'>}</span>
+</code></pre>
+</div>
+</div>
+<p>The <em>likert</em> function from the <em>HH</em> package is used to plot the Diverging Stacked Bar Chart in the following code chunk.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Plot diverging bar chart</span>
+
+<span class='fu'>likert</span><span class='op'>(</span><span class='va'>Country</span> <span class='op'>~</span> <span class='va'>.</span>,data <span class='op'>=</span> <span class='va'>vac_1_df</span>, ylab <span class='op'>=</span> <span class='cn'>NULL</span>,
+       RefernceZero <span class='op'>=</span> <span class='fl'>3</span>, as.percent<span class='op'>=</span><span class='cn'>TRUE</span>,
+       positive.order<span class='op'>=</span><span class='cn'>TRUE</span>,
+       main <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>div_chart_title</span>, 
+                   x <span class='op'>=</span><span class='fu'>unit</span><span class='op'>(</span><span class='fl'>.55</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span>,
+       sub <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"Response"</span>, x<span class='op'>=</span><span class='fu'>unit</span><span class='op'>(</span><span class='fl'>.57</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span>,
+       xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>100</span>,<span class='op'>-</span><span class='fl'>80</span>,<span class='op'>-</span><span class='fl'>60</span>,<span class='op'>-</span><span class='fl'>40</span>,<span class='op'>-</span><span class='fl'>20</span>,<span class='fl'>0</span>,<span class='fl'>20</span>,<span class='fl'>40</span>,<span class='fl'>60</span>,<span class='fl'>80</span>,<span class='fl'>100</span><span class='op'>)</span>,
+       strip <span class='op'>=</span> <span class='cn'>FALSE</span>,
+       par.strip.text<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>cex<span class='op'>=</span><span class='fl'>.7</span><span class='op'>)</span>
+       <span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="vaccination_files/figure-html5/unnamed-chunk-21-1.png" width="624" /></p>
+</div>
+<p>From the Diverging Stacked Bar Chart plotted, we are able to observe the various responses for respective countries. For the above example where “vac_1” was selected as <em>qn_selected</em>, we observe that France, followed by the United States and Singapore, were the most receptive to vaccination among the other countries.</p>
+<p>By changing the value of <em>qn_selected</em> to other questions (e.g. vac2_1, vac4), we will be able to visualize the responses to the different questions and hence get a deeper understanding of the possible association and determinants behind the attitudes and inclination towards vaccination.</p>
+<p>For illustration, when <em>qn_selected</em> is changed to “vac2_1” and the below code chunk is run, the corresponding Diverging is also produced below.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Obtain dataset with only responses for selected question</span>
+
+<span class='va'>qn_selected</span> <span class='op'>&lt;-</span> <span class='st'>"vac2_1"</span>    <span class='co'># variable of question selected</span>
+
+<span class='va'>vac_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>main_gathered</span>, <span class='va'>measure</span> <span class='op'>==</span> <span class='va'>qn_selected</span><span class='op'>)</span>
+
+<span class='co'># Obtain contingency table for vac_1</span>
+<span class='va'>vac_1_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>vac_1</span><span class='op'>$</span><span class='va'>country</span>,<span class='va'>vac_1</span><span class='op'>$</span><span class='va'>response</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame.matrix</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Change column names, now labelled as 1-5</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>vac_1_df</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Strongly Disagree"</span>,
+                        <span class='st'>"Disagree"</span>,
+                        <span class='st'>"Neutral"</span>,
+                        <span class='st'>"Agree"</span>,
+                        <span class='st'>"Strongly Agree"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>vac_1_df</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Australia"</span>,<span class='st'>"Canada"</span>,<span class='st'>"Denmark"</span>,
+                        <span class='st'>"Finland"</span>,<span class='st'>"France"</span>,<span class='st'>"Germany"</span>,
+                        <span class='st'>"Israel"</span>,<span class='st'>"Italy"</span>,<span class='st'>"Japan"</span>,
+                        <span class='st'>"Netherlands"</span>,<span class='st'>"Norway"</span>,<span class='st'>"Singapore"</span>,
+                        <span class='st'>"South Korea"</span>,<span class='st'>"Spain"</span>,<span class='st'>"Sweden"</span>,
+                        <span class='st'>"United Kingdom"</span>,<span class='st'>"United States"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Remove other columns containing other responses (for other questions)</span>
+<span class='va'>vac_1_df</span> <span class='op'>&lt;-</span> <span class='va'>vac_1_df</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>]</span>
+
+<span class='co'># Add a column with rownames</span>
+<span class='va'>vac_1_df</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/rownames.html'>rownames_to_column</a></span><span class='op'>(</span><span class='va'>vac_1_df</span>, var<span class='op'>=</span><span class='st'>"Country"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Matching appropriate graph titles to qn_selected</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac_1"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion who are willing to take vaccine"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac2_1"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion worried about getting COVID-19"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac2_2"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion worried about side effects of COVID-19 vaccines"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac2_3"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion confident government will provide effective COVID-19 vaccines"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac2_4"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion confident vaccine will completely protect recipients from health effects of COVID-19"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac2_5"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion confident vaccine will completely prevent transmission of COVID-19 from recipient to others"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac2_6"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion who feel they will regret if they do not take the vaccine"</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qn_selected</span> <span class='op'>==</span> <span class='st'>"vac_3"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>div_chart_title</span> <span class='op'>&lt;-</span> <span class='st'>"Proportion who will take the vaccine if available in 1 year"</span>
+<span class='op'>}</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Plot diverging bar chart</span>
+
+<span class='fu'>likert</span><span class='op'>(</span><span class='va'>Country</span> <span class='op'>~</span> <span class='va'>.</span>,data <span class='op'>=</span> <span class='va'>vac_1_df</span>, ylab <span class='op'>=</span> <span class='cn'>NULL</span>,
+       RefernceZero <span class='op'>=</span> <span class='fl'>3</span>, as.percent<span class='op'>=</span><span class='cn'>TRUE</span>,
+       positive.order<span class='op'>=</span><span class='cn'>TRUE</span>,
+       main <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>div_chart_title</span>, 
+                   x <span class='op'>=</span><span class='fu'>unit</span><span class='op'>(</span><span class='fl'>.55</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span>,
+       sub <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"Response"</span>, x<span class='op'>=</span><span class='fu'>unit</span><span class='op'>(</span><span class='fl'>.57</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span>,
+       xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>100</span>,<span class='op'>-</span><span class='fl'>80</span>,<span class='op'>-</span><span class='fl'>60</span>,<span class='op'>-</span><span class='fl'>40</span>,<span class='op'>-</span><span class='fl'>20</span>,<span class='fl'>0</span>,<span class='fl'>20</span>,<span class='fl'>40</span>,<span class='fl'>60</span>,<span class='fl'>80</span>,<span class='fl'>100</span><span class='op'>)</span>,
+       strip <span class='op'>=</span> <span class='cn'>FALSE</span>,
+       par.strip.text<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>cex<span class='op'>=</span><span class='fl'>.7</span><span class='op'>)</span>
+       <span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="vaccination_files/figure-html5/unnamed-chunk-26-1.png" width="624" /></p>
+</div>
+<p>From the 2nd chart, it is observed that United States had a relatively high proportion of people agreeing that they were worried about getting COVID-19 which could explain why United States was one of the countries that were more inclined to vaccination.</p>
+<p>Singapore on the other hand, had most respondents disagreeing that there were worried about getting COVID-19. Closer examination would be needed to understand the factors that could be affecting different countries’ inclination towards vaccination.</p>
+<h3 id="bar-plot-with-error-bars">4.2 Bar plot with Error Bars</h3>
+<p>As discussed in Section 3.1.5, we will use a sample statistic such as the proportion of respondents who strongly agree that they are keen on vaccination (i.e. vac_1 = 5). The statistic will also be plotted with confidence intervals as discussed in Section 3.2.</p>
+<p>The following code chunk plots the bar plot and error bars. User will be able to vary and select the following variables to explore the different bar plots.</p>
+<p><strong>(1) responseLevel</strong></p>
+<ul>
+<li>possible values depend on the responses to the question selected</li>
+<li>determines the cut off for the computation of the sample statistic.</li>
+<li>E.g., if responseLevel = 5, the bar plot will reflect proportion of respondents who “Strongly Agreed”. If responseLevel = 4, the bar plot will reflect proportion who “Agreed”.</li>
+</ul>
+<p><strong>(2) confidence level</strong></p>
+<ul>
+<li>possible values are 0.90, 0.95, 0.98, 0.99</li>
+<li>determines the width of the confidence interval (error bars) that are plotted.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>responseLevel</span> <span class='op'>&lt;-</span> <span class='fl'>5</span>
+
+<span class='va'>vac_1</span> <span class='op'>&lt;-</span> <span class='va'>vac_1</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>countSA <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>response</span> <span class='op'>==</span> <span class='va'>responseLevel</span> <span class='op'>~</span> <span class='fl'>1</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>as.double</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>vac_1</span> <span class='op'>&lt;-</span> <span class='va'>vac_1</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>countResponse <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Obtain contingency table for Prop of SA</span>
+<span class='va'>propSA_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>vac_1</span><span class='op'>$</span><span class='va'>country</span>,<span class='va'>vac_1</span><span class='op'>$</span><span class='va'>countSA</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame.matrix</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>countResponse_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>vac_1</span><span class='op'>$</span><span class='va'>country</span>,<span class='va'>vac_1</span><span class='op'>$</span><span class='va'>countResponse</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame.matrix</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># Change column names, now labelled as 1-5</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>propSA_df</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"NotSA"</span>,<span class='st'>"SA"</span><span class='op'>)</span>
+
+<span class='co'># Compute proportion of SA</span>
+<span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>propSA</span> <span class='op'>&lt;-</span> <span class='op'>(</span><span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>SA</span> <span class='op'>/</span> <span class='op'>(</span><span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>SA</span> <span class='op'>+</span> <span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>NotSA</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># Compute SE</span>
+<span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>SE</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='op'>(</span><span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>propSA</span><span class='op'>*</span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>-</span> <span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>propSA</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span> <span class='op'>(</span><span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>SA</span> <span class='op'>+</span> <span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>NotSA</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># compute z-value</span>
+
+<span class='va'>confidence_level</span> <span class='op'>&lt;-</span> <span class='st'>"0.95"</span>  <span class='co'># to select between 0.9, 0.95, 0.98, 0.99</span>
+
+<span class='kw'>if</span> <span class='op'>(</span><span class='va'>confidence_level</span> <span class='op'>==</span> <span class='st'>"0.9"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>z_value</span> <span class='op'>&lt;-</span> <span class='fl'>1.645</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>confidence_level</span> <span class='op'>==</span> <span class='st'>"0.95"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>z_value</span> <span class='op'>&lt;-</span> <span class='fl'>1.96</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>confidence_level</span> <span class='op'>==</span> <span class='st'>"0.98"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>z_value</span> <span class='op'>&lt;-</span> <span class='fl'>2.33</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>confidence_level</span> <span class='op'>==</span> <span class='st'>"0.99"</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>z_value</span> <span class='op'>&lt;-</span> <span class='fl'>2.58</span>
+<span class='op'>}</span>
+
+<span class='co'># Compute Upper and Lower Limits</span>
+<span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>UppLim</span> <span class='op'>&lt;-</span> <span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>propSA</span> <span class='op'>+</span> <span class='va'>z_value</span><span class='op'>*</span><span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>SE</span>
+<span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>LowLim</span> <span class='op'>&lt;-</span> <span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>propSA</span> <span class='op'>-</span> <span class='va'>z_value</span><span class='op'>*</span><span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>SE</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>propSA_df</span><span class='op'>$</span><span class='va'>country</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Australia"</span>,<span class='st'>"Canada"</span>,<span class='st'>"Denmark"</span>,
+                        <span class='st'>"Finland"</span>,<span class='st'>"France"</span>,<span class='st'>"Germany"</span>,
+                        <span class='st'>"Israel"</span>,<span class='st'>"Italy"</span>,<span class='st'>"Japan"</span>,
+                        <span class='st'>"Netherlands"</span>,<span class='st'>"Norway"</span>,<span class='st'>"Singapore"</span>,
+                        <span class='st'>"South Korea"</span>,<span class='st'>"Spain"</span>,<span class='st'>"Sweden"</span>,
+                        <span class='st'>"United Kingdom"</span>,<span class='st'>"United States"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'>#vertical bar chart with error plots</span>
+<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>propSA_df</span><span class='op'>)</span> <span class='op'>+</span>
+ <span class='fu'>geom_bar</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>country</span>,<span class='va'>propSA</span><span class='op'>)</span>,y <span class='op'>=</span> <span class='va'>propSA</span><span class='op'>)</span>, stat <span class='op'>=</span> <span class='st'>"identity"</span>, fill <span class='op'>=</span><span class='st'>"dodgerblue3"</span>, alpha <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span> <span class='op'>+</span>
+ <span class='fu'>geom_errorbar</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>country</span>, ymin <span class='op'>=</span> <span class='va'>LowLim</span>, ymax <span class='op'>=</span> <span class='va'>UppLim</span><span class='op'>)</span>, width <span class='op'>=</span> <span class='fl'>0.5</span>, colour <span class='op'>=</span> <span class='st'>"firebrick2"</span>,
+               alpha <span class='op'>=</span> <span class='fl'>0.9</span>, size <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>coord_flip</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="vaccination_files/figure-html5/unnamed-chunk-30-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r">  <span class='fu'>theme</span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"top"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>List of 1
+ $ legend.position: chr &quot;top&quot;
+ - attr(*, &quot;class&quot;)= chr [1:2] &quot;theme&quot; &quot;gg&quot;
+ - attr(*, &quot;complete&quot;)= logi FALSE
+ - attr(*, &quot;validate&quot;)= logi TRUE</code></pre>
+</div>
+<p>From the above bar plot, we can observe the countries which have the highest proportions of Strongly Agreed to vac2_1 as well as the correspondig confidence intervals.</p>
+<p>For Singapore, we can see that it has a lower proportion of people who Strongly Agree to vac2_1 (“worried about COVID19”) than Spain. However as their confidence intervals overlap, this difference may not be statistically significant. However when Singapore is compared to Italy, we are 95% confident that Singapore’s proportion is lower than Italy’s since the confidence intervals do not overlap.</p>
+<h3 id="upset-plots-with-upsetr-package">4.3 UpSet plots with UpSetR package</h3>
+<p>To understand the association between categorical variables as discussed in Section 3.3, we will explore the creation of an UpSet plot.</p>
+<p>To start, the user will be able to select / input the following variables.</p>
+<p><strong>(1) countrySelected</strong></p>
+<ul>
+<li>Possible values include all countries in the following list Canada, Denmark, Finland, France, Germany, Israel, Italy, Japan, Netherlands, Norway, Singapore, South Korea, Spain, Sweden, United Kingdom, United States</li>
+<li>The UpSet plot will show association for responses and variables for the country selected.</li>
+</ul>
+<p><strong>(2) strength</strong> - Possible values are dependent on the responses to the individual questions - This will determine the level of agreement which will be used to categorise the responses. - E.g. if Strength is 4, responses 4 and 5 (on a scale of 1 to 5) will be considered as 1, while 1 to 3 will be considered 0.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Select country - User to input selected country</span>
+<span class='va'>countrySelected</span> <span class='op'>=</span> <span class='st'>"Australia"</span>   
+<span class='va'>strength</span> <span class='op'>=</span> <span class='fl'>4</span>  <span class='co'># For user to determine level of agreement - 4 Agree, 5 Strongly agree</span>
+
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>main_df</span>, <span class='va'>country</span> <span class='op'>==</span> <span class='va'>countrySelected</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># vac_1 - willing to get vaccine</span>
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='va'>upset_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac_1_ag <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac_1</span> <span class='op'>&gt;=</span> <span class='va'>strength</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='co'># vac2_1 - worried about getting COVID19</span>
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='va'>upset_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac2_1_ag <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac2_1</span> <span class='op'>&gt;=</span> <span class='va'>strength</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># vac2_2 - worried about side effects of vaccine (inv relationship)</span>
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='va'>upset_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac2_2_ag <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac2_2</span> <span class='op'>&lt;=</span> <span class='op'>(</span><span class='fl'>6</span><span class='op'>-</span><span class='va'>strength</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>,   <span class='co'># when strength 4, equivalent is 2. When strength 5, equiv is 1</span>
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># vac2_3 - confidence in government providing effective vaccine</span>
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='va'>upset_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac2_3_ag <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac2_3</span> <span class='op'>&gt;=</span> <span class='va'>strength</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>,   
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># vac2_4 - confident vaccine protects recipient from COVID19 effects</span>
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='va'>upset_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac2_4_ag <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac2_4</span> <span class='op'>&gt;=</span> <span class='va'>strength</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>,   
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># vac2_5 - confidence in vaccine preventing recipient from spreading COVID19</span>
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='va'>upset_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac2_5_ag <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac2_5</span> <span class='op'>&gt;=</span> <span class='va'>strength</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>,   
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># vac2_6 - will regret if do not take vaccine</span>
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='va'>upset_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac2_6_ag <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac2_6</span> <span class='op'>&gt;=</span> <span class='va'>strength</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>,   
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># vac_3 - keen to get vaccine 1 year later</span>
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='va'>upset_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac_3_ag <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac_3</span> <span class='op'>&gt;=</span> <span class='va'>strength</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>,   
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># vac4 - how important vaccine is for health</span>
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='va'>upset_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac4_ag <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac4</span> <span class='op'>&gt;=</span> <span class='op'>(</span><span class='va'>strength</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># vac5 - will get vaccine if available</span>
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='va'>upset_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac5_ag <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac5</span> <span class='op'>==</span> <span class='fl'>1</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>,   
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># vac6 - will get vaccine if available</span>
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='va'>upset_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac6_ag <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac6</span> <span class='op'>==</span> <span class='fl'>1</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>,  
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># vac7 - trust COVID19 vaccines</span>
+<span class='va'>upset_df</span> <span class='op'>&lt;-</span> <span class='va'>upset_df</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>vac7_ag <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='va'>vac7</span> <span class='op'>&gt;=</span> <span class='op'>(</span><span class='va'>strength</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>,
+  <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># create combination matrix</span>
+
+<span class='va'>combiMatrix</span> <span class='op'>&lt;-</span> <span class='fu'>select</span><span class='op'>(</span><span class='va'>upset_df</span>,<span class='va'>vac_1_ag</span>,<span class='va'>vac2_1_ag</span>,<span class='va'>vac2_2_ag</span>,
+                      <span class='va'>vac2_3_ag</span>,<span class='va'>vac2_4_ag</span>,<span class='va'>vac2_5_ag</span>,
+                      <span class='va'>vac2_6_ag</span>,<span class='va'>vac_3_ag</span>,<span class='va'>vac4_ag</span>,
+                      <span class='va'>vac5_ag</span>,<span class='va'>vac6_ag</span>,<span class='va'>vac7_ag</span>,<span class='op'>)</span>
+
+<span class='va'>combiMatrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>combiMatrix</span>, <span class='va'>vac_1_ag</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> 
+<span class='co'># UpSetR cannot have 0 length argument (i.e. 0 0 0 0 0) so investigate only vac_1 = 1 cases</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>upset</span><span class='op'>(</span><span class='va'>combiMatrix</span>, sets <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"vac_1_ag"</span>,<span class='st'>"vac2_1_ag"</span>,<span class='st'>"vac2_2_ag"</span>,
+                            <span class='st'>"vac2_3_ag"</span>,<span class='st'>"vac2_4_ag"</span>,<span class='st'>"vac2_5_ag"</span>,          
+                            <span class='st'>"vac2_6_ag"</span>,<span class='st'>"vac_3_ag"</span>,<span class='st'>"vac4_ag"</span>,
+                            <span class='st'>"vac5_ag"</span>,<span class='st'>"vac6_ag"</span>,<span class='st'>"vac7_ag"</span><span class='op'>)</span>,
+      mb.ratio <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.55</span>,<span class='fl'>0.45</span><span class='op'>)</span>, order.by <span class='op'>=</span> <span class='st'>"freq"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="vaccination_files/figure-html5/unnamed-chunk-34-1.png" width="624" /></p>
+</div>
+<p>In addition to the UpSet plot, queries can be used to identify specific combinations. For example, if we want to know what the strength of association is like for vac_1 and vac2_1, we can input them in the code below. The corresponding UpSet plot with the required combination will be highlighted (in blue).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>upset_df_filtered</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>upset_df</span>, <span class='va'>vac_1_ag</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> 
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>upset</span><span class='op'>(</span><span class='va'>upset_df_filtered</span>, main.bar.color <span class='op'>=</span> <span class='st'>"black"</span>,
+      shade.color <span class='op'>=</span> <span class='st'>"slategray"</span>,
+      sets <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"vac_1_ag"</span>,<span class='st'>"vac2_1_ag"</span>,<span class='st'>"vac2_2_ag"</span>,
+                <span class='st'>"vac2_3_ag"</span>,<span class='st'>"vac2_4_ag"</span>,<span class='st'>"vac2_5_ag"</span>,          
+                <span class='st'>"vac2_6_ag"</span>,<span class='st'>"vac_3_ag"</span>,<span class='st'>"vac4_ag"</span>,
+                <span class='st'>"vac5_ag"</span>,<span class='st'>"vac6_ag"</span>,<span class='st'>"vac7_ag"</span><span class='op'>)</span>,
+      mb.ratio <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.55</span>,<span class='fl'>0.45</span><span class='op'>)</span>, order.by <span class='op'>=</span> <span class='st'>"freq"</span>,
+      queries <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+        <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>query <span class='op'>=</span> <span class='va'>intersects</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"vac_1_ag"</span>,<span class='st'>"vac2_1_ag"</span><span class='op'>)</span>, active <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
+        <span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="vaccination_files/figure-html5/unnamed-chunk-36-1.png" width="624" /></p>
+</div>
+<p>In addition to queries, the UpSet plot can also be plotted with attribute plots below which allow the user to visualize the distribution of the selected combination in relation to other variables in the attribute plots.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>myplot</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>mydata</span>, <span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>plot</span> <span class='op'>&lt;-</span> <span class='op'>(</span><span class='fu'>ggplot</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>mydata</span>, <span class='fu'>aes_string</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, colour <span class='op'>=</span> <span class='st'>"color"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
+        <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>scale_color_identity</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>theme</span><span class='op'>(</span>plot.margin <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, 
+        <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>, <span class='st'>"cm"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+<span class='fu'>upset</span><span class='op'>(</span><span class='va'>upset_df_filtered</span>, main.bar.color <span class='op'>=</span> <span class='st'>"black"</span>,
+      shade.color <span class='op'>=</span> <span class='st'>"slategray"</span>,
+      sets <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"vac_1_ag"</span>,<span class='st'>"vac2_1_ag"</span>,<span class='st'>"vac2_2_ag"</span>,
+                <span class='st'>"vac2_3_ag"</span>,<span class='st'>"vac2_4_ag"</span>,<span class='st'>"vac2_5_ag"</span>,          
+                <span class='st'>"vac2_6_ag"</span>,<span class='st'>"vac_3_ag"</span>,<span class='st'>"vac4_ag"</span>,
+                <span class='st'>"vac5_ag"</span>,<span class='st'>"vac6_ag"</span>,<span class='st'>"vac7_ag"</span><span class='op'>)</span>,
+      mb.ratio <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.55</span>,<span class='fl'>0.45</span><span class='op'>)</span>, order.by <span class='op'>=</span> <span class='st'>"freq"</span>,
+      queries <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+        <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>query <span class='op'>=</span> <span class='va'>intersects</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"vac_1_ag"</span>,<span class='st'>"vac2_1_ag"</span><span class='op'>)</span>, active <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>)</span>,
+      attribute.plots <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>gridrows <span class='op'>=</span> <span class='fl'>40</span>,
+                             plots <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>plot <span class='op'>=</span> <span class='va'>myplot</span>, 
+                                               x <span class='op'>=</span> <span class='st'>"household_children"</span>,
+                                               y <span class='op'>=</span> <span class='st'>"household_size"</span>, queries <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="vaccination_files/figure-html5/unnamed-chunk-37-1.png" width="624" /></p>
+</div>
+<p><a href="#Top">Return to Top</a><br></p>
+<p><a name="Part5"></a></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>
