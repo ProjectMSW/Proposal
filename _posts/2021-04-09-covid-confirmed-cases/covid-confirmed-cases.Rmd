@@ -23,30 +23,31 @@ knitr::opts_chunk$set(echo = TRUE)
 # Overview
 The purpose of this assignment is to provides estimates of COVID-19 near-future case load in each country, based on global data collated by Johns Hopkins University. Generally, the data is a sequence of observations stored in time orders (Time Series Data). 
 
-Time series analysis attempt to analyse the time series data to extract meaningful characteristics of data and generate useful insights. For our case, we will attempt to forecast the near-future number of confirmed cases. Time series may have several characteristics that make their analysis different from other types of data.
+Time series analysis aim to analyse the time series data to extract meaningful characteristics of data and generate useful insights. For our case, we will attempt to forecast the near-future number of confirmed cases. Time series may have several characteristics that make their analysis different from other types of data, namely: 
 
 * The time series variable may have a trend over time.
-* The variable may exhibit cyclicity or seasonality. 
-* The data may have serial correlation between subsequent observations.
-* The data will almost always have an irregular component, which is referred to as the White Noise. This is the random variation not explained by any other factor. White Noise is a stationary process with a constant mean and variance.
+* The variable may exhibit seasonality. 
+* The data may have serial correlation between observations.
+* The data will have an irregular component (White Noise). This is the random variation not explained by any other factor. 
 
-These characteristics will affect the outcome of the forecasting models. Decomposing a time series into its components (trend, cycle, seasonality, and random (stationary)) is an important part of time series analysis. This is done to help understand the time series better and also to improve forecast result.
+These characteristics will affect the outcome of the forecasting models. Decomposing a time series into its components (trend, cycle, seasonality, and random (stationary)) is an important part of time series analysis. We do this to help understand the time series better and also to improve the forecast result.
 
-# Literature review of current visualisations on COVID-19 Confirmed Cases
-Most of the sites that forecast the near-future case load uses time series charts and/or putting values in tabular form in white papers (See Fig 1).
+# Literature Review ofCcurrent Visualisations on COVID-19 Confirmed Cases
+Most of the sites that forecast the near-future case load uses time series charts and/or putting values in tabular form in white papers (See Fig 1). The site/papers will give detailed explanation of the mathematical models, without letting the users to explore the dataset.
 
-![Fig 1: Time Series Chart](images/LitReview.jpg){width=100%}
+![Fig 1: Time Series Chart](images/LitReview.jpg){width=150%}
 
+### Proposed Enhancement
 
-* These visualisations focus on showing the result of the chosen models, without allowing users to change any of the parameters of the models.Most of the time, users are also not given the choice on which forecasting models to use. 
+* These visualisations focus on showing the result of the chosen models, without allowing users to change any of the parameters of the models. Most of the time, users are also not given the choice on which forecasting models to use. If possible, to have a few models so that users can make a comparison and to allow the users to choose the models he/she wants.
 
-* As with all forecasting/prediction models, most of the forecast models do show the Confidence Interval of result. This will show the users the range in which the forecast will fall in. Will continue to maintain this in our application.
+* As with all forecasting/prediction models, most of the forecast models do show the Confidence Interval of the outcome. This will show the users the range in which the forecast will fall in. We will continue to maintain this in our application.
 
 * Most forecasting site do not allow users to explore the dataset. Will be good if users are able to observe the "characteristics" of the dataset before proceeding to the forecast. Also, should explore allowing the users to select the date range to be used for the forecast. 
 
 * Most site only show the Time Series plot of the forecast, without the values of the result (RMSE etc). Will be good to show the users the results so that users can gauge the accuracy of the models.
 
-# Suggested visualisations and R packages
+# Suggested Visualisations and R packages
 
 Most of the visualisations for the forecast of Covid-19 confirmed cases are time series charts, without much interactivity with the users. Most of the time, only 1 model result is shown.
 
@@ -76,9 +77,6 @@ A list of packages are required for this assignment. This code chunk installs th
 packages = c('xgboost','tidymodels','modeltime','tidyverse','lubridate','timetk','earth','tseries','forecast',
              'viridis','plotly','tidyverse','tsibble','tsintermittent','randomForest',
              'fpp3','Metrics','gghighlight')
-
-
-
 
 for(p in packages){
   if(!require(p, character.only = T)){
@@ -117,9 +115,9 @@ The following code helps to convert the data to the correct format for subsequen
 
 * Create a "confirmed_cases_country_level" variable to store cumulative confirmed cases for the country (aggregating the province/state, city level data to Country/Region)
 
-* We are interested in the daily new confirmed cases. Current data record the cumulative daily total. Need to calculate the daily new confirmed cases using the lag function.
+* We are interested in the daily new confirmed cases. Current data record the cumulative daily total. Need to calculate the "daily new confirmed cases" using the lag function.
 
-* Selecting only Country, Date, TotalCases and Daily_new_cases to be stored.
+* Selecting only Country, Date, TotalCases and Daily_new_cases to be stored.Dropping all other variables (e.g Lat and Long).
 
 
 ```{r message=FALSE, warning=FALSE }
@@ -142,11 +140,10 @@ confirmed_cases_country_level <- confirmed_cases_country_level %>%
 
 confirmed_cases_country_level
 
-
 ```
 
 
-# EDA - Visualise the distribution of the daily confirmed cases for each country - Using TimeTK package. 
+# EDA - Visualise the Distribution of the Daily Confirmed Cases for each Country - Using TimeTK package. 
 
 To allow users to explore / visualise the time series data for the countries, time series charts would be plotted. Since our dataset contains many different countries, will be good to show the distribution of various countries, for comparison. The following section help to explore what is the optimal number of charts that can be displayed at any point of time, using the TimeTK package.
 
@@ -309,7 +306,7 @@ ggplot(SEA, aes(Date,Daily_new_cases, color=Country)) +
 ```
 Decomposing time series in Trend, Seasonality and Remainder.
 
-(the following code return an error: Error in decompose(.): time series has no or less than 2 periods)
+<i>(the following code return an error: Error in decompose(.): time series has no or less than 2 periods)</i>
 
 ```{r eval = FALSE}
 
@@ -320,11 +317,12 @@ US_Confirmed_Cases %>%
 ```
 
 ## Obervations for Packages that support EDA
+
 Both the TIMETK and GGPLOT packages do have functions to support EDA.
 
 From the visualisation, the following can be observed:
 
-* For most optimal view, to have maximum of 12 countries to be plot (4 rows of 3 countries each) to view the distribution of the data. If not, the chart will be too "squeeze".
+* For most optimal view, to have maximum of 12 countries to be plot (4 rows of 3 countries each) to view the distribution of the data. If not, the chart will be too "squeeze". However, the scale of the Y axis would be different and this might confused users. 
 
 * TIMETK package allow interactivity such as PAN, ZOOM etc to be incorporated into the charts by a single argument (.interactive = TRUE). For ggplot, would need to incorporate the use of plotly package to achieve the same effect.
 
@@ -409,15 +407,11 @@ forecast_tbl <- fpp3_model_table %>%
    as_tibble() %>%
    select(Date, Daily_new_cases, .model, fc_qty = .mean)
 
-
-
 forecast_tbl <- US_Confirmed_Cases %>%
   as_tibble() %>% # change tsibble -> tibble
   select(Date, Daily_new_cases) %>%
   right_join(forecast_tbl, by = c("Date"))%>% # join forecast values
   mutate(fc_qty = ifelse(fc_qty < 0, 0, fc_qty)) # change negative & NA orders
-
-
 
 accuracy_tbl <- forecast_tbl %>%
   group_by(.model) %>%
@@ -432,7 +426,7 @@ accuracy_tbl <- forecast_tbl %>%
 
 # Building Time Series Forecasting Model, using the ModelTime packages.
 
-For comparison, we will be building the forecasting models using the ModelTime packages.
+For comparison, we will be building forecasting models using the ModelTime package as well.
 
 ### Creating the Training and Test dataset
 
@@ -497,8 +491,6 @@ USmodel_fit_lm <- linear_reg() %>%
 USmodel_fit_lm
 
 
-
-
 USmodel_spec_mars <- mars(mode = "regression") %>%
     set_engine("earth") 
 
@@ -514,7 +506,6 @@ USwflw_fit_mars <- workflow() %>%
     fit(US_train_data)
 
 USwflw_fit_mars
-
 
 
 USmodel_snaive <- naive_reg() %>%
@@ -554,13 +545,12 @@ USmodels_tbl
 
 ```
 
-## Calibrate the model using test data
+### Calibrate the model using test data
 
 
 ```{r message=FALSE, warning=FALSE}
 UScalibration_tbl <- USmodels_tbl %>%
     modeltime_calibrate(new_data = US_test_data)
-
 
 UScalibration_tbl %>%
     modeltime_accuracy() %>%
@@ -575,7 +565,7 @@ UScalibration_tbl
 
 
 
-# Comparing ModelTime and Forecast Package
+# Comparing ModelTime and Forecast Packages
 
 From the result, it was observed that Forecast and Modeltime packages are able to create similar models (e.g ARIMA, ETS etc). However, it is easier to code using ModelTime package. Moreover, the results for the models are identical, See image below (highlighted 3 models in which the parameters are aligned and it returned same results.)
 ![](images/Presentation1.jpg){width=150%}
@@ -585,7 +575,7 @@ Upon further investigation, it was observed that ModelTime packages included mod
 
 
 
-## Showing visualisation of the forecast (calibrate with Test Data)
+### Showing visualisation of the forecast (calibrate with Test Data)
 
 Fitting the forecast with the Test Data and plot the visualisation.
 
@@ -601,7 +591,7 @@ UScalibration_tbl %>%
 ```
 
 
-## Forecasting US next 10 days of confirmed cases
+### Forecasting US next 10 days of confirmed cases
 To re-calibrate the model using the full dataset and forecast the next 10 days of confirmed cases.
 
 ```{r}
@@ -625,7 +615,7 @@ USrefit_tbl %>%
     )
 ```
 
-## Using Shorter Time Period for the Forecast.
+### Using Shorter Time Period for the Forecast (Calibrate the Models)
 
 As discussed earlier, we should allow users to choose the period to forecast. Therefore, we need to explore the minimum period that the models accept.
 
@@ -799,7 +789,6 @@ model_fit_prophet <- prophet_reg() %>%
 model_fit_prophet
 
 
-
 #Multivariate Adaptive Regression Spline model
 
 model_spec_mars <- mars(mode = "regression") %>%
@@ -891,12 +880,9 @@ refit_tbl %>%
 ```
 
 
+# Observations - Shorten Time Periods
 
-
-
-# Observations
-
-From the result, it suggested that the "anomaly" in the dataset do affect the forecast result. For example, the Prophet result is 33675.32 (RMSE) for Jul to Oct 2020 dataset and result is 241226.03 (RMSE) for the full set of US data. To improve the accuracy of the models, the application should allow the users to choose the period to be used for the forecasting. From the test, it also show that the models is able to accommodate as little as 1 month data to do the forecast. However, some of the models do require longer dataset and could not be used if a short date range is chosen. This will be the limitation for the date range.It was also observed that we are not able to use May 2020 modelling to forecast for Mar 2021. Therefore, most recent data have to be included in the forecast.
+From the result, it suggested that the "anomaly" in the dataset do affect the forecast result. For example, the Prophet result is 33675.32 (RMSE) for Jul to Oct 2020 dataset and result is 241226.03 (RMSE) for the full set of US data. To improve the accuracy of the models, the application should allow the users to choose the period to be used for the forecasting. From the test, it also show that the models is able to accommodate as little as 1 month data to do the forecast. However, some of the models do require longer dataset and could not be used if a short date range is chosen. This will be the limitation for the date range. It was also observed that we are not able to use May 2020 modelling to forecast for Mar 2021. Therefore, most recent data have to be included in the forecast.
 
 
 
@@ -916,7 +902,6 @@ Default setting
 model_fit_prophet <- prophet_reg() %>%
     set_engine(engine = "prophet") %>%
     fit(Daily_new_cases ~ Date, data = traindata)
-
 
 modeltime_table(
     model_fit_prophet
@@ -951,7 +936,6 @@ model_fit_prophet <- prophet_reg() %>%
     set_engine(engine = "prophet") %>%
     fit(log(Daily_new_cases) ~ Date, data = traindata)
 
-
 modeltime_table(
     model_fit_prophet
 ) %>%
@@ -983,7 +967,6 @@ model_fit_prophet <- prophet_reg(seasonality_daily=TRUE,season = 'multiplicative
     set_engine(engine = "prophet") %>%
     fit(Daily_new_cases ~ Date, data = traindata)
 
-
 modeltime_table(
     model_fit_prophet
 ) %>%
@@ -1008,10 +991,14 @@ modeltime_table(
 
 ```
 
-### Observations
+### Observations - Changing Parameters for Prophet Model
 
-Changing the parameters for the model do change the forecast outcome. Users should explore the dataset and change the parameters of the model to find the best forecast outcome. The application will allow the users to change the SEASON and Log the input data.
+Changing the parameters for the model do change the forecast outcome. Users should explore the dataset and change the parameters of the model to find the best forecast outcome. The application will allow the users to change the parameter of the models.
 
+
+# Conclusion
+
+In this Sub-module, the Shiny App will allows users to (1) explore the dataset and (2) have different models for forecasting. We will be using the TimeTK and ModelTime packages for the development. For EDA, users will be able to view the time series plot, STL plot, Anomaly Plot and ACF/PACF plot. Using these plot, the users will have better understanding of the dataset and can choose the right time period and parameters for the forecast.
 
 # StoryBoard
 
@@ -1034,3 +1021,9 @@ Page 1 will allow users to explore the time series dataset. Page 2 will show the
 * For Forecasting,
   - Users are allow to choose the period (date range) to use for the forecasting
   - Users are able to zoom, pan the time series chart to compare the result of the different models.
+  
+  
+# References
+
+
+
