@@ -737,11 +737,11 @@ calibration_tbl %>%
         .searchable = FALSE
     )
 ```
-### Choosing only 1 Month data
+### Choosing only 1 Month Data Range
 
 To check if the models allow input of 1 month data only. May 2020 data is chosen for this test. 
 
-The outcome shows that the certain models (e.g SNAIVE) do require long date period to do the forecasting. As a result, it is unable to give any forecast. 
+The outcome shows that the certain models (e.g SNAIVE) do require longer date period to do the forecasting. As a result, it is unable to give any forecast. 
 
 ```{r}
 chosendata <- confirmed_cases_country_level%>%
