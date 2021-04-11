@@ -117,7 +117,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["BarPlotErrorBars.jpg","ColumnCharts.jpg","CorrMatrix.jpg","CorrPlot.jpg","data/australia.csv","data/canada.csv","data/codebook.xlsx","data/denmark.csv","data/finland.csv","data/france.csv","data/germany.csv","data/israel.csv","data/italy.csv","data/japan.csv","data/netherlands.csv","data/norway.csv","data/singapore.csv","data/south-korea.csv","data/spain.csv","data/sweden.csv","data/united-kingdom.csv","data/united-states.csv","DivergingStackedBarChart.jpg","GroupedBarCharts.jpg","PieChart.jpeg","StackedBarCharts.jpg","UpsetPlot.jpg","vaccination_files/figure-html5/unnamed-chunk-13-1.png","vaccination_files/figure-html5/unnamed-chunk-14-1.png","vaccination_files/figure-html5/unnamed-chunk-21-1.png","vaccination_files/figure-html5/unnamed-chunk-26-1.png","vaccination_files/figure-html5/unnamed-chunk-30-1.png","vaccination_files/figure-html5/unnamed-chunk-34-1.png","vaccination_files/figure-html5/unnamed-chunk-36-1.png","vaccination_files/figure-html5/unnamed-chunk-37-1.png","vaccination_files/figure-html5/unnamed-chunk-7-1.png","vaccination_files/figure-html5/unnamed-chunk-8-1.png","vaccination_files/figure-html5/unnamed-chunk-9-1.png"]}
+  {"type":"character","attributes":{},"value":["BarPlotErrorBars.jpg","ColumnCharts.jpg","CorrMatrix.jpg","CorrPlot.jpg","data/australia.csv","data/canada.csv","data/codebook.xlsx","data/denmark.csv","data/finland.csv","data/france.csv","data/germany.csv","data/israel.csv","data/italy.csv","data/japan.csv","data/netherlands.csv","data/norway.csv","data/singapore.csv","data/south-korea.csv","data/spain.csv","data/sweden.csv","data/united-kingdom.csv","data/united-states.csv","DivergingStackedBarChart.jpg","GroupedBarCharts.jpg","PieChart.jpeg","SketchDiverging.jpg","SketchEDA.png","SketchUpset.jpg","StackedBarCharts.jpg","UpsetPlot.jpg","vaccination_files/anchor-4.2.2/anchor.min.js","vaccination_files/bowser-1.9.3/bowser.min.js","vaccination_files/distill-2.2.21/template.v2.js","vaccination_files/figure-html5/unnamed-chunk-13-1.png","vaccination_files/figure-html5/unnamed-chunk-14-1.png","vaccination_files/figure-html5/unnamed-chunk-21-1.png","vaccination_files/figure-html5/unnamed-chunk-26-1.png","vaccination_files/figure-html5/unnamed-chunk-30-1.png","vaccination_files/figure-html5/unnamed-chunk-34-1.png","vaccination_files/figure-html5/unnamed-chunk-36-1.png","vaccination_files/figure-html5/unnamed-chunk-37-1.png","vaccination_files/figure-html5/unnamed-chunk-7-1.png","vaccination_files/figure-html5/unnamed-chunk-8-1.png","vaccination_files/figure-html5/unnamed-chunk-9-1.png","vaccination_files/header-attrs-2.7/header-attrs.js","vaccination_files/jquery-1.11.3/jquery.min.js","vaccination_files/popper-2.6.0/popper.min.js","vaccination_files/tippy-6.2.7/tippy-bundle.umd.min.js","vaccination_files/tippy-6.2.7/tippy-light-border.css","vaccination_files/tippy-6.2.7/tippy.css","vaccination_files/tippy-6.2.7/tippy.umd.min.js","vaccination_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2109,7 +2109,7 @@ text-align: justify}
 <p>Relevant questions relating to public’s attitudes towards vaccination have been extracted for the analyses in this post.</p>
 <p><a name="Top"></a></p>
 <p>The scope of this post is as follows.</p>
-<p><a href="#Part1">1. Preparation of Data</a><br> <a href="#Part2">2. Exploratory Data Analysis</a><br> <a href="#Part2">2. Review of visual analytic techniques</a><br> <a href="#Part3">3. Evaluation of Packages for Visualization</a><br> <a href="#Part4">4. Storyboard for the Shiny Visual Analytics Application</a><br></p>
+<p><a href="#Part1">1. Preparation of Data</a><br> <a href="#Part2">2. Exploratory Data Analysis</a><br> <a href="#Part3">3. Review of visual analytic techniques</a><br> <a href="#Part4">4. Packages and Functions for Visualization</a><br> <a href="#Part5">5. Storyboard for the Shiny Visual Analytics Application</a><br></p>
 <p><a name="Part1"></a></p>
 <h2 id="exploration-and-preparation-of-data">1. Exploration and Preparation of Data</h2>
 <p>The following code is first input to define Global Settings for code chunks in this post.</p>
@@ -3024,7 +3024,12 @@ Figure 9: Upset plot
 <li>Possible values include all countries in the following list Canada, Denmark, Finland, France, Germany, Israel, Italy, Japan, Netherlands, Norway, Singapore, South Korea, Spain, Sweden, United Kingdom, United States</li>
 <li>The UpSet plot will show association for responses and variables for the country selected.</li>
 </ul>
-<p><strong>(2) strength</strong> - Possible values are dependent on the responses to the individual questions - This will determine the level of agreement which will be used to categorise the responses. - E.g. if Strength is 4, responses 4 and 5 (on a scale of 1 to 5) will be considered as 1, while 1 to 3 will be considered 0.</p>
+<p><strong>(2) strength</strong></p>
+<ul>
+<li>Possible values are dependent on the responses to the individual questions</li>
+<li>This will determine the level of agreement which will be used to categorise the responses.</li>
+<li>E.g. if Strength is 4, responses 4 and 5 (on a scale of 1 to 5) will be considered as 1, while 1 to 3 will be considered 0.</li>
+</ul>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Select country - User to input selected country</span>
@@ -3188,6 +3193,47 @@ Figure 9: Upset plot
 </div>
 <p><a href="#Top">Return to Top</a><br></p>
 <p><a name="Part5"></a></p>
+<h2 id="storyboard-for-the-shiny-visual-analytics-application">5. Storyboard for the Shiny Visual Analytics Application</h2>
+<p>For the Shiny App, 3 pages are proposed.</p>
+<p><strong>(1) Survey Findings</strong></p>
+<p>On this page, the survey findings will be presented to the user in the form of a Diverging Stacked Bar Chart, which displays the responses for the selected question for all countries.</p>
+<p>Also presented is the Bar Plots with Error Bars that will provide users an idea of the proportions of respondents for each country which strongly agreed or agreed with the question, as well as the confidence interval of the proportions.</p>
+<p>Users will be able to select the question of interest to be viewed as well as the confidence level for the error bars.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure10"></span>
+<img src="SketchDiverging.jpg" alt="Survey Findings page" width="100%" />
+<p class="caption">
+Figure 10: Survey Findings page
+</p>
+</div>
+</div>
+<p><strong>(2) Association of Factors</strong></p>
+<p>On this page, users will be able to select the country of interest, strength of response and multiple factors of interest.</p>
+<p>What will be displayed is an UpSet plot which provides an overview of the strength of association of the various factors selected.</p>
+<p>Users will also be able to select factors to be queried and highlighted in the plot.</p>
+<p>There will also be a multiple drop down box for users to select factors to be included in the attributes plot at the bottom.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure11"></span>
+<img src="SketchUpset.jpg" alt="Association of Factors page" width="100%" />
+<p class="caption">
+Figure 11: Association of Factors page
+</p>
+</div>
+</div>
+<p><strong>(3) Data Exploration</strong></p>
+<p>This page allows users to explore the association between 2 selected variables for a selected country.</p>
+<p>If the 2 variables selected are both categorical, a mosaic plot will be displayed. However if 1 variable is continuous, then a density plot will be displayed.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure12"></span>
+<img src="SketchEDA.png" alt="Data Exploration page" width="100%" />
+<p class="caption">
+Figure 12: Data Exploration page
+</p>
+</div>
+</div>
+<h2 id="conclusion">Conclusion</h2>
+<p>With the interactive visualization provided on this sub-module, users will gain deeper insights into the attitudes and perceptions towards vaccination by various countries, and also the determinants and factors that influence those perceptions.</p>
+<p><a href="#Top">Return to Top</a><br></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

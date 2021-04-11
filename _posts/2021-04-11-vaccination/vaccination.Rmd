@@ -33,9 +33,9 @@ The scope of this post is as follows.
 
 [1. Preparation of Data](#Part1)<br>
 [2. Exploratory Data Analysis](#Part2)<br>
-[2. Review of visual analytic techniques](#Part2)<br>
-[3. Evaluation of Packages for Visualization](#Part3)<br>
-[4. Storyboard for the Shiny Visual Analytics Application](#Part4)<br>
+[3. Review of visual analytic techniques](#Part3)<br>
+[4. Packages and Functions for Visualization](#Part4)<br>
+[5. Storyboard for the Shiny Visual Analytics Application](#Part5)<br>
 
 <a name="Part1"></a>
 
@@ -706,6 +706,7 @@ Canada, Denmark, Finland, France, Germany, Israel, Italy, Japan, Netherlands, No
 - The UpSet plot will show association for responses and variables for the country selected.
 
 **(2) strength**
+
 - Possible values are dependent on the responses to the individual questions
 - This will determine the level of agreement which will be used to categorise the responses.
 - E.g. if Strength is 4, responses 4 and 5 (on a scale of 1 to 5) will be considered as 1, while 1 to 3 will be considered 0.
@@ -863,3 +864,48 @@ upset(upset_df_filtered, main.bar.color = "black",
 [Return to Top](#Top)<br>
 
 <a name="Part5"></a>
+
+## 5. Storyboard for the Shiny Visual Analytics Application
+
+For the Shiny App, 3 pages are proposed.
+
+**(1) Survey Findings**
+
+On this page, the survey findings will be presented to the user in the form of a Diverging Stacked Bar Chart, which displays the responses for the selected question for all countries.
+
+Also presented is the Bar Plots with Error Bars that will provide users an idea of the proportions of respondents for each country which strongly agreed or agreed with the question, as well as the confidence interval of the proportions.
+
+Users will be able to select the question of interest to be viewed as well as the confidence level for the error bars.
+
+```{r pressure10, echo=FALSE, fig.cap="Survey Findings page", out.width = '100%'}
+knitr::include_graphics("SketchDiverging.jpg")
+```
+**(2) Association of Factors**
+
+On this page, users will be able to select the country of interest, strength of response and multiple factors of interest.
+
+What will be displayed is an UpSet plot which provides an overview of the strength of association of the various factors selected.
+
+Users will also be able to select factors to be queried and highlighted in the plot.
+
+There will also be a multiple drop down box for users to select factors to be included in the attributes plot at the bottom.
+
+```{r pressure11, echo=FALSE, fig.cap="Association of Factors page", out.width = '100%'}
+knitr::include_graphics("SketchUpset.jpg")
+```
+
+**(3) Data Exploration**
+
+This page allows users to explore the association between 2 selected variables for a selected country.
+
+If the 2 variables selected are both categorical, a mosaic plot will be displayed. However if 1 variable is continuous, then a density plot will be displayed.
+
+```{r pressure12, echo=FALSE, fig.cap="Data Exploration page", out.width = '100%'}
+knitr::include_graphics("SketchEDA.png")
+```
+
+## Conclusion
+
+With the interactive visualization provided on this sub-module, users will gain deeper insights into the attitudes and perceptions towards vaccination by various countries, and also the determinants and factors that influence those perceptions.
+
+[Return to Top](#Top)<br>
