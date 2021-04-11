@@ -80,7 +80,7 @@ The following R packages will be explored:
 | Multivariate Analysis | *olsrr* |
 | Interactivity | *plotly* |
 
-# Data Preparation
+# Data preparation
 
 All data extraction and wrangling are done in R using the *tidyverse* suite of packages. 
 
@@ -851,7 +851,7 @@ Generally, the arguments in all three functions are straightforward to use and t
 
 Although *FunnelPlotR* is relatively easy to use, the function does not allow for more customisation due to its limitation of only taking in vectors for the key variables. In addition, it cannot be rendered into an interactive graphic. As such, `ggplot()` is chosen to create the funnel plot in the final product.
 
-## Multivariate Analysis
+## Multivariate analysis
 
 The main analysis to explore in multivariate analysis is exploratory multiple linear regression (MLR). This assignment will explore the *olsrr* package in supporting and visualising MLR analysis.
 
@@ -949,12 +949,12 @@ ols_plot_diagnostics(model)
 
 The 10 selected plots covers several key model diagnostics. The table below shows the common model diagnostics performed for MLR and the corresponding plot(s) that fulfils the task.
 
-|<img width=200> Diagnostics Tasks | <img width=350> Plots |
-|-------------------|-------|
+| Diagnostics Task | Plots |
+|------------------|-------|
 | Model fit assessment | Observed by Predicted, Residual Fit Spread Plots (fit-mean and residual) |
-| MLR assumptions validation <br>(linearity of data, normality of errors, homogeneity of residual variance, independent residual error terms) | Residual vs Predicted Values, Normal Q-Q Plot, Residual Fit Spread Plots (fit-mean and residual), Residual Histogram, Residual Box Plot |
+| MLR assumptions validation <br>*(linearity of data, normality of errors,<br>homogeneity of residual variance,<br>independent residual error terms)* | Residual vs Predicted Values, Normal Q-Q Plot, Residual Fit Spread Plots (fit-mean and residual), Residual Histogram, Residual Box Plot |
 | Measures of influence | Outlier and Leverage Diagnostics, Deleted Studentized Residual vs Predicted Values, Cook's D Chart |
-| Collinearity | <none> |
+| Collinearity | *none* |
 
 As there are no diagnostics for collinearity provided by `ols_plot_diagnostics()`, let us take a look at the specific collinearity tests provided by *olsrr*. 
 
@@ -968,6 +968,26 @@ ols_coll_diag(model)
 
 Based on the model built, users can have the option to call the model diagnostics, which will include both the plots and the collinearity diagnostics.
 
-# Storyboard
+# Storyboard for Shiny app
 
-The final story board w
+There will be two tabs in the Shiny app sub-module on COVID-19 deaths: bivariate and multivariate analysis.
+
+## Bivariate analysis
+
+To enhance user experience, users would only need to indicate the x and y variables in the bivariate analysis. Based on the y variable that user selected (cumulative number of deaths or fatality rate), the scatterplot or funnel plot will be shown. After user has selected the variables, plot-specific options will show on the app for further calibration by the user.
+
+The figure below shows a sketch of the storyboard for the bivariate analysis tab.
+
+![Figure 6: Bivariate analysis storyboard](images/bivariate.jpg)
+
+In order not to load the page, a submit button is proposed. However, during the Shiny app development, we will experiment without delaying the reaction of the plot to compare the time lag.
+
+## Multivariate analysis
+
+Similar to bivariate, users will need to select the y and x variables for the multivariate analysis. Users will then need to select the regression model and its corresponding model options, as discussed in earlier sections. Users can also indicate whether to display the plots for the model summary results and/or the model diagnostics. 
+
+![Figure 7: Multivariate analysis storyboard](images/multivariate.jpg)
+
+The output panel will display the results according to the user selection on the left panel. Likewise, the use of the submit button to delay the outputs will be tested during app development.
+
+*- End of assignment -*
