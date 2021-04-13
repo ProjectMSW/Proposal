@@ -1,6 +1,7 @@
 library(shiny)
 library(shinythemes)
 
+source("Modules/forecast.R")
 
 ui <- fluidPage(
   titlePanel("Amanda is TOP student"),
@@ -8,7 +9,7 @@ ui <- fluidPage(
   navbarPage(
     theme = shinytheme("sandstone"),
     "Covid",
-    tabPanel("Covid Forecast",
+    tabPanel("Forecasting Positive Cases",
              sidebarPanel(
                fileInput("file", "File input:"),
                textInput("txt", "Text input:", "general"),
@@ -37,8 +38,9 @@ ui <- fluidPage(
                )
              )
     ),
-    tabPanel("Covid Death", "This panel is intentionally left blank"),
-    tabPanel("Covid Survey", "This panel is intentionally left blank")
+    tabPanel("Exploring Deaths", "This panel is intentionally left blank"),
+    tabPanel("Understanding vaccination sentiments", "This panel is intentionally left blank"),
+    tabPanel("test", forecastUI("hist"))
   )
   
 )
