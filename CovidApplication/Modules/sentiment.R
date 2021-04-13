@@ -1,4 +1,4 @@
-forecastUI <- function(id) {
+sentimentUI <- function(id) {
   tagList(
     sidebarPanel(
       fileInput("file", "File input:"),
@@ -33,7 +33,7 @@ forecastUI <- function(id) {
 
 
 
-forecastServer <- function(id) {
+sentimentServer <- function(id) {
   moduleServer(id, function(input, output, session) {
     data <- reactive(mtcars[[input$var]])
     output$hist <- renderPlot({

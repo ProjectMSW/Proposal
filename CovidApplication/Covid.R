@@ -2,6 +2,8 @@ library(shiny)
 library(shinythemes)
 
 source("Modules/forecast.R")
+source("Modules/death.R")
+source("Modules/sentiment.R")
 
 ui <- fluidPage(
   titlePanel("Amanda is TOP student"),
@@ -38,8 +40,8 @@ ui <- fluidPage(
                )
              )
     ),
-    tabPanel("Exploring Deaths", "This panel is intentionally left blank"),
-    tabPanel("Understanding vaccination sentiments", "This panel is intentionally left blank"),
+    tabPanel("Exploring Deaths", deathUI("DEATH")),
+    tabPanel("Understanding vaccination sentiments", sentimentUI("SENSE")),
     tabPanel("test", forecastUI("hist"))
   )
   

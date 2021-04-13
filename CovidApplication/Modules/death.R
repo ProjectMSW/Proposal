@@ -1,4 +1,4 @@
-forecastUI <- function(id) {
+deathUI <- function(id) {
   tagList(
     sidebarPanel(
       fileInput("file", "File input:"),
@@ -27,13 +27,14 @@ forecastUI <- function(id) {
         tabPanel("Tab 3", "This panel is intentionally left blank")
       )
     )
+ 
   )
 }
 
 
 
 
-forecastServer <- function(id) {
+deathServer <- function(id) {
   moduleServer(id, function(input, output, session) {
     data <- reactive(mtcars[[input$var]])
     output$hist <- renderPlot({
