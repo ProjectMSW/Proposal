@@ -4,6 +4,7 @@ library(shinythemes)
 source("Modules/forecast.R")
 source("Modules/death.R")
 source("Modules/sentiment.R")
+source("Modules/forecastWorker.R")
 
 ui <- fluidPage(
   titlePanel("Amanda is TOP student"),

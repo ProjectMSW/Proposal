@@ -1,8 +1,15 @@
+
+
 forecastUI <- function(id) {
   ns <- NS(id)
   tagList(
     sidebarPanel(
-      selectInput(NS(id, "var"), "Variable", choices = names(mtcars)),
+      selectInput(NS(id, "Msea"), "South East Asia", choices = c("Brunei"="Brunei", "Burma"="Burma", "Cambodia"="Cambodia", 
+                                                         "Timor-Leste"="Timor-Leste", "Indonesia"="Indonesia", "Laos"="Laos", "Malaysia"="Malaysia", 
+                                                         "Philippines"="Philippines","Singapore"="Singapore", "Thailand"="Thailand", "Vietnam"="Vietnam")),
+      
+      selectInput(NS(id, "MUS"), "USA", choices = c("US"="US")),
+      
       fileInput("file", "File input:"),
       textInput("txt", "Text input:", "general"),
       sliderInput("slider", "Slider input:", 1, 100, 30),
@@ -15,15 +22,7 @@ forecastUI <- function(id) {
     mainPanel(
       tabsetPanel(
         tabPanel("Tab 1",
-                 h4("Table"),
-                 tableOutput("table"),
-                 h4("Verbatim text output"),
-                 verbatimTextOutput("txtout"),
-                 h1("Header 1"),
-                 h2("Header 2"),
-                 h3("Header 3"),
-                 h4("Header 4"),
-                 h5("Header 5")
+                 plotOutput(NS(id, "hist"))
         ),
         tabPanel("Tab 2", "This panel is intentionally left blank"),
         tabPanel("Tab 3", "This panel is intentionally left blank")
