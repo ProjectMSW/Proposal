@@ -1,4 +1,5 @@
 forecastUI <- function(id) {
+  ns <- NS(id)
   tagList(
     sidebarPanel(
       selectInput(NS(id, "var"), "Variable", choices = names(mtcars)),

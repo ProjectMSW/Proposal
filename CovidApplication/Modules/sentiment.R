@@ -1,4 +1,5 @@
 sentimentUI <- function(id) {
+  ns <- NS(id)
   tagList(
     sidebarPanel(
       fileInput("file", "File input:"),
