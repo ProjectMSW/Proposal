@@ -1,6 +1,7 @@
 forecastUI <- function(id) {
   tagList(
     sidebarPanel(
+      selectInput(NS(id, "var"), "Variable", choices = names(mtcars)),
       fileInput("file", "File input:"),
       textInput("txt", "Text input:", "general"),
       sliderInput("slider", "Slider input:", 1, 100, 30),
