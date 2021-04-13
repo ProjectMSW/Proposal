@@ -806,12 +806,18 @@ fp_ggplot <- ggplot(covid_deaths_tidy,
             size = 0.4, colour = "grey40") +
   geom_hline(data = dfCI, aes(yintercept = rate.fem), 
              size = 0.4, colour = "grey40") +
-  annotate("text", x = 0, y = -0.05, label = "95%", size = 3, colour = "grey40") + # label 95% CI
-  annotate("text", x = 20, y = -0.15, label = "99%", size = 3, colour = "grey40") + # label 99% CI
+  annotate("text", x = 1, y = -0.13, label = "95%", size = 3, colour = "grey40") + # label 95% CI
+  annotate("text", x = 4.5, y = -0.18, label = "99%", size = 3, colour = "grey40") + # label 99% CI
   ggtitle("Case Fatality Rate by Total Number of COVID-19 Cases") +
   xlab("Total Number of COVID-19 Cases - log ") + 
   ylab("Case Fatality Rate") +
   theme_light() +
+  theme(plot.title = element_text(size=12),
+        legend.position = c(0.91,0.85), # place legend within the plot area
+        legend.title = element_text(size=7),
+        legend.text = element_text(size=7),
+        legend.background = element_rect(colour = "grey60", linetype = "dotted"),
+        legend.key.height = unit(0.3, "cm")) +
   scale_size_continuous(guide = FALSE) + # remove size legend
   scale_colour_discrete(name ="Continent") # rename colour legend title
 
@@ -826,6 +832,8 @@ fp_ggplotly <- ggplotly(fp_ggplot,
 
 fp_ggplotly
 ```
+
+Note that the legend position and theme were not retained within the plot area for the plotly object.
 
 ### Evaluation
 
@@ -850,6 +858,37 @@ Generally, the arguments in all three functions are straightforward to use and t
 #### Conclusion
 
 Although *FunnelPlotR* is relatively easy to use, the function does not allow for more customisation due to its limitation of only taking in vectors for the key variables. In addition, it cannot be rendered into an interactive graphic. As such, `ggplot()` is chosen to create the funnel plot in the final product.
+
+### Adding a distribution plot to the funnel plot
+
+We will also explore if it is possible to add a distribution plot, e.g. histogram or "densigram", to the funnel plot. This is similar to the concept of the scatterplot with marginal distributions, whereby the intention is to inform users whether the rates plotted on the funnel plot are normally distributed. For simplicity, users will not be able to choose the type of chart to display the distribution.
+
+The code chunk below plots the distribution plot using *ggplot*. The densigram is selected as the combination of the density curve and histogram can clearly show the distribution. Note that all non-data elements are removed, as it is not necessary to show them when combined with the funnel plot.
+
+```{r}
+fp_densigram <- ggplot(covid_deaths_tidy, aes(x = case_fatality_rate)) +
+  geom_histogram(bins = 40, fill="orange", colour="grey40") + 
+  geom_density(colour="grey40", size=0.8) +
+  coord_flip(xlim = c(-0.2,0.2), clip = "off") +
+  ggtitle("Distribution") +
+  theme_void() +
+  theme(axis.line = element_line(colour = "white"), # to remove x-axis line in subplot()
+        panel.grid = element_line(colour = "white")) # to remove panel grid lines in subplot()
+
+fp_densigram
+```
+
+Next, `subplot()` from the *plotly* package can be directly called to combine the two *ggplots* into one *plotly* object. The call is simple and provides flexibility in arranging the plots, as compared to other packages such as *gridExtra*.
+
+```{r}
+subplot(fp_ggplot, fp_densigram,
+        nrows = 1,
+        widths = c(3/4,1/4), # define the proportion of space taken up by the two plots
+        shareY = TRUE, # align the y-axis between the two graphs
+        which_layout = 1) # adopt the layout of the main funnel plot
+```
+
+The *plotly* object allows for synchronised interactivity across the two plots, which improves clarity during data exploration. The output looks acceptable, even though the legend position and theme was not as initially designed. This will be the funnel plot that will be used in the final product!
 
 ## Multivariate analysis
 
@@ -990,4 +1029,4 @@ Similar to bivariate, users will need to select the y and x variables for the mu
 
 The output panel will display the results according to the user selection on the left panel. Likewise, the use of the submit button to delay the outputs will be tested during app development.
 
-*- End of assignment -*
+*- End of assignment, thank you! -*
