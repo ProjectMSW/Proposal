@@ -112,7 +112,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Receptivity of Countries towards COVID-19 Vaccination"]},{"type":"character","attributes":{},"value":["This post is a sub-module of the project and focuses on analysing countries' attitudes towards COVID-19 vaccination. Data for the analyses is obtained from the Imperial College London YouGov Covid 19 Behaviour Tracker Data Hub."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Daniel Lin Yongyan"]},{"type":"character","attributes":{},"value":["https://daniel-lin-yy-data-viz.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["04-02-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Receptivity of Countries towards COVID-19 Vaccination"]},{"type":"character","attributes":{},"value":["This post is a sub-module of the project and focuses on analysing countries' attitudes towards COVID-19 vaccination. Data for the analyses is obtained from the Imperial College London YouGov Covid 19 Behaviour Tracker Data Hub."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Daniel Lin Yongyan"]},{"type":"character","attributes":{},"value":["https://daniel-lin-yy-data-viz.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["04-02-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2098,6 +2098,40 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#exploration-and-preparation-of-data">1. Exploration and Preparation of Data</a>
+<ul>
+<li><a href="#installation-and-loading-of-required-packages">Installation and loading of required packages</a></li>
+<li><a href="#importing-of-datasets-and-creation-of-combined-dataset">Importing of datasets and creation of combined dataset</a></li>
+<li><a href="#recoding-of-variables">Recoding of variables</a></li>
+</ul></li>
+<li><a href="#exploratory-data-analysis-eda">2. Exploratory Data Analysis (EDA)</a>
+<ul>
+<li><a href="#univariate-data-eda">Univariate data EDA</a></li>
+<li><a href="#bivariate-eda-for-categorical-data">Bivariate EDA for Categorical Data</a></li>
+<li><a href="#bivariate-eda-between-categorical-and-continuous-variable">Bivariate EDA between categorical and continuous variable</a></li>
+</ul></li>
+<li><a href="#review-of-visual-analytic-techniques">3. Review of visual analytic techniques</a>
+<ul>
+<li><a href="#representation-of-likert-scales">3.1 Representation of Likert Scales</a></li>
+<li><a href="#visualizing-uncertainty">3.2 Visualizing Uncertainty</a></li>
+<li><a href="#visualizing-correlation">3.3 Visualizing Correlation</a></li>
+</ul></li>
+<li><a href="#packages-and-functions-for-visualization">4. Packages and Functions for Visualization</a>
+<ul>
+<li><a href="#diverging-stacked-bar-chart">4.1 Diverging Stacked Bar Chart</a></li>
+<li><a href="#bar-plot-with-error-bars">4.2 Bar plot with Error Bars</a></li>
+<li><a href="#upset-plots-with-upsetr-package">4.3 UpSet plots with UpSetR package</a></li>
+</ul></li>
+<li><a href="#storyboard-for-the-shiny-visual-analytics-application">5. Storyboard for the Shiny Visual Analytics Application</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</div>
 <style>
 body {
 text-align: justify}
