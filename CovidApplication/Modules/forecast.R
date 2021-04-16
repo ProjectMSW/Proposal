@@ -1,7 +1,8 @@
 
 
 forecastUI <- function(id) {
-  ns <- NS(id)
+  print("hahahahah")
+  #ns <- NS(id)
   tagList(
     sidebarPanel(
       selectInput(NS(id, "Msea"), "South East Asia", choices = c("Brunei"="Brunei", "Burma"="Burma", "Cambodia"="Cambodia", 
@@ -21,10 +22,13 @@ forecastUI <- function(id) {
     ),
     mainPanel(
       tabsetPanel(
-        tabPanel("Tab 1",
-                 plotOutput(NS(id, "hist"))
-        ),
-        tabPanel("Tab 2", "This panel is intentionally left blank"),
+        tabPanel("Tab 1", histogramUI("tt")),
+        tabPanel("Tab 2", 
+                 
+                 
+                 selectInput(NS(id, "var"), 
+                 "Variable", choices = c("US"="US","ABC"="ABC")),
+                 textOutput(NS(id,"text"))),
         tabPanel("Tab 3", "This panel is intentionally left blank")
       )
     )
@@ -33,12 +37,12 @@ forecastUI <- function(id) {
 
 
 
-
 forecastServer <- function(id) {
+  print("am i here")
   moduleServer(id, function(input, output, session) {
-    data <- reactive(mtcars[[input$var]])
-    output$hist <- renderPlot({
-      hist(data(), breaks = input$bins, main = input$var)
-    }, res = 96)
+    histogramServer("tt")
+    data <- reactive(input$var)
+    output$text <- renderText({ "abc" })
+   
   })
 }

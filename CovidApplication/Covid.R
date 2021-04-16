@@ -1,10 +1,18 @@
 library(shiny)
 library(shinythemes)
+library(plotly)
+library(ggplot2)
+library(timetk)
+library(modeltime)
+library(tidymodels)
 
+#source("Modules/EDACountry.R")
+source("Modules/forecastNav.R")
 source("Modules/forecast.R")
 source("Modules/death.R")
 source("Modules/sentiment.R")
 source("Modules/forecastWorker.R")
+source("Modules/histogram.R")
 
 ui <- fluidPage(
   titlePanel("Amanda is TOP student"),
@@ -41,23 +49,31 @@ ui <- fluidPage(
                )
              )
     ),
-    tabPanel("Exploring Deaths", deathUI("DEATH")),
-    tabPanel("Understanding vaccination sentiments", sentimentUI("SENSE")),
-    tabPanel("test", forecastUI("hist"))
+    tabPanel("Exploring Deaths", "Wait for Mdm"),
+    tabPanel("Understanding vaccination sentiments", "Wait for Daniel"),
+    tabPanel("test", 
+             sidebarPanel(
+               forecastNavUI("Nav")
+             ),
+             mainPanel(
+               tabsetPanel(
+                 tabPanel("Tab A", EDACountryUI("c","US")),
+                 tabPanel("Tab 2", "This panel is intentionally left blank"),
+                 tabPanel("Tab 3", "This panel is intentionally left blank")
+               )
+             )
+      )
   )
   
 )
 
-server <- function(input, output, session) {
-  output$txtout <- renderText({
-    paste(input$txt, input$slider, format(input$date), sep = ", ")
-  })
-  output$table <- renderTable({
-    head(cars, 4)
-  })
+server <- function(input, output, session){
+  forecastNavServer("Nav")
+  #EDACountryServer("c","US")
 }
 
-shinyApp(ui = ui, server = server)
+shinyApp(ui,server)
+
 
 
 
