@@ -15,7 +15,7 @@ source("Modules/forecastWorker.R")
 source("Modules/histogram.R")
 
 ui <- fluidPage(
-  titlePanel("Amanda is TOP student"),
+  titlePanel("Amanda and Daniel are TOP students"),
   
   navbarPage(
     theme = shinytheme("sandstone"),
@@ -49,7 +49,46 @@ ui <- fluidPage(
                )
              )
     ),
-    tabPanel("Exploring Deaths", "Wait for Mdm"),
+    tabPanel("Death",
+        tabsetPanel(
+          tabPanel("Bivariate Analysis", 
+                   
+                   sidebarPanel(
+                     fileInput("file", "File input:"),
+                     textInput("txt", "Text input:", "general"),
+                     sliderInput("slider", "Slider input:", 1, 100, 30),
+                     tags$h5("Default actionButton:"),
+                     actionButton("action", "Search"),
+                     
+                     tags$h5("actionButton with CSS class:"),
+                     actionButton("action2", "Action button", class = "btn-primary")
+                   ),
+                   mainPanel(
+                    
+                   )
+                   
+                   
+                   ),
+          tabPanel("MultiVariate Analysis", 
+                   sidebarPanel(
+                     fileInput("file", "File input:"),
+                     textInput("txt", "Text input:", "general"),
+                     sliderInput("slider", "Slider input:", 1, 100, 30),
+                     tags$h5("Default actionButton:"),
+                     actionButton("action", "Search"),
+                     
+                     tags$h5("actionButton with CSS class:"),
+                     actionButton("action2", "Action button", class = "btn-primary")
+                   ),
+                   mainPanel(
+                     
+                   )
+                   
+                   
+                   
+                   )
+        )
+      ),
     tabPanel("Understanding vaccination sentiments", "Wait for Daniel"),
     tabPanel("test", 
              sidebarPanel(
@@ -57,7 +96,7 @@ ui <- fluidPage(
              ),
              mainPanel(
                tabsetPanel(
-                 tabPanel("Tab A", EDACountryUI("c","US")),
+                 tabPanel("Tab A", EDACountryUI("Nav","US")),
                  tabPanel("Tab 2", "This panel is intentionally left blank"),
                  tabPanel("Tab 3", "This panel is intentionally left blank")
                )
@@ -69,7 +108,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session){
   forecastNavServer("Nav")
-  #EDACountryServer("c","US")
+  EDACountryServer("Nav")
 }
 
 shinyApp(ui,server)
