@@ -54,21 +54,12 @@ ui <- fluidPage(
           tabPanel("Bivariate Analysis", 
                    
                    sidebarPanel(
-                     fileInput("file", "File input:"),
-                     textInput("txt", "Text input:", "general"),
-                     sliderInput("slider", "Slider input:", 1, 100, 30),
-                     tags$h5("Default actionButton:"),
-                     actionButton("action", "Search"),
-                     
-                     tags$h5("actionButton with CSS class:"),
-                     actionButton("action2", "Action button", class = "btn-primary")
+                     forecastNavUI("Nav")
                    ),
                    mainPanel(
                     
                    )
-                   
-                   
-                   ),
+              ),
           tabPanel("MultiVariate Analysis", 
                    sidebarPanel(
                      fileInput("file", "File input:"),
@@ -84,12 +75,25 @@ ui <- fluidPage(
                      
                    )
                    
-                   
-                   
-                   )
+            )
         )
       ),
-    tabPanel("Understanding vaccination sentiments", "Wait for Daniel"),
+    tabPanel("Understanding vaccination sentiments", 
+             sidebarPanel(
+               forecastNavUI("Nav")
+             ),
+             mainPanel(
+               tabsetPanel(
+                 tabPanel("Survey Finding", "This is for survey findings"),
+                 tabPanel("Association of Factors", "This is for factors"),
+                 tabPanel("Data Exploration", "This is for data exploration")
+               )
+             )
+             
+             
+             
+             
+             ),
     tabPanel("test", 
              sidebarPanel(
                forecastNavUI("Nav")
