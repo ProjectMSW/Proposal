@@ -21,15 +21,18 @@ forecastNavUI <- function(id) {
 }
 
 
-
 forecastNavServer <- function(id) {
   print("am i here1111")
   print(id)
   moduleServer(id, function(input, output, session) {
-    data <- reactive(input$Msea)
+    #data <- reactive(input$Msea)
     observeEvent(input$button, {
-      print(data)
-      return(input$Msea)
+      print("datai am here at last")
+      #countrydata <- getIndividualCountryData(confirmed_cases_country_level,input$Msea)
+      
+      print(input$Msea)
+     
+      #return(input$Msea)
       
     })
     
@@ -40,14 +43,31 @@ forecastNavServer <- function(id) {
 
 EDACountryUI <- function(id,a) {
   ns <- NS(id)
-  countrydata <- getIndividualCountryData(confirmed_cases_country_level,a)
+  print("inside")
+ # countrydata <- getIndividualCountryData(confirmed_cases_country_level,a)
   tagList(
-    countrydata%>%
-      plot_time_series(Date, Daily_new_cases, 
-                       .facet_ncol =2, .facet_scales = "free",
-                       .interactive = TRUE,
-                       .plotly_slider = TRUE)
+    #textOutput(ns("distPlot"))
+    plotlyOutput(ns("distPlot"))
     
   )
-  
 }
+  
+  EDACountryServer <- function(id) {
+    #countrydata <- getIndividualCountryData(confirmed_cases_country_level,input$Msea)
+    print("am i here1111")
+    print(id)
+    #print(input$Msea)
+    moduleServer(id, function(input, output, session) {
+    output$distPlot <-renderPlotly(
+     #renderText(input$Msea)
+      plot_time_series(input$Msea,Date, Daily_new_cases,
+                       .facet_ncol =3, .facet_scales = "free",
+                       .interactive = TRUE,)
+      
+    )
+    })
+    
+  }
+  
+  
+  
