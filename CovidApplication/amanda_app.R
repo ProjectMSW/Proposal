@@ -1,11 +1,15 @@
 library(shiny)
 library(tidyverse)
 library(ggstatsplot)
+library(ggExtra)
 library(olsrr)
 library(plotly)
 
 death_df <- read_csv("data/deaths_tidy.csv")
 
+death_df <- death_df %>%
+    mutate(deaths_per_test = total_deaths / total_tests,
+           deaths_per_100000pop = (total_deaths / population)*100000)
 
 ui <- fluidPage(
     hr(),
@@ -27,9 +31,10 @@ ui <- fluidPage(
                 
                 selectInput("yVariable_b", 
                             h5("Y-variable"),
-                            #data = death_df,
-                            c("Cumulative death" = "total_deaths", "Fatality rate" = "rate"),
-                            selected = "total_deaths"
+                            c("Cumulative death" = "total_deaths", 
+                              "Log(Cumulative death)" = "total_deaths_log",
+                              "Fatality rate" = "rate"),
+                            selected = "total_deaths_log"
                 ), # End selectInput
                 
                 #################################################
@@ -37,16 +42,17 @@ ui <- fluidPage(
                 #################################################
                 
                 conditionalPanel(
-                    condition = "input.tabs_name == 'tab_b' && input.yVariable_b == 'total_deaths'",
+                    condition = "input.tabs_name == 'tab_b' && (input.yVariable_b == 'total_deaths'|| input.yVariable_b == 'total_deaths_log')",
                     ns = NS(NULL),
                     
                     selectInput("xVariable_bc",
-                                h5("X-variable:"), 
-                                #data = death_df,
+                                h5("X-variable:"),
                                 list(
                                     'COVID related' = list(
                                         "Cumulative positive cases" = "total_cases",
                                         "Cumulative tests conducted" = "total_tests",
+                                        "Log(Cumulative positive cases)" = "total_cases_log",
+                                        "Log(Cumulative tests conducted)" = "total_tests_log",
                                         "Positive rate" = "positive_rate"),
                                     'Healthcare' = list(
                                         "Hospital beds (per thousand)" = "hospital_beds_per_thousand",
@@ -56,23 +62,23 @@ ui <- fluidPage(
                                         "Current health expenditure (% of GDP)" = "current_health_exp_%gdp",
                                         "% population living in extreme poverty" = "extreme_poverty",
                                         "GDP per capita" = "gdp_per_capita",
-                                        "Government health expenditure (% of total government expenditure)" = "govt_health_exp_%totalgovtexp",
-                                        "Human development index (HDI)" = "human_development_index"),
+                                        "Government health expenditure (% of total govt. exp.)" = "govt_health_exp_%totalgovtexp",
+                                        "Human development index (HDI)" = "human_development_index",
+                                        "Log(GDP per capita)" = "gdp_per_capita_log"),
                                     'Population' = list(
                                         "Total population" = "population",
                                         "Population aged 0 to 14" = "0_to_14(%)",
                                         "Population aged 15 to 64" = "15_to_64(%)",
                                         "Population aged 65 and above" = "65_and_above(%)",
-                                        "Population density" = "population_density"),
+                                        "Population density" = "population_density",
+                                        "Log(Total population)" = "population_log",
+                                        "Log(Population density)" = "population_density_log"),
                                     'Others' = list(
-                                        "Annual international arrivals" = "annual_intl_arrivals_thousands")
-                                    ) # End list
+                                        "Annual international arrivals" = "annual_intl_arrivals_thousands",
+                                        "Log(Annual international arrivals)" = "annual_intl_arrivals_thou_log")
+                                    ),
+                                selected = "total_cases_log" # End list
                                 ), # End selectInput
-                    
-                    checkboxInput("use.log.bc",
-                                  h5("Use log values"),
-                                  value = TRUE
-                    ),
                     
                     hr(),
                     
@@ -88,6 +94,12 @@ ui <- fluidPage(
                         selectInput("type",
                                     h5("Statistical test:"),
                                     c("Bayesian", "Non-parametrtic", "Parametric", "Robust")
+                        ),
+                        
+                        selectInput("conf.level",
+                                    h5("Confidence level for statistical test:"),
+                                    c("90%" = "0.90", "95%" = "0.95", "99%" = "0.99"),
+                                    selected = "0.95"
                         )
                         
                     ), # End conditionalPanel for show statistical test
@@ -104,15 +116,10 @@ ui <- fluidPage(
                                 c("Generalised Additive Model (GAM)" = "gam",
                                   "General Linear Model (GLM)" = "glm",
                                   "Linear Model" = "lm", 
-                                  "Loess" = "loess")
-                                ),
-                    
-                    selectInput("conf.level",
-                                h5("Confidence level for regression line:"),
-                                c("90%" = "0.90", "95%" = "0.95", "99%" = "0.99"),
-                                selected = "0.95"
-                    )
-                    
+                                  "Loess" = "loess",
+                                  "None" = "NULL"),
+                                selected = "lm"
+                                )
                 ), # End conditionalPanel for y variable: cumDeath
                 
                 
@@ -128,12 +135,8 @@ ui <- fluidPage(
                                 h5("X-variable:"), 
                                 list(
                                     'COVID related' = list(
-                                        "Log of cumulative positive cases" = "total_cases_log",
+                                        "Cumulative positive cases" = "total_cases",
                                         "Cumulative tests conducted" = "total_tests"),
-                                    'Healthcare' = list(
-                                        "Hospital beds (per thousand)" = "hospital_beds_per_thousand",
-                                        "Physicians (per thousand)" = "num_physicians_per_thousand",
-                                        "Handwashing facilities" = "handwashing_facilities"),
                                     'Population' = list(
                                         "Total population" = "population")
                                 ) # End list
@@ -303,8 +306,8 @@ ui <- fluidPage(
                     ################################################
                     conditionalPanel(
                         condition = "input.vsMethod == 'forward_p' 
-                                    | input.vsMethod == 'backward_p' 
-                                    | input.vsMethod == 'both_p'",
+                                    || input.vsMethod == 'backward_p' 
+                                    || input.vsMethod == 'both_p'",
                         ns = NS(NULL),
                         
                         numericInput("prem", # TO UPDATE TO PREM
@@ -346,21 +349,24 @@ ui <- fluidPage(
                     "Bivariate Analysis", value = "tab_b",
                     
                     conditionalPanel(
-                        condition = "input.tabs_name == 'tab_b' && input.yVariable_b == 'total_deaths'",
+                        condition = "input.tabs_name == 'tab_b' && 
+                                    (input.yVariable_b == 'total_deaths' || input.yVariable_b == 'total_deaths_log')",
                         ns = NS(NULL),
                         
                         hr(),
                         
                         selectInput("selectedContinent",
                                     "Display label for:",
-                                    c("All" = "All",
+                                    c("None" = "None",
+                                      "All" = "All",
                                       "Africa" = "Africa",
                                       "Asia" = "Asia",
                                       "Europe" = "Europe",
                                       "North America" = "North America",
                                       "Oceania" = "Oceania",
-                                      "South America" = "South America"),
-                                    selected = "All"
+                                      "South America" = "South America"
+                                      ),
+                                    selected = "None"
                         ), # End selectInput
                         
                         hr(),
@@ -441,10 +447,11 @@ server <- function(input, output) {
         
         xselect <- input$xVariable_bc
         yselect <- input$yVariable_b
-       
+        continentselect <- input$selectedContinent
+        
         xselect <- enquo(xselect)
         yselect <- enquo(yselect)
-        
+        continentselect <- enquo(continentselect)
         
         if (input$selectedContinent == "All") {
             ggscatterstats(data = death_df,
@@ -452,8 +459,9 @@ server <- function(input, output) {
                            y = !!yselect, # dependent variable
                            type = input$type, # statistical test
                            conf.level = as.numeric(input$conf.level), # confidence level
-                           results.subtitle = input$showStatTest, # set to FALSE to NOT display the statistical tests
-                           ggplot.component = list(geom_smooth(method = input$gg.regression.method, size =0.05)), # regression line
+                           results.subtitle = input$showStatTest, # display the statistical tests
+                           ggplot.component = list(geom_smooth(method = input$gg.regression.method, size =0.05), # regression line
+                                                   scale_size_continuous(guide = FALSE)), 
                            label.var = location,
                            # NO CRITERIA TO DISPLAY BY WHICH CONTINENT
                            point.args = list(aes(colour=continent,
@@ -462,117 +470,69 @@ server <- function(input, output) {
                            smooth.line.args = list(color = NA, 
                                                    se = FALSE),
                            marginal.type = input$marginal.type, # marginal distribution
-                           title = "Scatterplot with marginal distribution")
-        } else if (input$selectedContinent == "Africa") {
+                           title = "Scatterplot with marginal distribution",
+                           ggtheme = ggplot2::theme(legend.position = "bottom"))
+        } else if (input$selectedContinent == "None") {
             ggscatterstats(data = death_df,
-                           x = total_cases, # independent variable
-                           y = total_deaths_log, # dependent variable
+                           x = !!xselect, # independent variable
+                           y = !!yselect, # dependent variable
                            type = input$type, # statistical test
                            conf.level = as.numeric(input$conf.level), # confidence level
                            results.subtitle = input$showStatTest, # set to FALSE to NOT display the statistical tests
-                           ggplot.component = list(geom_smooth(method = input$gg.regression.method, size =0.05)), # regression line
-                           label.var = location,
-                           label.expression = continent == "Africa", # criteria to display labels
+                           ggplot.component = list(geom_smooth(method = input$gg.regression.method, size =0.05), # regression line
+                                                   scale_size_continuous(guide = FALSE)), 
+                           # NO DISPLAY OF LABEL
                            point.args = list(aes(colour=continent,
                                                  size=population),
                                              alpha = 0.4),
                            smooth.line.args = list(color = NA, 
                                                    se = FALSE),
                            marginal.type = input$marginal.type, # marginal distribution
-                           title = "Scatterplot with marginal distribution")
-        } else if (input$selectedContinent == "Asia") {
+                           title = "Scatterplot with marginal distribution",
+                           ggtheme = ggplot2::theme(legend.position = "bottom"))
+        } else {
             ggscatterstats(data = death_df,
                            x = total_cases, # independent variable
                            y = total_deaths_log, # dependent variable
                            type = input$type, # statistical test
                            conf.level = as.numeric(input$conf.level), # confidence level
                            results.subtitle = input$showStatTest, # set to FALSE to NOT display the statistical tests
-                           ggplot.component = list(geom_smooth(method = input$gg.regression.method, size =0.05)), # regression line
+                           ggplot.component = list(geom_smooth(method = input$gg.regression.method, size =0.05), # regression line
+                                                   scale_size_continuous(guide = FALSE)), 
                            label.var = location,
-                           label.expression = continent == "Asia", # criteria to display labels
+                           label.expression = continent == !!continentselect, # criteria to display labels
                            point.args = list(aes(colour=continent,
                                                  size=population),
                                              alpha = 0.4),
                            smooth.line.args = list(color = NA, 
                                                    se = FALSE),
                            marginal.type = input$marginal.type, # marginal distribution
-                           title = "Scatterplot with marginal distribution")
-        } else if (input$selectedContinent == "Europe") {
-            ggscatterstats(data = death_df,
-                           x = total_cases, # independent variable
-                           y = total_deaths_log, # dependent variable
-                           type = input$type, # statistical test
-                           conf.level = as.numeric(input$conf.level), # confidence level
-                           results.subtitle = input$showStatTest, # set to FALSE to NOT display the statistical tests
-                           ggplot.component = list(geom_smooth(method = input$gg.regression.method, size =0.05)), # regression line
-                           label.var = location,
-                           label.expression = continent == "Europe", # criteria to display labels
-                           point.args = list(aes(colour=continent,
-                                                 size=population),
-                                             alpha = 0.4),
-                           smooth.line.args = list(color = NA, 
-                                                   se = FALSE),
-                           marginal.type = input$marginal.type, # marginal distribution
-                           title = "Scatterplot with marginal distribution")
-        } else if (input$selectedContinent == "North America") {
-            ggscatterstats(data = death_df,
-                           x = total_cases, # independent variable
-                           y = total_deaths_log, # dependent variable
-                           type = input$type, # statistical test
-                           conf.level = as.numeric(input$conf.level), # confidence level
-                           results.subtitle = input$showStatTest, # set to FALSE to NOT display the statistical tests
-                           ggplot.component = list(geom_smooth(method = input$gg.regression.method, size =0.05)), # regression line
-                           label.var = location,
-                           label.expression = continent == "North America", # criteria to display labels
-                           point.args = list(aes(colour=continent,
-                                                 size=population),
-                                             alpha = 0.4),
-                           smooth.line.args = list(color = NA, 
-                                                   se = FALSE),
-                           marginal.type = input$marginal.type, # marginal distribution
-                           title = "Scatterplot with marginal distribution")
-        } else if (input$selectedContinent == "Oceania") {
-            ggscatterstats(data = death_df,
-                           x = total_cases, # independent variable
-                           y = total_deaths_log, # dependent variable
-                           type = input$type, # statistical test
-                           conf.level = as.numeric(input$conf.level), # confidence level
-                           results.subtitle = input$showStatTest, # set to FALSE to NOT display the statistical tests
-                           ggplot.component = list(geom_smooth(method = input$gg.regression.method, size =0.05)), # regression line
-                           label.var = location,
-                           label.expression = continent == "Oceania", # criteria to display labels
-                           point.args = list(aes(colour=continent,
-                                                 size=population),
-                                             alpha = 0.4),
-                           smooth.line.args = list(color = NA, 
-                                                   se = FALSE),
-                           marginal.type = input$marginal.type, # marginal distribution
-                           title = "Scatterplot with marginal distribution")
-        } else if (input$selectedContinent == "South America") {
-            ggscatterstats(data = death_df,
-                           x = total_cases, # independent variable
-                           y = total_deaths_log, # dependent variable
-                           type = input$type, # statistical test
-                           conf.level = as.numeric(input$conf.level), # confidence level
-                           results.subtitle = input$showStatTest, # set to FALSE to NOT display the statistical tests
-                           ggplot.component = list(geom_smooth(method = input$gg.regression.method, size =0.05)), # regression line
-                           label.var = location,
-                           label.expression = continent == "South America", # criteria to display labels
-                           point.args = list(aes(colour=continent,
-                                                 size=population),
-                                             alpha = 0.4),
-                           smooth.line.args = list(color = NA, 
-                                                   se = FALSE),
-                           marginal.type = input$marginal.type, # marginal distribution
-                           title = "Scatterplot with marginal distribution")
-        }
+                           title = "Scatterplot with marginal distribution",
+                           ggtheme = ggplot2::theme(legend.position = "bottom"))
+        } # End if else
 
     }) # End renderPlot for scatterplot
     
     output$funnelplot <- renderPlotly({
         
-        rate <- death_df$case_fatality_rate # TO UPDATE
-        number <- death_df$total_cases_log # TO UPDATE
+        if (input$xVariable_br == "total_cases") {
+            rate <- death_df$case_fatality_rate
+            number <- death_df$total_cases_log
+            xselect <- "total_cases_log"
+            yselect <- "case_fatality_rate"
+            
+        } else if (input$xVariable_br == "total_tests") {
+            rate <- death_df$deaths_per_test
+            number <- death_df$total_tests_log
+            xselect <- "total_tests_log"
+            yselect <- "deaths_per_test"
+            
+        } else if (input$xVariable_br == "population") {
+            rate <- death_df$deaths_per_100000pop
+            number <- death_df$population_log
+            xselect <- "population_log"
+            yselect <- "deaths_per_100000pop"
+        }
         
         rate.se <- sqrt((rate*(1-rate)) / (number))
         df <- data.frame(rate, number, rate.se)
@@ -598,7 +558,7 @@ server <- function(input, output) {
         # Draw funnel plot
         
         fp_ggplot <- ggplot(death_df, 
-                            aes(x = total_cases_log, y = case_fatality_rate)) + # TO UPDATE ACCORDINGLY
+                            aes(x = xselect, y = yselect)) + # TO UPDATE ACCORDINGLY
             geom_point(aes(colour=continent,
                            size=population,
                            label=location),
