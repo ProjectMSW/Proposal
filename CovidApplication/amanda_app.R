@@ -439,12 +439,17 @@ server <- function(input, output) {
     
     output$scatterplot <- renderPlot({
         
-
+        xselect <- input$xVariable_bc
+        yselect <- input$yVariable_b
+       
+        xselect <- enquo(xselect)
+        yselect <- enquo(yselect)
+        
         
         if (input$selectedContinent == "All") {
             ggscatterstats(data = death_df,
-                           x = total_cases, # independent variable
-                           y = total_deaths_log, # dependent variable
+                           x = !!xselect, # independent variable
+                           y = !!yselect, # dependent variable
                            type = input$type, # statistical test
                            conf.level = as.numeric(input$conf.level), # confidence level
                            results.subtitle = input$showStatTest, # set to FALSE to NOT display the statistical tests
