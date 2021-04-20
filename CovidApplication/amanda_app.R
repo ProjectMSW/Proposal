@@ -27,19 +27,22 @@ ui <- fluidPage(
                 
                 selectInput("yVariable_b", 
                             h5("Y-variable"),
-                            c("Cumulative death" = "cumDeath", "Fatality rate" = "rate")
+                            #data = death_df,
+                            c("Cumulative death" = "total_deaths", "Fatality rate" = "rate"),
+                            selected = "total_deaths"
                 ), # End selectInput
                 
-                #############################################
-                # conditionalPanel for y variable: cumDeath #
-                #############################################
+                #################################################
+                # conditionalPanel for y variable: total_deaths #
+                #################################################
                 
                 conditionalPanel(
-                    condition = "input.tabs_name == 'tab_b' && input.yVariable_b == 'cumDeath'",
+                    condition = "input.tabs_name == 'tab_b' && input.yVariable_b == 'total_deaths'",
                     ns = NS(NULL),
                     
                     selectInput("xVariable_bc",
                                 h5("X-variable:"), 
+                                #data = death_df,
                                 list(
                                     'COVID related' = list(
                                         "Cumulative positive cases" = "total_cases",
@@ -168,14 +171,14 @@ ui <- fluidPage(
                 #####################
                 selectInput("yVariable_m", 
                             h5("Y-variable"),
-                            c("Cumulative death" = "cumDeath", "Case fatality rate" = "caseFatalityRate")
+                            c("Cumulative death" = "total_deaths", "Case fatality rate" = "caseFatalityRate")
                 ), # End selectInput
             
-                #############################################
-                # conditionalPanel for y variable: cumDeath #
-                #############################################
+                #################################################
+                # conditionalPanel for y variable: total_deaths #
+                #################################################
                 conditionalPanel(
-                    condition = "input.tabs_name == 'tab_m' && input.yVariable_m == 'cumDeath'",
+                    condition = "input.tabs_name == 'tab_m' && input.yVariable_m == 'total_deaths'",
                     ns = NS(NULL),
                     
                     selectizeInput("xVariable_mc",
@@ -210,7 +213,7 @@ ui <- fluidPage(
                                 )
                     ) # End selectizeInput
 
-                ), # End conditionalPanel for y variable: cumDeath
+                ), # End conditionalPanel for y variable: total_deaths
                 
                 #########################################
                 # conditionalPanel for y variable: rate #
@@ -343,7 +346,7 @@ ui <- fluidPage(
                     "Bivariate Analysis", value = "tab_b",
                     
                     conditionalPanel(
-                        condition = "input.tabs_name == 'tab_b' && input.yVariable_b == 'cumDeath'",
+                        condition = "input.tabs_name == 'tab_b' && input.yVariable_b == 'total_deaths'",
                         ns = NS(NULL),
                         
                         hr(),
@@ -436,12 +439,11 @@ server <- function(input, output) {
     
     output$scatterplot <- renderPlot({
         
-        x <- death_df$hospital_beds_per_thousand
-        y <- input$yVariable
+
         
         if (input$selectedContinent == "All") {
             ggscatterstats(data = death_df,
-                           x = hospital_beds_per_thousand, # independent variable
+                           x = total_cases, # independent variable
                            y = total_deaths_log, # dependent variable
                            type = input$type, # statistical test
                            conf.level = as.numeric(input$conf.level), # confidence level
@@ -458,7 +460,7 @@ server <- function(input, output) {
                            title = "Scatterplot with marginal distribution")
         } else if (input$selectedContinent == "Africa") {
             ggscatterstats(data = death_df,
-                           x = hospital_beds_per_thousand, # independent variable
+                           x = total_cases, # independent variable
                            y = total_deaths_log, # dependent variable
                            type = input$type, # statistical test
                            conf.level = as.numeric(input$conf.level), # confidence level
@@ -475,7 +477,7 @@ server <- function(input, output) {
                            title = "Scatterplot with marginal distribution")
         } else if (input$selectedContinent == "Asia") {
             ggscatterstats(data = death_df,
-                           x = hospital_beds_per_thousand, # independent variable
+                           x = total_cases, # independent variable
                            y = total_deaths_log, # dependent variable
                            type = input$type, # statistical test
                            conf.level = as.numeric(input$conf.level), # confidence level
@@ -492,7 +494,7 @@ server <- function(input, output) {
                            title = "Scatterplot with marginal distribution")
         } else if (input$selectedContinent == "Europe") {
             ggscatterstats(data = death_df,
-                           x = hospital_beds_per_thousand, # independent variable
+                           x = total_cases, # independent variable
                            y = total_deaths_log, # dependent variable
                            type = input$type, # statistical test
                            conf.level = as.numeric(input$conf.level), # confidence level
@@ -509,7 +511,7 @@ server <- function(input, output) {
                            title = "Scatterplot with marginal distribution")
         } else if (input$selectedContinent == "North America") {
             ggscatterstats(data = death_df,
-                           x = hospital_beds_per_thousand, # independent variable
+                           x = total_cases, # independent variable
                            y = total_deaths_log, # dependent variable
                            type = input$type, # statistical test
                            conf.level = as.numeric(input$conf.level), # confidence level
@@ -526,7 +528,7 @@ server <- function(input, output) {
                            title = "Scatterplot with marginal distribution")
         } else if (input$selectedContinent == "Oceania") {
             ggscatterstats(data = death_df,
-                           x = hospital_beds_per_thousand, # independent variable
+                           x = total_cases, # independent variable
                            y = total_deaths_log, # dependent variable
                            type = input$type, # statistical test
                            conf.level = as.numeric(input$conf.level), # confidence level
@@ -543,7 +545,7 @@ server <- function(input, output) {
                            title = "Scatterplot with marginal distribution")
         } else if (input$selectedContinent == "South America") {
             ggscatterstats(data = death_df,
-                           x = hospital_beds_per_thousand, # independent variable
+                           x = total_cases, # independent variable
                            y = total_deaths_log, # dependent variable
                            type = input$type, # statistical test
                            conf.level = as.numeric(input$conf.level), # confidence level
@@ -605,7 +607,6 @@ server <- function(input, output) {
                   legend.text = element_text(size=7)) +
             scale_size_continuous(guide = FALSE) +
         
-        
             geom_line(data = dfCI, aes(x = number.seq, y = number.ll90), 
                       size = 0.4, colour = "grey40", linetype = "dotted") +
             geom_line(data = dfCI, aes(x = number.seq, y = number.ul90), 
@@ -628,9 +629,7 @@ server <- function(input, output) {
                       size = 0.4, colour = "grey40") +
             geom_line(data = dfCI, aes(x = number.seq, y = number.ul999), 
                       size = 0.4, colour = "grey40") +
-            annotate("text", x = 0.3, y = -0.33, label = "99.9%", size = 2, colour = "grey40") +
-            
-            
+            annotate("text", x = 0.3, y = -0.33, label = "99.9%", size = 2, colour = "grey40")
         
         fp_densigram <- ggplot(death_df, aes(x = case_fatality_rate)) + # TO UPDATE
             geom_histogram(bins = 40, fill="orange", colour="grey40", size=0.2) + 
@@ -677,8 +676,8 @@ server <- function(input, output) {
                     data = death_df) # TO CHANGE Y AND X VARIABLES
         
         model_vsm <- ols_step_both_p(model, # TO CHANGE VSM SELECTED
-                                     prem = 0.05, # TO UPDATE ACCORDINGLY
-                                     progress = input$showStep) # TO UPDATE ACCORDINGLY
+                                     prem = input$prem,
+                                     progress = input$showStep)
         
         plot(model_vsm)
         
