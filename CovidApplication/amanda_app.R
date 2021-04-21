@@ -542,7 +542,10 @@ ui <- fluidPage(
                         verbatimTextOutput("VSMResultsText"),
                         
                         conditionalPanel(
-                            condition = "input.plotResults == 1",
+                            condition = "input.plotResults == 1 && 
+                                        (input.vsMethod == 'forward_aic' 
+                                            || input.vsMethod == 'backward_aic'
+                                            || input.vsMethod == 'both_aic')",
                             ns = NS(NULL),
                             
                             plotOutput("VSMResultsPlot", height = 250, width = 500)
