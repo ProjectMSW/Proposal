@@ -5,6 +5,8 @@ library(readr)
 
 confirmed_cases_raw <- read_csv("data/time_series_covid19_confirmed_global.csv") 
 
+death_df <- read_csv("data/deaths_tidy.csv")
+
 getMyDate <- function(d){
   e<-(rev(names(d))[1])
   temp <- strsplit(e,"/")
@@ -232,7 +234,7 @@ PredictionModel <- function(traindata, modelselection){
   
   a <-modeltime_table(USmodel_fit_arima_boosted)
   b <-modeltime_table(USmodel_fit_ets)
-  c <-modeltime_table(USmodel_fit_prophet)
+  c1 <-modeltime_table(USmodel_fit_prophet)
   d <- modeltime_table(USmodel_fit_lm)
   e<- modeltime_table(USwflw_fit_mars)
   f<- modeltime_table(USmodel_snaive)
@@ -253,7 +255,7 @@ PredictionModel <- function(traindata, modelselection){
       USmodels_tbl <- combine_modeltime_tables(USmodels_tbl,b)
     }
     if(c == "prophet"){
-      USmodels_tbl <- combine_modeltime_tables(USmodels_tbl,c)
+      USmodels_tbl <- combine_modeltime_tables(USmodels_tbl,c1)
     }
     
     if(c == "lm"){

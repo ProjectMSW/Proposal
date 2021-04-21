@@ -1,5 +1,46 @@
 
 
+factorUI <- function(id) {
+  ns <- NS(id)
+  tagList(
+    
+    selectInput(NS(id, "qn"), 'Select Question', choices = 
+                  c("Proportion who are willing to take vaccine"="vac_1", 
+                    "Proportion worried about getting COVID-19"="vac2_1", 
+                    "Proportion worried about side effects of COVID-19 vaccines"="vac2_2", 
+                    "Proportion confident government will provide effective COVID-19 vaccines"="vac2_3", 
+                    "Proportion confident vaccine will completely protect recipients from health effects of COVID-19"="vac2_4",
+                    "Proportion confident vaccine will completely prevent transmission of COVID-19 from recipient to others"="vac2_5",
+                    "Proportion who feel they will regret if they do not take the vaccine"="vac2_6", 
+                    "Proportion who will take the vaccine if available in 1 year"="vac_3"),
+                width = '100%'),
+    
+    selectInput(NS(id, "responselvl"), 'Response Level', choices = 
+                  c("Strongly Agreed"="5", 
+                    "Agreed"="4", 
+                    "Neutral"="3",
+                    "Disagreed"="2",
+                    "Strongly Disagreed" = "1"),
+                width = '100%'),
+    
+    selectInput(NS(id, "confidlvl"), 'Response Level', choices = 
+                  c("0.90"="0.90", 
+                    "0.95"="0.95", 
+                    "0.98"="0.98",
+                    "0.99"="0.99"),
+                width = '100%'),
+    
+    actionButton(ns("DgoButton"), label = "Go")
+    
+    
+  )
+}
+
+
+
+
+
+
 surveysideUI <- function(id) {
   ns <- NS(id)
   tagList(
