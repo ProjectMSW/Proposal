@@ -1030,3 +1030,18 @@ Similar to bivariate, users will need to select the y and x variables for the mu
 The output panel will display the results according to the user selection on the left panel. Likewise, the use of the submit button to delay the outputs will be tested during app development.
 
 *- End of assignment, thank you! -*
+
+```{r}
+covid_deaths_tidy <- covid_deaths_tidy %>%
+    mutate(deaths_per_test = total_deaths / total_tests,
+           deaths_per_population = total_deaths / population) %>%
+    rename("pop_young" = "0_to_14(%)",
+           "pop_working" = "15_to_64(%)",
+           "pop_old" = "65_and_above(%)",
+           "current_health_exp" = "current_health_exp_%gdp",
+           "govt_health_exp" = "govt_health_exp_%totalgovtexp")
+
+write.csv(covid_deaths_tidy, "data/deaths_tidy.csv")
+
+```
+

@@ -8,15 +8,6 @@ library(plotly)
 
 death_df <- read_csv("data/deaths_tidy.csv")
 
-death_df <- death_df %>%
-    mutate(deaths_per_test = total_deaths / total_tests,
-           deaths_per_population = total_deaths / population) %>%
-    rename("pop_young" = "0_to_14(%)",
-           "pop_working" = "15_to_64(%)",
-           "pop_old" = "65_and_above(%)",
-           "current_health_exp" = "current_health_exp_%gdp",
-           "govt_health_exp" = "govt_health_exp_%totalgovtexp")
-
 ui <- fluidPage(
     hr(),
     
