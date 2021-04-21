@@ -646,12 +646,33 @@ ui <- fluidPage(
     ),
     tabPanel("Understanding vaccination sentiments", 
              sidebarPanel(
-               surveysideUI("datafile")
+               selectInput("countryofinterest", 'Select Country', choices = 
+                             c("Australia" ="Australia","Canada" ="Canada","Denmark"="Denmark",
+                               "Finland"="Finland","France"="France","Germany"="Germany",
+                               "Israel"="Israel","Italy"="Italy","Japan"="Japan",
+                               "Netherlands"="Netherlands","Norway"="Norway","Singapore"="Singapore",
+                               "South Korea"="South Korea","Spain"="Spain","Sweden"="Sweden",
+                               "United Kingdom"="United Kingdom","United States"="United States"),
+                           width = '100%'),
+               
+               selectInput("strengthResponse", 'Strength of Response', choices = 
+                             c("Strongly Agreed"="5", 
+                               "Agreed"="4"),
+                           width = '100%'),
+               
+               selectInput("factorofinterest", 'Factor of Interest', choices = 
+                             c("0.90"="0.90", 
+                               "0.95"="0.95", 
+                               "0.98"="0.98",
+                               "0.99"="0.99"),
+                           width = '100%'),
+               
+               actionButton("DgoButton1", label = "Go")
              ),
              mainPanel(
                tabsetPanel(
-                 tabPanel("Survey Finding", plotOutput("likert")),
-                 tabPanel("Association of Factors", "This is for factors"),
+                 tabPanel("Survey Finding", "this is empty" ),
+                 tabPanel("Association of Factors", plotOutput("likert")),
                  tabPanel("Data Exploration", "This is for data exploration")
                )
              )
@@ -858,11 +879,18 @@ server <- function(input, output, session){
   
   
   output$likert <- renderPlot({
-    main_df<- read_csv("data/main_df.csv") 
     
+    dcountry <- input$countryofinterest
+    print("country")
+    print(dcountry)
     
-    countrySelected = "Australia"   
-    strength = 4  # For user to determine level of agreement - 4 Agree, 5 Strongly agree
+    dstrength <- input$strengthResponse
+    
+    print("strength")
+    print(dstrength)
+    
+    countrySelected = dcountry
+    strength = as.integer(dstrength)  # For user to determine level of agreement - 4 Agree, 5 Strongly agree
     
     upset_df <- filter(main_df, country == countrySelected)
     # vac_1 - willing to get vaccine
@@ -952,7 +980,16 @@ server <- function(input, output, session){
                                 "vac5_ag","vac6_ag","vac7_ag"),
           mb.ratio = c(0.55,0.45), order.by = "freq")
     
+    
+    
+    
   })
+  
+  
+  
+  
+  
+  ############################### AMANDA  #######################
   
   ###############
   # SCATTERPLOT #
