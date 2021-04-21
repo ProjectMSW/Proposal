@@ -536,7 +536,7 @@ ui <- fluidPage(
                     conditionalPanel(
                         condition = "input.tabs_name == 'tab_m' && input.regressionModel == 'vsm'",
                         ns = NS(NULL),
-                        
+                        h5("am i here"),
                         h5("Model Output:"),
                         verbatimTextOutput("VSMResultsText"),
                         
@@ -552,6 +552,7 @@ ui <- fluidPage(
                             condition = "input.plotDiagnostics == 1",
                             ns = NS(NULL),
                             
+<<<<<<< HEAD
                             h4("Model diagnostics:"),
                             h6("Model fit assessment and assumptions validation"),
                             plotOutput("BaseDiagnosticsPlot1", height = 200),
@@ -562,6 +563,19 @@ ui <- fluidPage(
                             hr(),
                             h6("Collinearity"),
                             verbatimTextOutput("BaseCollResultsText")
+=======
+<<<<<<< HEAD
+                            h5("Model diagnostics:"),
+                            plotOutput("BaseDiagnosticsPlot"),
+                            
+                            h6("Collinearity:"),
+                            verbatimTextOutput("BaseCollResultsText")
+=======
+                            plotOutput("BaseDiagnosticsPlot"),
+                            
+                            plotOutput("BaseCollPlot")
+>>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
+>>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
                             
                         ) # End conditionalPanel for plotDiagnostics
                         
@@ -776,6 +790,7 @@ server <- function(input, output) {
                           size = 0.4, colour = "grey40", linetype = "dotted") +
                 annotate("text", x = 0.3, y = dfCI$number.ll90[1], label = "90%", size = 2, colour = "grey40")
         } 
+<<<<<<< HEAD
         
         if (95 %in% input$conf.range) {
             fp_ggplot <- fp_ggplot + 
@@ -786,6 +801,18 @@ server <- function(input, output) {
                 annotate("text", x = 0.3, y = dfCI$number.ll95[1], label = "95%", size = 2, colour = "grey40")
         } 
         
+=======
+        
+        if (95 %in% input$conf.range) {
+            fp_ggplot <- fp_ggplot + 
+                geom_line(data = dfCI, aes(x = number.seq, y = number.ll95), 
+                      size = 0.4, colour = "grey40", linetype = "dashed") +
+                geom_line(data = dfCI, aes(x = number.seq, y = number.ul95), 
+                          size = 0.4, colour = "grey40", linetype = "dashed") +
+                annotate("text", x = 0.3, y = dfCI$number.ll95[1], label = "95%", size = 2, colour = "grey40")
+        } 
+        
+>>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
         if (99 %in% input$conf.range) {
             fp_ggplot <- fp_ggplot + 
                 geom_line(data = dfCI, aes(x = number.seq, y = number.ll99), 
@@ -794,6 +821,7 @@ server <- function(input, output) {
                           size = 0.4, colour = "grey40", linetype = "twodash") +
                 annotate("text", x = 0.3, y = dfCI$number.ll99[1], label = "99%", size = 2, colour = "grey40")
         } 
+<<<<<<< HEAD
         
         if (99.9 %in% input$conf.range) {
             fp_ggplot <- fp_ggplot + 
@@ -804,6 +832,18 @@ server <- function(input, output) {
                 annotate("text", x = 0.3, y = dfCI$number.ll999[1], label = "99.9%", size = 2, colour = "grey40")
         }
         
+=======
+        
+        if (99.9 %in% input$conf.range) {
+            fp_ggplot <- fp_ggplot + 
+                geom_line(data = dfCI, aes(x = number.seq, y = number.ll999), 
+                      size = 0.4, colour = "grey40") +
+                geom_line(data = dfCI, aes(x = number.seq, y = number.ul999), 
+                          size = 0.4, colour = "grey40") +
+                annotate("text", x = 0.3, y = dfCI$number.ll999[1], label = "99.9%", size = 2, colour = "grey40")
+        }
+        
+>>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
         # Combine funnel plot and distribution
         subplot(fp_ggplot, fp_densigram,
                 nrows = 1,
@@ -839,7 +879,15 @@ server <- function(input, output) {
                         data = death_df,
                         iterm = input$iterm)
         }
+<<<<<<< HEAD
     }) # End model_lsr reactive
+=======
+<<<<<<< HEAD
+    }) # End model_lsr reactive
+=======
+    })
+>>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
+>>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
     
     output$lsrResultsText <- renderPrint({
         
@@ -851,7 +899,14 @@ server <- function(input, output) {
     # VARIABLE SELECTION #
     ######################
     
+<<<<<<< HEAD
     # create base model
+=======
+<<<<<<< HEAD
+    # create base model
+=======
+>>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
+>>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
     model <- reactive({
         if(input$yVariable_m == "total_deaths"){
             lm(reformulate(response=input$yVariable_m,
@@ -870,7 +925,53 @@ server <- function(input, output) {
                            termlabels=input$xVariable_m_dpp),
                data = death_df)
         }
+<<<<<<< HEAD
     }) # End model reactive
+=======
+<<<<<<< HEAD
+    }) # End model reactive
+    
+    # create model based on VSM chosen
+    model_vsm <- reactive({
+        
+        
+        if (input$vsMethod == "all_possible"){
+         
+            
+            
+            model1 <- lm(reformulate(response="total_deaths",
+                                     termlabels="total_cases"),
+                                     data = death_df)
+            model_vsm <- ols_step_all_possible(model1)
+        } else if (input$vsMethod == "best_subset") {
+            model_vsm <- ols_step_best_subset(model, 
+                                              progress = input$showStep)
+        } else if (input$vsMethod == "forward_p") {
+            model_vsm <- ols_step_forward_p(model, 
+                                            prem = input$prem, 
+                                            progress = input$showStep)
+        } else if (input$vsMethod == "backward_p") {
+            model_vsm <- ols_step_backward_p(model, 
+                                             prem = input$prem, 
+                                             progress = input$showStep)
+        } else if (input$vsMethod == "both_p") {
+            model_vsm <- ols_step_both_p(model(), 
+                                         prem = input$prem, 
+                                         progress = input$showStep)
+        } else if (input$vsMethod == "forward_aic") {
+            model_vsm <- ols_step_forward_aic(model, 
+                                              progress = input$showStep)
+        } else if (input$vsMethod == "backward_aic") {
+            model_vsm <- ols_step_backward_aic(model, 
+                                               progress = input$showStep)
+        } else if (input$vsMethod == "both_aic") {
+            model_vsm <- ols_step_both_aic(model, 
+                                           progress = input$showStep)
+        }
+    }) # End model_vsm reactive
+=======
+    })
+>>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
     
     # create model based on VSM chosen
     model_vsm <- reactive({
@@ -903,7 +1004,38 @@ server <- function(input, output) {
             ols_step_both_aic(model(), 
                               progress = input$showStep)
         }
+<<<<<<< HEAD
     }) # End model_vsm reactive
+=======
+        if (input$vsMethod == "both_p") {
+            model_vsm <- ols_step_both_p(model, 
+                                         prem = input$prem, 
+                                         progress = input$showStep)
+        }
+        if (input$vsMethod == "forward_aic") {
+            model_vsm <- ols_step_forward_aic(model, 
+                                              prem = input$prem, 
+                                              progress = input$showStep)
+        }
+        if (input$vsMethod == "backward_aic") {
+            model_vsm <- ols_step_backward_aic(model, 
+                                               prem = input$prem, 
+                                               progress = input$showStep)
+        }
+        if (input$vsMethod == "both_aic") {
+            model_vsm <- ols_step_both_aic(model, 
+                                           prem = input$prem, 
+                                           progress = input$showStep)
+        }
+        
+        
+    })
+    
+    
+    
+    
+>>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
+>>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
     
     # Printing the results
     output$VSMResultsText <- renderPrint({
@@ -911,9 +1043,19 @@ server <- function(input, output) {
     }) # End renderPrint for vsmResultsText
     
     # Plotting the results
+<<<<<<< HEAD
     output$VSMResultsPlot <- renderPlot({
+=======
+<<<<<<< HEAD
+   # output$vsmResultsPlotly <- renderPlot({
+ #      plot(model_vsm())
+ #   }) # End renderPlot for vsmResultsPlot
+=======
+    output$vsmResultsPlotly <- renderPlot({
+>>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
         plot(model_vsm())
     }) # End renderPlot for vsmResultsPlot
+>>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
     
     # Plotting the diagnostics for base model
     output$BaseDiagnosticsPlot1 <- renderPlot({
@@ -938,7 +1080,15 @@ server <- function(input, output) {
     }) # End renderPlot for BaseDiagnosticsPlot3
     
     # Plotting the collinearity for base model
+<<<<<<< HEAD
     output$BaseCollResultsText <- renderPrint({
+=======
+<<<<<<< HEAD
+    output$BaseCollResultsText <- renderPrint({
+=======
+    output$BaseCollPlot <- renderPlot({
+>>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
+>>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
         ols_coll_diag(model())
     }) # End renderPlot for BaseCollPlot
     

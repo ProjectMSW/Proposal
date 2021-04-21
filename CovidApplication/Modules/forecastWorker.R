@@ -5,8 +5,41 @@ library(readr)
 
 confirmed_cases_raw <- read_csv("data/time_series_covid19_confirmed_global.csv") 
 
+getMyDate <- function(d){
+  e<-(rev(names(d))[1])
+  temp <- strsplit(e,"/")
+  day <-0
+  mon<- 0
+  year<-0
+  for(i in temp){
+    day <- i[2]
+    mon <- i[1]
+    year <- paste0("20",i[3])
+  }
+  newtemp <- paste(mon,day,year, sep="-")
+  
+  return(newtemp)
+}
+
+geYearMonth <- function(d){
+  temp <- strsplit(d,"-")
+  day <-0
+  mon<- 0
+  year<-0
+  for(i in temp){
+    day <- i[1]
+    mon <- i[2]
+    year <- i[3]
+  }
+  newtemp <- paste(year,mon, sep="-")
+  return(newtemp)
+  
+}
+
+
+
 formatraw <- function(raw){
-  confirmed_cases_country_level <-raw %>%
+  confirmed_cases_country_level <- raw %>%
     gather(Date,Total_Cases,-'Province/State',-'Country/Region',-Lat,-Long) %>%    #collecting all the date variables into a single date variable.
     group_by(`Country/Region`,Date) %>%
     summarize(total = sum(Total_Cases)) %>% 
@@ -36,7 +69,7 @@ getIndividualCountryData <- function(countryData,country){
 
 createTrainData <- function(data){
   train_tbl <- training(initial_time_split(data, prop = 0.8)) # 80% training and 20% test
- return(train_tbl)
+  return(train_tbl)
 }
 
 createTestData <- function(data){
@@ -59,20 +92,20 @@ createModel <- function(traindata,testdata,countrydata){
     fit(Daily_new_cases ~ Date + as.numeric(Date) + factor(month(Date, label = TRUE), ordered = F),
         data = traindata)
   
-model_fit_ets <- exp_smoothing() %>%
+  model_fit_ets <- exp_smoothing() %>%
     set_engine(engine = "ets") %>%
     fit(Daily_new_cases ~ Date , data = traindata)
   
-model_fit_prophet <- prophet_reg() %>%
+  model_fit_prophet <- prophet_reg() %>%
     set_engine(engine = "prophet") %>%
     fit(Daily_new_cases ~ Date, data = traindata)
   
-model_fit_lm <- linear_reg() %>%
+  model_fit_lm <- linear_reg() %>%
     set_engine("lm") %>%
     fit(Daily_new_cases ~ as.numeric(Date),
         data = traindata)
   
-model_spec_mars <- mars(mode = "regression") %>%
+  model_spec_mars <- mars(mode = "regression") %>%
     set_engine("earth") 
   
   recipe_spec <- recipe(Daily_new_cases ~ Date, data = traindata) %>%
@@ -90,7 +123,7 @@ model_spec_mars <- mars(mode = "regression") %>%
   model_snaive <- naive_reg() %>%
     set_engine(engine = "snaive") %>%
     fit(Daily_new_cases ~ Date, data = traindata)
-
+  
   
   model_ETS <- exp_smoothing( 
     error = "additive",
@@ -99,7 +132,7 @@ model_spec_mars <- mars(mode = "regression") %>%
     set_engine(engine = "ets") %>%
     fit(Daily_new_cases ~ Date , data = traindata)
   
-
+  
   # adding the models to table
   
   models_tbl <- modeltime_table(
@@ -119,8 +152,7 @@ model_spec_mars <- mars(mode = "regression") %>%
 
 
 PredictionModel <- function(traindata, modelselection){
-  print("in prediciton model")
-  print(modelselection)
+  
   USmodel_fit_arima_no_boost <- arima_reg() %>%
     set_engine(engine = "auto_arima") %>%
     fit(Daily_new_cases ~ Date, data = traindata)
@@ -186,33 +218,33 @@ PredictionModel <- function(traindata, modelselection){
   
   # adding the models to table
   
- # USmodels_tbl <- modeltime_table(
- #   USmodel_fit_arima_no_boost,
+  # USmodels_tbl <- modeltime_table(
+  #   USmodel_fit_arima_no_boost,
   #  USmodel_fit_arima_boosted,
   #  USmodel_fit_ets,
- #   USmodel_fit_prophet,
+  #   USmodel_fit_prophet,
   #  USmodel_fit_lm,
   #  USwflw_fit_mars,
- #   USmodel_snaive,
+  #   USmodel_snaive,
   #  USmodel_ETS
- # )
+  # )
   
   
-a <-modeltime_table(USmodel_fit_arima_boosted)
-b <-modeltime_table(USmodel_fit_ets)
-c <-modeltime_table(USmodel_fit_prophet)
-d <- modeltime_table(USmodel_fit_lm)
-e<- modeltime_table(USwflw_fit_mars)
-f<- modeltime_table(USmodel_snaive)
-g<- modeltime_table(USmodel_ETS)
+  a <-modeltime_table(USmodel_fit_arima_boosted)
+  b <-modeltime_table(USmodel_fit_ets)
+  c <-modeltime_table(USmodel_fit_prophet)
+  d <- modeltime_table(USmodel_fit_lm)
+  e<- modeltime_table(USwflw_fit_mars)
+  f<- modeltime_table(USmodel_snaive)
+  g<- modeltime_table(USmodel_ETS)
   
   
   USmodels_tbl <- modeltime_table(
-       USmodel_fit_arima_no_boost
-       )
+    USmodel_fit_arima_no_boost
+  )
   
   
-
+  
   for(c in modelselection){
     if(c == "arima_boosted"){
       USmodels_tbl <- combine_modeltime_tables(USmodels_tbl,a)
@@ -237,7 +269,21 @@ g<- modeltime_table(USmodel_ETS)
       USmodels_tbl <- combine_modeltime_tables(USmodels_tbl,e)
     }
   }
+  
+  
+  return(USmodels_tbl)
+  
+}
 
+PredictionModel1 <- function(traindata){
+  
+  USmodel_fit_arima_no_boost <- arima_reg() %>%
+    set_engine(engine = "auto_arima") %>%
+    fit(Daily_new_cases ~ Date, data = traindata)
+  
+  USmodels_tbl <- modeltime_table(
+    USmodel_fit_arima_no_boost
+  )
   
   return(USmodels_tbl)
   
@@ -245,14 +291,19 @@ g<- modeltime_table(USmodel_ETS)
 
 
 
+getDataByTime <- function(d,date1,date2){
+  temp <- d%>%
+    filter_by_time(Date, date1, date2)
+  
+  return(temp)
+}
+
 
 
 
 
 createModelforPrediction <- function(traindata, choices){
-  print("please let me know what inside")
-  print(length(choices))
-  print("please let me abcde")
+ 
   model_fit_arima_no_boost <- arima_reg() %>%
     set_engine(engine = "auto_arima") %>%
     fit(Daily_new_cases ~ Date, data = traindata)
@@ -310,7 +361,7 @@ createModelforPrediction <- function(traindata, choices){
   # adding the models to table
   for(c in choices){
     if(c == "arima_no_boost"){
-      print("must be here.....please")
+      
       models_tbl %>%
         add_modeltime_model(model_fit_arima_no_boost)
     }
@@ -358,7 +409,6 @@ createModelforPrediction <- function(traindata, choices){
   )
   
   
-  print("here please. i am alreauf")
   UScalibration_tbl <- models_tbl %>%
     modeltime_calibrate(new_data = traindata)%>%
     modeltime_accuracy() %>%
