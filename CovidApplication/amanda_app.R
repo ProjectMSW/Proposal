@@ -82,9 +82,9 @@ ui <- fluidPage(
                                     'Others' = list(
                                         "Annual international arrivals" = "annual_intl_arrivals_thousands",
                                         "Log(Annual international arrivals)" = "annual_intl_arrivals_thou_log")
-                                    ),
+                                ),
                                 selected = "total_cases_log" # End list
-                                ), # End selectInput
+                    ), # End selectInput
                     
                     hr(),
                     
@@ -115,7 +115,7 @@ ui <- fluidPage(
                                 c("Boxplot" = "boxplot", "Densigram" = "densigram", 
                                   "Density" = "density", "Histogram" = "histogram",
                                   "Violin plot"= "violin")
-                                ),
+                    ),
                     
                     selectInput("gg.regression.method",
                                 h5("Regression line:"),
@@ -125,7 +125,7 @@ ui <- fluidPage(
                                   "Loess" = "loess",
                                   "None" = "NULL"),
                                 selected = "lm"
-                                )
+                    )
                 ), # End conditionalPanel for y variable: cumDeath
                 
                 
@@ -162,10 +162,10 @@ ui <- fluidPage(
                                        ),
                                        selected = c(95, 99.9)
                     ) # End checkboxGroupInput
-
+                    
                 ) # End conditionalPanel for y variable: rate
                 
-
+                
             ), # End conditionalPanel for bivariate tab
             
             #################################
@@ -185,9 +185,9 @@ ui <- fluidPage(
                               "Case fatality rate" = "case_fatality_rate",
                               "Death rate (tests conducted)" = "deaths_per_test",
                               "Death rate (population)" = "deaths_per_population"
-                              )
+                            )
                 ), # End selectInput
-            
+                
                 #################################################
                 # conditionalPanel for y variable: total_deaths #
                 #################################################
@@ -196,41 +196,41 @@ ui <- fluidPage(
                     ns = NS(NULL),
                     
                     selectizeInput("xVariable_m_td",
-                                h5("X-variable:"), 
-                                list(
-                                    'COVID related' = list(
-                                        "Total positive cases" = "total_cases",
-                                        "Total tests conducted" = "total_tests",
-                                        "Positive rate" = "positive_rate"),
-                                    'Healthcare' = list(
-                                        "Hospital beds (per thousand)" = "hospital_beds_per_thousand",
-                                        "Physicians (per thousand)" = "num_physicians_per_thousand",
-                                        "Handwashing facilities" = "handwashing_facilities"),
-                                    'Country indicators' = list(
-                                        "Current health expenditure (% of GDP)" = "current_health_exp",
-                                        "% population living in extreme poverty" = "extreme_poverty",
-                                        "GDP per capita" = "gdp_per_capita",
-                                        "Government health expenditure (% of total government expenditure)" = "govt_health_exp",
-                                        "Human development index (HDI)" = "human_development_index"),
-                                    'Population' = list(
-                                        "Total population" = "population",
-                                        "Population - young (aged 0 to 14)" = "pop_young",
-                                        "Population - working (aged 15 to 64)" = "pop_working",
-                                        "Population - old (aged 65 and above)" = "pop_old",
-                                        "Population density" = "population_density"),
-                                    'Others' = list(
-                                        "Annual international arrivals" = "annual_intl_arrivals_thousands")
-                                ), # End list
-                                multiple = TRUE,
-                                selected = c("total_cases",
-                                             "hospital_beds_per_thousand",
-                                             "gdp_per_capita",
-                                             "pop_old"),
-                                options = list(
-                                    plugins = list("remove_button")
-                                )
+                                   h5("X-variable:"), 
+                                   list(
+                                       'COVID related' = list(
+                                           "Total positive cases" = "total_cases",
+                                           "Total tests conducted" = "total_tests",
+                                           "Positive rate" = "positive_rate"),
+                                       'Healthcare' = list(
+                                           "Hospital beds (per thousand)" = "hospital_beds_per_thousand",
+                                           "Physicians (per thousand)" = "num_physicians_per_thousand",
+                                           "Handwashing facilities" = "handwashing_facilities"),
+                                       'Country indicators' = list(
+                                           "Current health expenditure (% of GDP)" = "current_health_exp",
+                                           "% population living in extreme poverty" = "extreme_poverty",
+                                           "GDP per capita" = "gdp_per_capita",
+                                           "Government health expenditure (% of total government expenditure)" = "govt_health_exp",
+                                           "Human development index (HDI)" = "human_development_index"),
+                                       'Population' = list(
+                                           "Total population" = "population",
+                                           "Population - young (aged 0 to 14)" = "pop_young",
+                                           "Population - working (aged 15 to 64)" = "pop_working",
+                                           "Population - old (aged 65 and above)" = "pop_old",
+                                           "Population density" = "population_density"),
+                                       'Others' = list(
+                                           "Annual international arrivals" = "annual_intl_arrivals_thousands")
+                                   ), # End list
+                                   multiple = TRUE,
+                                   selected = c("total_cases",
+                                                "hospital_beds_per_thousand",
+                                                "gdp_per_capita",
+                                                "pop_old"),
+                                   options = list(
+                                       plugins = list("remove_button")
+                                   )
                     ) # End selectizeInput
-
+                    
                 ), # End conditionalPanel for y variable: total_deaths
                 
                 #######################################################
@@ -241,38 +241,38 @@ ui <- fluidPage(
                     ns = NS(NULL),
                     
                     selectizeInput("xVariable_m_cfr",
-                                h5("X-variable:"), 
-                                list(
-                                    'COVID related' = list(
-                                        "Total tests conducted" = "total_tests",
-                                        "Positive rate" = "positive_rate"),
-                                    'Healthcare' = list(
-                                        "Hospital beds (per thousand)" = "hospital_beds_per_thousand",
-                                        "Physicians (per thousand)" = "num_physicians_per_thousand",
-                                        "Handwashing facilities" = "handwashing_facilities"),
-                                    'Country indicators' = list(
-                                        "Current health expenditure (% of GDP)" = "current_health_exp",
-                                        "% population living in extreme poverty" = "extreme_poverty",
-                                        "GDP per capita" = "gdp_per_capita",
-                                        "Government health expenditure (% of total government expenditure)" = "govt_health_exp",
-                                        "Human development index (HDI)" = "human_development_index"),
-                                    'Population' = list(
-                                        "Total population" = "population",
-                                        "Population - young (aged 0 to 14)" = "pop_young",
-                                        "Population - working (aged 15 to 64)" = "pop_working",
-                                        "Population - old (aged 65 and above)" = "pop_old",
-                                        "Population density" = "population_density"),
-                                    'Others' = list(
-                                        "Annual international arrivals" = "annual_intl_arrivals_thousands")
-                                ), # End list
-                                multiple = TRUE,
-                                selected = c("positive_rate",
-                                             "hospital_beds_per_thousand",
-                                             "gdp_per_capita",
-                                             "pop_old"),
-                                options = list(
-                                    plugins = list("remove_button")
-                                    )
+                                   h5("X-variable:"), 
+                                   list(
+                                       'COVID related' = list(
+                                           "Total tests conducted" = "total_tests",
+                                           "Positive rate" = "positive_rate"),
+                                       'Healthcare' = list(
+                                           "Hospital beds (per thousand)" = "hospital_beds_per_thousand",
+                                           "Physicians (per thousand)" = "num_physicians_per_thousand",
+                                           "Handwashing facilities" = "handwashing_facilities"),
+                                       'Country indicators' = list(
+                                           "Current health expenditure (% of GDP)" = "current_health_exp",
+                                           "% population living in extreme poverty" = "extreme_poverty",
+                                           "GDP per capita" = "gdp_per_capita",
+                                           "Government health expenditure (% of total government expenditure)" = "govt_health_exp",
+                                           "Human development index (HDI)" = "human_development_index"),
+                                       'Population' = list(
+                                           "Total population" = "population",
+                                           "Population - young (aged 0 to 14)" = "pop_young",
+                                           "Population - working (aged 15 to 64)" = "pop_working",
+                                           "Population - old (aged 65 and above)" = "pop_old",
+                                           "Population density" = "population_density"),
+                                       'Others' = list(
+                                           "Annual international arrivals" = "annual_intl_arrivals_thousands")
+                                   ), # End list
+                                   multiple = TRUE,
+                                   selected = c("positive_rate",
+                                                "hospital_beds_per_thousand",
+                                                "gdp_per_capita",
+                                                "pop_old"),
+                                   options = list(
+                                       plugins = list("remove_button")
+                                   )
                     ) # End selectInput
                 ), # End conditionalPanel for y variable: case fatality rate
                 
@@ -420,7 +420,7 @@ ui <- fluidPage(
                                      min = 0,
                                      max = 1,
                                      step = 0.005
-                                     ) # End numericInput
+                        ) # End numericInput
                     ), # End conditionalPanel for vsm with p-values
                     
                     h5("Output options:"),
@@ -493,7 +493,7 @@ ui <- fluidPage(
                                       "North America" = "North America",
                                       "Oceania" = "Oceania",
                                       "South America" = "South America"
-                                      ),
+                                    ),
                                     selected = "None"
                         ), # End selectInput
                         
@@ -537,7 +537,7 @@ ui <- fluidPage(
                     conditionalPanel(
                         condition = "input.tabs_name == 'tab_m' && input.regressionModel == 'vsm'",
                         ns = NS(NULL),
-                        h5("am i here"),
+                        
                         h5("Model Output:"),
                         verbatimTextOutput("VSMResultsText"),
                         
@@ -553,7 +553,6 @@ ui <- fluidPage(
                             condition = "input.plotDiagnostics == 1",
                             ns = NS(NULL),
                             
-<<<<<<< HEAD
                             h4("Model diagnostics:"),
                             h6("Model fit assessment and assumptions validation"),
                             plotOutput("BaseDiagnosticsPlot1", height = 200),
@@ -564,24 +563,11 @@ ui <- fluidPage(
                             hr(),
                             h6("Collinearity"),
                             verbatimTextOutput("BaseCollResultsText")
-=======
-<<<<<<< HEAD
-                            h5("Model diagnostics:"),
-                            plotOutput("BaseDiagnosticsPlot"),
-                            
-                            h6("Collinearity:"),
-                            verbatimTextOutput("BaseCollResultsText")
-=======
-                            plotOutput("BaseDiagnosticsPlot"),
-                            
-                            plotOutput("BaseCollPlot")
->>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
->>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
                             
                         ) # End conditionalPanel for plotDiagnostics
                         
                     ) # End conditionalPanel for variable selection
-                 ) # Close tabpanel Multivariate
+                ) # Close tabpanel Multivariate
             ) # Close tabset tabs_names
         ) # End mainPanel
     )  # End sidebarLayout
@@ -662,7 +648,7 @@ server <- function(input, output) {
                            title = "Scatterplot with marginal distribution",
                            ggtheme = ggplot2::theme(legend.position = "bottom"))
         } # End if else
-
+        
     }) # End renderPlot for scatterplot
     
     ###############
@@ -791,60 +777,34 @@ server <- function(input, output) {
                           size = 0.4, colour = "grey40", linetype = "dotted") +
                 annotate("text", x = 0.3, y = dfCI$number.ll90[1], label = "90%", size = 2, colour = "grey40")
         } 
-<<<<<<< HEAD
         
         if (95 %in% input$conf.range) {
             fp_ggplot <- fp_ggplot + 
                 geom_line(data = dfCI, aes(x = number.seq, y = number.ll95), 
-                      size = 0.4, colour = "grey40", linetype = "dashed") +
+                          size = 0.4, colour = "grey40", linetype = "dashed") +
                 geom_line(data = dfCI, aes(x = number.seq, y = number.ul95), 
                           size = 0.4, colour = "grey40", linetype = "dashed") +
                 annotate("text", x = 0.3, y = dfCI$number.ll95[1], label = "95%", size = 2, colour = "grey40")
         } 
         
-=======
-        
-        if (95 %in% input$conf.range) {
-            fp_ggplot <- fp_ggplot + 
-                geom_line(data = dfCI, aes(x = number.seq, y = number.ll95), 
-                      size = 0.4, colour = "grey40", linetype = "dashed") +
-                geom_line(data = dfCI, aes(x = number.seq, y = number.ul95), 
-                          size = 0.4, colour = "grey40", linetype = "dashed") +
-                annotate("text", x = 0.3, y = dfCI$number.ll95[1], label = "95%", size = 2, colour = "grey40")
-        } 
-        
->>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
         if (99 %in% input$conf.range) {
             fp_ggplot <- fp_ggplot + 
                 geom_line(data = dfCI, aes(x = number.seq, y = number.ll99), 
-                      size = 0.4, colour = "grey40", linetype = "twodash") +
+                          size = 0.4, colour = "grey40", linetype = "twodash") +
                 geom_line(data = dfCI, aes(x = number.seq, y = number.ul99), 
                           size = 0.4, colour = "grey40", linetype = "twodash") +
                 annotate("text", x = 0.3, y = dfCI$number.ll99[1], label = "99%", size = 2, colour = "grey40")
         } 
-<<<<<<< HEAD
         
         if (99.9 %in% input$conf.range) {
             fp_ggplot <- fp_ggplot + 
                 geom_line(data = dfCI, aes(x = number.seq, y = number.ll999), 
-                      size = 0.4, colour = "grey40") +
+                          size = 0.4, colour = "grey40") +
                 geom_line(data = dfCI, aes(x = number.seq, y = number.ul999), 
                           size = 0.4, colour = "grey40") +
                 annotate("text", x = 0.3, y = dfCI$number.ll999[1], label = "99.9%", size = 2, colour = "grey40")
         }
         
-=======
-        
-        if (99.9 %in% input$conf.range) {
-            fp_ggplot <- fp_ggplot + 
-                geom_line(data = dfCI, aes(x = number.seq, y = number.ll999), 
-                      size = 0.4, colour = "grey40") +
-                geom_line(data = dfCI, aes(x = number.seq, y = number.ul999), 
-                          size = 0.4, colour = "grey40") +
-                annotate("text", x = 0.3, y = dfCI$number.ll999[1], label = "99.9%", size = 2, colour = "grey40")
-        }
-        
->>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
         # Combine funnel plot and distribution
         subplot(fp_ggplot, fp_densigram,
                 nrows = 1,
@@ -880,34 +840,19 @@ server <- function(input, output) {
                         data = death_df,
                         iterm = input$iterm)
         }
-<<<<<<< HEAD
     }) # End model_lsr reactive
-=======
-<<<<<<< HEAD
-    }) # End model_lsr reactive
-=======
-    })
->>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
->>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
     
     output$lsrResultsText <- renderPrint({
         
         model_lsr()
-    
+        
     }) # End renderPrint for lsr results
     
     ######################
     # VARIABLE SELECTION #
     ######################
     
-<<<<<<< HEAD
     # create base model
-=======
-<<<<<<< HEAD
-    # create base model
-=======
->>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
->>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
     model <- reactive({
         if(input$yVariable_m == "total_deaths"){
             lm(reformulate(response=input$yVariable_m,
@@ -926,53 +871,7 @@ server <- function(input, output) {
                            termlabels=input$xVariable_m_dpp),
                data = death_df)
         }
-<<<<<<< HEAD
     }) # End model reactive
-=======
-<<<<<<< HEAD
-    }) # End model reactive
-    
-    # create model based on VSM chosen
-    model_vsm <- reactive({
-        
-        
-        if (input$vsMethod == "all_possible"){
-         
-            
-            
-            model1 <- lm(reformulate(response="total_deaths",
-                                     termlabels="total_cases"),
-                                     data = death_df)
-            model_vsm <- ols_step_all_possible(model1)
-        } else if (input$vsMethod == "best_subset") {
-            model_vsm <- ols_step_best_subset(model, 
-                                              progress = input$showStep)
-        } else if (input$vsMethod == "forward_p") {
-            model_vsm <- ols_step_forward_p(model, 
-                                            prem = input$prem, 
-                                            progress = input$showStep)
-        } else if (input$vsMethod == "backward_p") {
-            model_vsm <- ols_step_backward_p(model, 
-                                             prem = input$prem, 
-                                             progress = input$showStep)
-        } else if (input$vsMethod == "both_p") {
-            model_vsm <- ols_step_both_p(model(), 
-                                         prem = input$prem, 
-                                         progress = input$showStep)
-        } else if (input$vsMethod == "forward_aic") {
-            model_vsm <- ols_step_forward_aic(model, 
-                                              progress = input$showStep)
-        } else if (input$vsMethod == "backward_aic") {
-            model_vsm <- ols_step_backward_aic(model, 
-                                               progress = input$showStep)
-        } else if (input$vsMethod == "both_aic") {
-            model_vsm <- ols_step_both_aic(model, 
-                                           progress = input$showStep)
-        }
-    }) # End model_vsm reactive
-=======
-    })
->>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
     
     # create model based on VSM chosen
     model_vsm <- reactive({
@@ -1005,38 +904,7 @@ server <- function(input, output) {
             ols_step_both_aic(model(), 
                               progress = input$showStep)
         }
-<<<<<<< HEAD
     }) # End model_vsm reactive
-=======
-        if (input$vsMethod == "both_p") {
-            model_vsm <- ols_step_both_p(model, 
-                                         prem = input$prem, 
-                                         progress = input$showStep)
-        }
-        if (input$vsMethod == "forward_aic") {
-            model_vsm <- ols_step_forward_aic(model, 
-                                              prem = input$prem, 
-                                              progress = input$showStep)
-        }
-        if (input$vsMethod == "backward_aic") {
-            model_vsm <- ols_step_backward_aic(model, 
-                                               prem = input$prem, 
-                                               progress = input$showStep)
-        }
-        if (input$vsMethod == "both_aic") {
-            model_vsm <- ols_step_both_aic(model, 
-                                           prem = input$prem, 
-                                           progress = input$showStep)
-        }
-        
-        
-    })
-    
-    
-    
-    
->>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
->>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
     
     # Printing the results
     output$VSMResultsText <- renderPrint({
@@ -1044,19 +912,9 @@ server <- function(input, output) {
     }) # End renderPrint for vsmResultsText
     
     # Plotting the results
-<<<<<<< HEAD
     output$VSMResultsPlot <- renderPlot({
-=======
-<<<<<<< HEAD
-   # output$vsmResultsPlotly <- renderPlot({
- #      plot(model_vsm())
- #   }) # End renderPlot for vsmResultsPlot
-=======
-    output$vsmResultsPlotly <- renderPlot({
->>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
         plot(model_vsm())
     }) # End renderPlot for vsmResultsPlot
->>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
     
     # Plotting the diagnostics for base model
     output$BaseDiagnosticsPlot1 <- renderPlot({
@@ -1070,7 +928,7 @@ server <- function(input, output) {
     output$BaseDiagnosticsPlot2 <- renderPlot({
         p3 <- ols_plot_resid_fit_spread(model())
         p3
-    
+        
     }) # End renderPlot for BaseDiagnosticsPlot2
     
     output$BaseDiagnosticsPlot3 <- renderPlot({
@@ -1081,15 +939,7 @@ server <- function(input, output) {
     }) # End renderPlot for BaseDiagnosticsPlot3
     
     # Plotting the collinearity for base model
-<<<<<<< HEAD
     output$BaseCollResultsText <- renderPrint({
-=======
-<<<<<<< HEAD
-    output$BaseCollResultsText <- renderPrint({
-=======
-    output$BaseCollPlot <- renderPlot({
->>>>>>> ed6d1c8e11981cb40526ffe8a387343981f77daf
->>>>>>> 2727ff2e4cc9dc931f8cd7dac5dd1517aba86ffc
         ols_coll_diag(model())
     }) # End renderPlot for BaseCollPlot
     
