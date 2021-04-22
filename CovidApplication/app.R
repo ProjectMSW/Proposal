@@ -715,7 +715,9 @@ ui <- fluidPage(
                                             "vac6_ag" = "vac6_ag",
                                             "vac7_ag" = "vac7_ag"
                                           ), # End list
-                                          multiple = TRUE)              
+                                          multiple = TRUE),  
+               
+               actionButton("DfactorButton", label = "Go")
                              
                ), 
                conditionalPanel(
@@ -760,7 +762,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session){
-  
+  danielvalue <- reactiveValues(default =-1)
   myvalues <- reactiveValues(default = 0)
   mypredictvalue <- reactiveValues(default =0)
   myinitialvalue <- reactiveValues(default =0)
@@ -1225,20 +1227,25 @@ server <- function(input, output, session){
     print(dcountry)
     dstrength <- input$strengthResponse
     print(dstrength)
+    totalselection <- c("vac_1_ag","vac2_1_ag")
+    
+  
+    
+    
+   totalselection <- eventReactive(input$DfactorButton, {
+      input$factorofinterest
+    })
+    #totalselection <-input$factorofinterest
+    observeEvent(input$DfactorButton,{
+      danielvalue$default <- input$DfactorButton
+    })
+    
+    
+    
     
     print("ddnam")
-    dv1 <- input$factorofinterest[1]
-    dv2 <- input$factorofinterest[2]
-    dv3 <- input$factorofinterest[3]
-    dv4 <- input$factorofinterest[4]
-    dv5 <- input$factorofinterest[5]
-    dv6 <- input$factorofinterest[6]
-    dv7 <- input$factorofinterest[7]
-    dv8 <- input$factorofinterest[8]
-    dv9 <- input$factorofinterest[9]
-    dv10 <- input$factorofinterest[10]
-    dv11 <- input$factorofinterest[11]
-    dv12 <- input$factorofinterest[12]
+    print(length(totalselection))
+   
     
     countrySelected = dcountry
     strength = as.integer(dstrength)  # For user to determine level of agreement - 4 Agree, 5 Strongly agree
@@ -1319,8 +1326,68 @@ server <- function(input, output, session){
       TRUE ~ as.integer(0)
     ))
     
-  
+    selectionlist <- vector()
+    if(sum(upset_df$vac7_ag) == 0){
+      selectionlist <- append(selectionlist,"vac7_ag")
+    }
+    if(sum(upset_df$vac6_ag) == 0){
+      selectionlist <- append(selectionlist,"vac6_ag")
+    }
+    if(sum(upset_df$vac5_ag) == 0){
+      selectionlist <- append(selectionlist,"vac5_ag")
+    }
+    if(sum(upset_df$vac4_ag) == 0){
+      selectionlist <- append(selectionlist,"vac4_ag")
+    }
+    if(sum(upset_df$vac_3_ag) == 0){
+      selectionlist <- append(selectionlist,"vac_3_ag")
+    }
+    if(sum(upset_df$vac2_6_ag) == 0){
+      selectionlist <- append(selectionlist,"vac2_6_ag")
+    }
+    if(sum(upset_df$vac2_5_ag) == 0){
+      selectionlist <- append(selectionlist,"vac2_5_ag")
+    }
+    if(sum(upset_df$vac2_4_ag) == 0){
+      selectionlist <- append(selectionlist,"vac2_4_ag")
+    }
+    if(sum(upset_df$vac2_3_ag) == 0){
+      selectionlist <- append(selectionlist,"vac2_3_ag")
+    }
+    if(sum(upset_df$vac2_2_ag) == 0){
+      selectionlist <- append(selectionlist,"vac2_2_ag")
+    }
+    if(sum(upset_df$vac2_1_ag) == 0){
+      selectionlist <- append(selectionlist,"vac_2_ag")
+    }
+    if(sum(upset_df$vac_1_ag) == 0){
+      selectionlist <- append(selectionlist,"vac_1_ag")
+    }
     
+    
+    initiallist <- c(
+      "vac_1_ag" = "vac_1_ag",
+      "vac2_1_ag" = "vac2_1_ag",
+      "vac2_2_ag" = "vac2_2_ag",
+      "vac2_3_ag" = "vac2_3_ag",
+      "vac2_4_ag" = "vac2_4_ag",
+      "vac2_5_ag" = "vac2_5_ag",          
+      "vac2_6_ag" = "vac2_6_ag",
+      "vac_3_ag" = "vac_3_ag",
+      "vac4_ag" = "vac4_ag",
+      "vac5_ag" = "vac5_ag",
+      "vac6_ag" = "vac6_ag",
+      "vac7_ag" = "vac7_ag"
+    )
+    
+    
+    selectionlist <- setdiff(initiallist, selectionlist)
+    
+    if(danielvalue$default == -1){
+    updateSelectInput(session, "factorofinterest",choices = selectionlist) 
+      danielvalue$default <-0
+    }
+   
     
     # create combination matrix
     combiMatrix <- select(upset_df,vac_1_ag,vac2_1_ag,vac2_2_ag,
@@ -1328,18 +1395,35 @@ server <- function(input, output, session){
                           vac2_6_ag,vac_3_ag,vac4_ag,
                           vac5_ag,vac6_ag,vac7_ag)
     
+    
+    if(danielvalue$default > 0){
     combiMatrix <- filter(combiMatrix, vac_1_ag == 1) 
     # UpSetR cannot have 0 length argument (i.e. 0 0 0 0 0) so investigate only vac_1 = 1 cases
     upset(combiMatrix, sets = c("vac_1_ag","vac2_1_ag","vac2_2_ag",
                                 "vac2_3_ag","vac2_4_ag","vac2_5_ag",          
                                 "vac2_6_ag","vac_3_ag","vac4_ag",
                                 "vac5_ag","vac6_ag","vac7_ag"),
-          mb.ratio = c(0.55,0.45), order.by = "freq")
+          mb.ratio = c(0.55,0.45), order.by = "freq",
+          queries = list(
+            list(query = intersects, params = totalselection(), active = T)
+          ))
+    }else{
+      combiMatrix <- filter(combiMatrix, vac_1_ag == 1) 
+      # UpSetR cannot have 0 length argument (i.e. 0 0 0 0 0) so investigate only vac_1 = 1 cases
+      upset(combiMatrix, sets = c("vac_1_ag","vac2_1_ag","vac2_2_ag",
+                                  "vac2_3_ag","vac2_4_ag","vac2_5_ag",          
+                                  "vac2_6_ag","vac_3_ag","vac4_ag",
+                                  "vac5_ag","vac6_ag","vac7_ag"),
+            mb.ratio = c(0.55,0.45), order.by = "freq",
+            queries = list(
+              list(query = intersects, params = c("vac_1_ag","vac2_1_ag"), active = T)
+            ))
+      
+    }
     
   })
   
-  
-  
+
   
   output$likertplot <- renderPlot({
     
@@ -1477,6 +1561,8 @@ server <- function(input, output, session){
            strip = FALSE,
            par.strip.text=list(cex=.7)
     )
+    
+    
     
     
   })
