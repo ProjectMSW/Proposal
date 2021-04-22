@@ -990,8 +990,6 @@ server <- function(input, output, session){
         mydataexplorationplot(dcountry1,tvariable,pvariable)
         
       })
-      
-      
      
     plot(abc)
     
@@ -1184,13 +1182,17 @@ server <- function(input, output, session){
     
     confidence_level <- dconfidlvl  
     z_value <- 0
-    if (confidence_level == "0.9") {
+    if (confidence_level == "0.90") {
+      print("not in here 0.9")
       z_value <- 1.645
     } else if (confidence_level == "0.95") {
+      print("not in here 0.95")
       z_value <- 1.96
     } else if (confidence_level == "0.98") {
+      print("not in here 0.98")
       z_value <- 2.33
     } else if (confidence_level == "0.99") {
+      print("not in here 0.99")
       z_value <- 2.58
     }
     
