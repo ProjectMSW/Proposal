@@ -13,15 +13,19 @@ library(earth)
 library(reactable)
 
 library(UpSetR)
+library(dlookr)
+library(naniar)
 
 
 library(ggstatsplot)
 library(ggExtra)
 library(olsrr)
 library(recipes)
+library(gridExtra)
 
 
-
+import::from(HH,likert)
+import::from(naniar,replace_with_na)
 
 
 source("Modules/forecastNav.R")
@@ -646,6 +650,41 @@ ui <- fluidPage(
     ),
     tabPanel("Understanding vaccination sentiments", 
              sidebarPanel(
+               conditionalPanel(
+                 condition = "input.danieltab == 'Survey Finding' ",
+                 selectInput("qn", 'Select Question', choices =
+                               c("Proportion who are willing to take vaccine"="vac_1",
+                                 "Proportion worried about getting COVID-19"="vac2_1",
+                                 "Proportion worried about side effects of COVID-19 vaccines"="vac2_2",
+                                 "Proportion confident government will provide effective COVID-19 vaccines"="vac2_3",
+                                 "Proportion confident vaccine will completely protect recipients from health effects of COVID-19"="vac2_4",
+                                 "Proportion confident vaccine will completely prevent transmission of COVID-19 from recipient to others"="vac2_5",
+                                 "Proportion who feel they will regret if they do not take the vaccine"="vac2_6",
+                                 "Proportion who will take the vaccine if available in 1 year"="vac_3"),
+                             width = '100%'),
+                 
+                 selectInput("responselvl", 'Response Level', choices =
+                               c("Strongly Agreed"="5",
+                                 "Agreed"="4",
+                                 "Neutral"="3",
+                                 "Disagreed"="2",
+                                 "Strongly Disagreed" = "1"),
+                             width = '100%'),
+                 
+                 selectInput("confidlvl", 'Response Level', choices =
+                               c("0.90"="0.90",
+                                 "0.95"="0.95",
+                                 "0.98"="0.98",
+                                 "0.99"="0.99"),
+                             width = '100%')
+               ),
+               
+               
+               
+               
+               
+               conditionalPanel(
+                 condition = "input.danieltab == 'Association of Factors' ",
                selectInput("countryofinterest", 'Select Country', choices = 
                              c("Australia" ="Australia","Canada" ="Canada","Denmark"="Denmark",
                                "Finland"="Finland","France"="France","Germany"="Germany",
@@ -659,21 +698,61 @@ ui <- fluidPage(
                              c("Strongly Agreed"="5", 
                                "Agreed"="4"),
                            width = '100%'),
-               
-               selectInput("factorofinterest", 'Factor of Interest', choices = 
-                             c("0.90"="0.90", 
-                               "0.95"="0.95", 
-                               "0.98"="0.98",
-                               "0.99"="0.99"),
-                           width = '100%'),
-               
-               actionButton("DgoButton1", label = "Go")
+                             
+                           selectizeInput("factorofinterest",
+                                          "Factor of Interest", 
+                                          list(
+                                            "vac_1_ag" = "vac_1_ag",
+                                            "vac2_1_ag" = "vac2_1_ag",
+                                            "vac2_2_ag" = "vac2_2_ag",
+                                            "vac2_3_ag" = "vac2_3_ag",
+                                            "vac2_4_ag" = "vac2_4_ag",
+                                            "vac2_5_ag" = "vac2_5_ag",          
+                                            "vac2_6_ag" = "vac2_6_ag",
+                                            "vac_3_ag" = "vac_3_ag",
+                                            "vac4_ag" = "vac4_ag",
+                                            "vac5_ag" = "vac5_ag",
+                                            "vac6_ag" = "vac6_ag",
+                                            "vac7_ag" = "vac7_ag"
+                                          ), # End list
+                                          multiple = TRUE)              
+                             
+               ), 
+               conditionalPanel(
+                 condition = "input.danieltab == 'Data Exploration' ",
+                 selectInput("countryofinterest1", 'Select Country', choices = 
+                               c("Australia" ="Australia","Canada" ="Canada","Denmark"="Denmark",
+                                 "Finland"="Finland","France"="France","Germany"="Germany",
+                                 "Israel"="Israel","Italy"="Italy","Japan"="Japan",
+                                 "Netherlands"="Netherlands","Norway"="Norway","Singapore"="Singapore",
+                                 "South Korea"="South Korea","Spain"="Spain","Sweden"="Sweden",
+                                 "United Kingdom"="United Kingdom","United States"="United States"),
+                             width = '100%'),
+                 
+                 selectInput("targetVariable", 'Select Target Variable', choices = 
+                               c("gender"="gender", "household_size"="household_size","household_children"="household_children",
+                                 "vac_1"="vac_1","vac2_1"="vac2_1","vac2_2"="vac2_2","vac2_3"="vac2_3","vac2_4"="vac2_4","vac2_5"="vac2_5","vac2_6"="vac2_6",
+                                 "vac_3"="vac_3","vac4"="vac4","vac5"="vac5","vac6"="vac6","vac7"="vac7"),
+                             width = '100%'),
+                 
+                 selectInput("predictiveVariable", 'Select Predictive Variable', choices = 
+                               c("age"="age", "gender"="gender", "household_size"="household_size","household_children"="household_children",
+                                 "vac_1"="vac_1","vac2_1"="vac2_1","vac2_2"="vac2_2","vac2_3"="vac2_3","vac2_4"="vac2_4","vac2_5"="vac2_5","vac2_6"="vac2_6",
+                                 "vac_3"="vac_3","vac4"="vac4","vac5"="vac5","vac6"="vac6","vac7"="vac7"),
+                             width = '100%'),
+                 
+                 actionButton("DexploreButton", label = "Go")
+                 
+                 
+               )
+         
              ),
              mainPanel(
-               tabsetPanel(
-                 tabPanel("Survey Finding", "this is empty" ),
-                 tabPanel("Association of Factors", plotOutput("likert")),
-                 tabPanel("Data Exploration", "This is for data exploration")
+               tabsetPanel(id="danieltab",
+                 tabPanel("Survey Finding", 
+                          plotOutput("likertplot"),plotOutput("errorbars")),
+                 tabPanel("Association of Factors", plotOutput("factorInterest")),
+                 tabPanel("Data Exploration", plotOutput("dataexplorationtab"))
                )
              )
     )
@@ -878,22 +957,296 @@ server <- function(input, output, session){
   })
   
   
-  output$likert <- renderPlot({
+  output$dataexplorationtab <- renderPlot({
+    display <-  c("age"="age", "gender"="gender", "household_size"="household_size","household_children"="household_children",
+                  "vac_1"="vac_1","vac2_1"="vac2_1","vac2_2"="vac2_2","vac2_3"="vac2_3","vac2_4"="vac2_4","vac2_5"="vac2_5","vac2_6"="vac2_6",
+                  "vac_3"="vac_3","vac4"="vac4","vac5"="vac5","vac6"="vac6","vac7"="vac7")
+    
+    
+    dcountry1 <- input$countryofinterest1
+   
+    
+    #tvariable <- input$targetVariable
+    
+    observeEvent(input$targetVariable,{
+      tvariable <- input$targetVariable
+      mydisplay <- setdiff(display, tvariable)
+      updateSelectInput(session, "predictiveVariable",choices =mydisplay )
+      
+      
+    })
+    
+    #observeEvent(input$DexploreButton,{
+      tvariable <-input$targetVariable
+      pvariable <- isolate(input$predictiveVariable)
+   # })
+      abc<- mydataexplorationplot(dcountry1,tvariable,pvariable)
+    
+      efg <-reactive(input$DexploreButton,{
+        tvariable <-isolate(input$targetVariable)
+        pvariable <- isolate(input$predictiveVariable)
+        mydataexplorationplot(dcountry1,tvariable,pvariable)
+        
+      })
+      
+      
+     
+    plot(abc)
+    
+  })
+  
+  
+  mydataexplorationplot <- function(dcountry1,tvariable,pvariable){
+    main_df <- main_df %>% mutate(vac_1 = case_when(
+      vac_1 == "1 - Strongly agree" ~ "1",
+      vac_1 == "5 – Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac_1)))
+    
+    main_df <- main_df %>% mutate(vac2_1 = case_when(
+      vac2_1 == "1 - Strongly agree" ~ "1",
+      vac2_1 == "5 – Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_1)))
+    
+    main_df <- main_df %>% mutate(vac2_2 = case_when(
+      vac2_2 == "1 - Strongly agree" ~ "1",
+      vac2_2 == "5 – Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_2)))
+    
+    main_df <- main_df %>% mutate(vac2_3 = case_when(
+      vac2_3 == "1 - Strongly agree" ~ "1",
+      vac2_3 == "5 – Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_3)))
+    
+    main_df <- main_df %>% mutate(vac2_4 = case_when(
+      vac2_4 == "1 - Strongly agree" ~ "1",
+      vac2_4 == "5 – Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_4)))
+    
+    main_df <- main_df %>% mutate(vac2_5 = case_when(
+      vac2_5 == "1 - Strongly agree" ~ "1",
+      vac2_5 == "5 – Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_5)))
+    
+    main_df <- main_df %>% mutate(vac2_6 = case_when(
+      vac2_6 == "1 - Strongly agree" ~ "1",
+      vac2_6 == "5 – Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_6)))
+    
+    main_df <- main_df %>% mutate(vac_3 = case_when(
+      vac_3 == "1 - Strongly agree" ~ "1",
+      vac_3 == "5 – Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac_3)))
+    
+    main_df <- main_df %>% mutate(vac4 = case_when(
+      vac4 == "Not at all important" ~ "1",
+      vac4 == "A little important" ~ "2",
+      vac4 == "Moderately important" ~ "3",
+      vac4 == "Very important" ~ "4"))
+    
+    main_df <- main_df %>% mutate(vac5 = case_when(
+      vac5 == "Yes" ~ "1",
+      vac5 == "No" ~ "2",
+      vac5 == "Not sure" ~ "99"))
+    
+    main_df <- main_df %>% mutate(vac6 = case_when(
+      vac6 == "Yes" ~ "1",
+      vac6 == "No" ~ "2",
+      vac6 == "Not sure" ~ "99"))
+    
+    main_df <- main_df %>% mutate(vac7 = case_when(
+      vac7 == "Not at all" ~ "1",
+      vac7 == "A little" ~ "2",
+      vac7 == "Moderately" ~ "3",
+      vac7 == "Very much" ~ "4"))
+    
+    main_df <- main_df %>% replace_with_na(replace = list(vac5 = "99", vac6 = "99" ))
+    
+    countrySelected = dcountry1
+    
+    explore_df <- filter(main_df, country == countrySelected)
+    
+    variable_selected <- tvariable   # to be selected by user
+    pred_var <- pvariable             # to be selected by user
+    
+    categ <- target_by(explore_df, variable_selected)
+    cat_num <- relate(categ, pred_var)
+    return(cat_num)
+  }
+  
+  
+  output$errorbars <- renderPlot({
+    dresponselvl <- input$responselvl
+    print(dresponselvl)
+    dconfidlvl <- input$confidlvl
+    print(dconfidlvl)
+    
+    
+    #recode variables
+    main_df <- main_df %>% mutate(vac_1 = case_when(
+      vac_1 == "1 - Strongly agree" ~ "1",
+      vac_1 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac_1)))
+    
+    main_df <- main_df %>% mutate(vac2_1 = case_when(
+      vac2_1 == "1 - Strongly agree" ~ "1",
+      vac2_1 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_1)))
+    
+    main_df <- main_df %>% mutate(vac2_2 = case_when(
+      vac2_2 == "1 - Strongly agree" ~ "1",
+      vac2_2 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_2)))
+    
+    main_df <- main_df %>% mutate(vac2_3 = case_when(
+      vac2_3 == "1 - Strongly agree" ~ "1",
+      vac2_3 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_3)))
+    
+    main_df <- main_df %>% mutate(vac2_4 = case_when(
+      vac2_4 == "1 - Strongly agree" ~ "1",
+      vac2_4 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_4)))
+    
+    main_df <- main_df %>% mutate(vac2_5 = case_when(
+      vac2_5 == "1 - Strongly agree" ~ "1",
+      vac2_5 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_5)))
+    
+    main_df <- main_df %>% mutate(vac2_6 = case_when(
+      vac2_6 == "1 - Strongly agree" ~ "1",
+      vac2_6 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_6)))
+    
+    main_df <- main_df %>% mutate(vac_3 = case_when(
+      vac_3 == "1 - Strongly agree" ~ "1",
+      vac_3 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac_3)))
+    
+    main_df <- main_df %>% mutate(vac4 = case_when(
+      vac4 == "Not at all important" ~ "1",
+      vac4 == "A little important" ~ "2",
+      vac4 == "Moderately important" ~ "3",
+      vac4 == "Very important" ~ "4"))
+    
+    main_df <- main_df %>% mutate(vac5 = case_when(
+      vac5 == "Yes" ~ "1",
+      vac5 == "No" ~ "2",
+      vac5 == "Not sure" ~ "99"))
+    
+    main_df <- main_df %>% mutate(vac6 = case_when(
+      vac6 == "Yes" ~ "1",
+      vac6 == "No" ~ "2",
+      vac6 == "Not sure" ~ "99"))
+    
+    main_df <- main_df %>% mutate(vac7 = case_when(
+      vac7 == "Not at all" ~ "1",
+      vac7 == "A little" ~ "2",
+      vac7 == "Moderately" ~ "3",
+      vac7 == "Very much" ~ "4"))
+    
+    main_df <- main_df %>% replace_with_na(replace = list(vac5 = "99", vac6 = "99" ))
+    # declare responses with "Not Sure" as missing values  
+    
+    # Make the table long - Gather question data from columns to rows
+    main_gathered <- gather(main_df, measure, response, c(6:17))
+    
+    # Obtain dataset with only responses for selected question
+    
+    qn_selected <- input$qn     # variable of question selected
+    
+    vac_1 <- filter(main_gathered, measure == qn_selected)
+    
+    responseLevel <- dresponselvl 
+    
+    vac_1 <- vac_1 %>% mutate(countSA = case_when(
+      response >= responseLevel ~ 1,
+      TRUE ~ as.double(0)
+    ))
+    
+    vac_1 <- vac_1 %>% mutate(countResponse = 1)
+    
+    # Obtain contingency table for Prop of SA
+    propSA_df <- table(vac_1$country,vac_1$countSA) %>% as.data.frame.matrix()
+    countResponse_df <- table(vac_1$country,vac_1$countResponse) %>% as.data.frame.matrix()
+    
+    # Change column names, now labelled as 1-5
+    colnames(propSA_df) <- c("NotSA","SA")
+    
+    # Compute proportion of SA
+    propSA_df$propSA <- (propSA_df$SA / (propSA_df$SA + propSA_df$NotSA))
+    
+    # Compute SE
+    propSA_df$SE <- sqrt((propSA_df$propSA*(1 - propSA_df$propSA))/ (propSA_df$SA + propSA_df$NotSA))
+    
+    # compute z-value
+    
+    confidence_level <- dconfidlvl  
+    z_value <- 0
+    if (confidence_level == "0.9") {
+      z_value <- 1.645
+    } else if (confidence_level == "0.95") {
+      z_value <- 1.96
+    } else if (confidence_level == "0.98") {
+      z_value <- 2.33
+    } else if (confidence_level == "0.99") {
+      z_value <- 2.58
+    }
+    
+    # Compute Upper and Lower Limits
+    propSA_df$UppLim <- propSA_df$propSA + z_value*propSA_df$SE
+    propSA_df$LowLim <- propSA_df$propSA - z_value*propSA_df$SE
+    
+    # Insert column into propSA_df with country labels
+    propSA_df$country <- c("Australia","Canada","Denmark",
+                           "Finland","France","Germany",
+                           "Israel","Italy","Japan",
+                           "Netherlands","Norway","Singapore",
+                           "South Korea","Spain","Sweden",
+                           "United Kingdom","United States")
+    
+    #vertical bar chart with error plots
+    a <- ggplot(propSA_df) +
+      geom_bar(aes(reorder(country,propSA),y = propSA), 
+               stat = "identity", fill ="dodgerblue3", alpha = 0.8) +
+      geom_errorbar(aes(x = country, ymin = LowLim, ymax = UppLim), 
+                    width = 0.5, colour = "firebrick2",
+                    alpha = 0.9, size = 0.6) +
+      coord_flip()
+    theme(legend.position = "top")
+    
+    return (a)
+    
+  })
+  
+  
+  output$factorInterest <- renderPlot({
     
     dcountry <- input$countryofinterest
-    print("country")
     print(dcountry)
-    
     dstrength <- input$strengthResponse
-    
-    print("strength")
     print(dstrength)
+    
+    print("ddnam")
+    dv1 <- input$factorofinterest[1]
+    dv2 <- input$factorofinterest[2]
+    dv3 <- input$factorofinterest[3]
+    dv4 <- input$factorofinterest[4]
+    dv5 <- input$factorofinterest[5]
+    dv6 <- input$factorofinterest[6]
+    dv7 <- input$factorofinterest[7]
+    dv8 <- input$factorofinterest[8]
+    dv9 <- input$factorofinterest[9]
+    dv10 <- input$factorofinterest[10]
+    dv11 <- input$factorofinterest[11]
+    dv12 <- input$factorofinterest[12]
     
     countrySelected = dcountry
     strength = as.integer(dstrength)  # For user to determine level of agreement - 4 Agree, 5 Strongly agree
     
     upset_df <- filter(main_df, country == countrySelected)
     # vac_1 - willing to get vaccine
+    
+
     upset_df <- upset_df %>% mutate(vac_1_ag = case_when(
       vac_1 >= strength ~ as.integer(1),
       TRUE ~ as.integer(0)
@@ -965,12 +1318,15 @@ server <- function(input, output, session){
       vac7 >= (strength-1) ~ as.integer(1),
       TRUE ~ as.integer(0)
     ))
-    # create combination matrix
     
+  
+    
+    
+    # create combination matrix
     combiMatrix <- select(upset_df,vac_1_ag,vac2_1_ag,vac2_2_ag,
                           vac2_3_ag,vac2_4_ag,vac2_5_ag,
                           vac2_6_ag,vac_3_ag,vac4_ag,
-                          vac5_ag,vac6_ag,vac7_ag,)
+                          vac5_ag,vac6_ag,vac7_ag)
     
     combiMatrix <- filter(combiMatrix, vac_1_ag == 1) 
     # UpSetR cannot have 0 length argument (i.e. 0 0 0 0 0) so investigate only vac_1 = 1 cases
@@ -980,11 +1336,150 @@ server <- function(input, output, session){
                                 "vac5_ag","vac6_ag","vac7_ag"),
           mb.ratio = c(0.55,0.45), order.by = "freq")
     
+  })
+  
+  
+  
+  
+  output$likertplot <- renderPlot({
     
+    
+    
+    dqn <- input$qn
+    print(dqn)
+   
+    
+    #recode variables
+    main_df <- main_df %>% mutate(vac_1 = case_when(
+      vac_1 == "1 - Strongly agree" ~ "1",
+      vac_1 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac_1)))
+    
+    main_df <- main_df %>% mutate(vac2_1 = case_when(
+      vac2_1 == "1 - Strongly agree" ~ "1",
+      vac2_1 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_1)))
+    
+    main_df <- main_df %>% mutate(vac2_2 = case_when(
+      vac2_2 == "1 - Strongly agree" ~ "1",
+      vac2_2 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_2)))
+    
+    main_df <- main_df %>% mutate(vac2_3 = case_when(
+      vac2_3 == "1 - Strongly agree" ~ "1",
+      vac2_3 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_3)))
+    
+    main_df <- main_df %>% mutate(vac2_4 = case_when(
+      vac2_4 == "1 - Strongly agree" ~ "1",
+      vac2_4 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_4)))
+    
+    main_df <- main_df %>% mutate(vac2_5 = case_when(
+      vac2_5 == "1 - Strongly agree" ~ "1",
+      vac2_5 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_5)))
+    
+    main_df <- main_df %>% mutate(vac2_6 = case_when(
+      vac2_6 == "1 - Strongly agree" ~ "1",
+      vac2_6 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac2_6)))
+    
+    main_df <- main_df %>% mutate(vac_3 = case_when(
+      vac_3 == "1 - Strongly agree" ~ "1",
+      vac_3 == "5 - Strongly disagree" ~ "5",
+      TRUE ~ as.character(vac_3)))
+    
+    main_df <- main_df %>% mutate(vac4 = case_when(
+      vac4 == "Not at all important" ~ "1",
+      vac4 == "A little important" ~ "2",
+      vac4 == "Moderately important" ~ "3",
+      vac4 == "Very important" ~ "4"))
+    
+    main_df <- main_df %>% mutate(vac5 = case_when(
+      vac5 == "Yes" ~ "1",
+      vac5 == "No" ~ "2",
+      vac5 == "Not sure" ~ "99"))
+    
+    main_df <- main_df %>% mutate(vac6 = case_when(
+      vac6 == "Yes" ~ "1",
+      vac6 == "No" ~ "2",
+      vac6 == "Not sure" ~ "99"))
+    
+    main_df <- main_df %>% mutate(vac7 = case_when(
+      vac7 == "Not at all" ~ "1",
+      vac7 == "A little" ~ "2",
+      vac7 == "Moderately" ~ "3",
+      vac7 == "Very much" ~ "4"))
+    
+    main_df <- main_df %>% replace_with_na(replace = list(vac5 = "99", vac6 = "99" ))
+    # declare responses with "Not Sure" as missing values  
+    
+    # Make the table long - Gather question data from columns to rows
+    main_gathered <- gather(main_df, measure, response, c(6:17))
+    
+    # Obtain dataset with only responses for selected question
+    
+    qn_selected <- dqn    # variable of question selected
+    
+    vac_1 <- filter(main_gathered, measure == qn_selected)
+    
+    # Obtain contingency table for vac_1
+    vac_1_df <- table(vac_1$country,vac_1$response) %>% as.data.frame.matrix()
+    
+    # Change column names, now labelled as 1-5
+    colnames(vac_1_df) <- c("Strongly Disagree",
+                            "Disagree",
+                            "Neutral",
+                            "Agree",
+                            "Strongly Agree")
+    
+    rownames(vac_1_df) <- c("Australia","Canada","Denmark",
+                            "Finland","France","Germany",
+                            "Israel","Italy","Japan",
+                            "Netherlands","Norway","Singapore",
+                            "South Korea","Spain","Sweden",
+                            "United Kingdom","United States")
+    
+    # Remove other columns containing other responses (for other questions)
+    vac_1_df <- vac_1_df[,c(1:5)]
+    
+    # Add a column with rownames
+    vac_1_df <- tibble::rownames_to_column(vac_1_df, var="Country")
+    
+    # Matching appropriate graph titles to qn_selected
+    if (qn_selected == "vac_1") {
+      div_chart_title <- "Proportion who are willing to take vaccine"
+    } else if (qn_selected == "vac2_1") {
+      div_chart_title <- "Proportion worried about getting COVID-19"
+    } else if (qn_selected == "vac2_2") {
+      div_chart_title <- "Proportion worried about side effects of COVID-19 vaccines"
+    } else if (qn_selected == "vac2_3") {
+      div_chart_title <- "Proportion confident government will provide effective COVID-19 vaccines"
+    } else if (qn_selected == "vac2_4") {
+      div_chart_title <- "Proportion confident vaccine will completely protect recipients from health effects of COVID-19"
+    } else if (qn_selected == "vac2_5") {
+      div_chart_title <- "Proportion confident vaccine will completely prevent transmission of COVID-19 from recipient to others"
+    } else if (qn_selected == "vac2_6") {
+      div_chart_title <- "Proportion who feel they will regret if they do not take the vaccine"
+    } else if (qn_selected == "vac_3") {
+      div_chart_title <- "Proportion who will take the vaccine if available in 1 year"
+    }
+    
+    
+    likert(Country ~ .,data = vac_1_df, ylab = NULL,
+           RefernceZero = 3, as.percent=TRUE,
+           positive.order=TRUE,
+           main = list(div_chart_title, 
+                       x =unit(.55,"npc")),
+           sub = list("Response", x=unit(.57,"npc")),
+           xlim = c(-100,-80,-60,-40,-20,0,20,40,60,80,100),
+           strip = FALSE,
+           par.strip.text=list(cex=.7)
+    )
     
     
   })
-  
   
   
   
@@ -1219,7 +1714,7 @@ server <- function(input, output, session){
     }
     
     # Combine funnel plot and distribution
-    subplot(fp_ggplot, fp_densigram,
+    plotly::subplot(fp_ggplot, fp_densigram,
             nrows = 1,
             widths = c(4/5,1/5),
             shareY = TRUE,

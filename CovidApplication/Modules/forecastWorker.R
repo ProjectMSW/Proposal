@@ -7,6 +7,8 @@ confirmed_cases_raw <- read_csv("data/time_series_covid19_confirmed_global.csv")
 
 death_df <- read_csv("data/deaths_tidy.csv")
 
+main_df <- read_csv("data/main_df.csv")
+
 getMyDate <- function(d){
   e<-(rev(names(d))[1])
   temp <- strsplit(e,"/")
