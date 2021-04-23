@@ -728,7 +728,7 @@ ui <- fluidPage(
                                  "Israel"="Israel","Italy"="Italy","Japan"="Japan",
                                  "Netherlands"="Netherlands","Norway"="Norway","Singapore"="Singapore",
                                  "South Korea"="South Korea","Spain"="Spain","Sweden"="Sweden",
-                                 "United Kingdom"="United Kingdom","United States"="United States"),
+                                 "United Kingdom"="United-Kingdom","United States"="United-States"),
                              width = '100%'),
                  
                  selectInput("targetVariable", 'Select Target Variable', choices = 
