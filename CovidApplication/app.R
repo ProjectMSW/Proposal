@@ -743,7 +743,7 @@ ui <- fluidPage(
                                  "vac_3"="vac_3","vac4"="vac4","vac5"="vac5","vac6"="vac6","vac7"="vac7"),
                              width = '100%'),
                  
-                 actionButton("DexploreButton", label = "Go")
+                 #actionButton("DexploreButton", label = "Go")
                  
                  
                )
