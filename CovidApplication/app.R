@@ -35,7 +35,7 @@ source("Modules/survey.R")
 
 
 ui <- fluidPage(
-  titlePanel("Covid Explorer1"),
+  titlePanel("Covid Explorer"),
   
   
   
@@ -715,7 +715,9 @@ ui <- fluidPage(
                                             "vac6_ag" = "vac6_ag",
                                             "vac7_ag" = "vac7_ag"
                                           ), # End list
-                                          multiple = TRUE)              
+                                          multiple = TRUE),  
+               
+               actionButton("DfactorButton", label = "Go")
                              
                ), 
                conditionalPanel(
@@ -741,7 +743,7 @@ ui <- fluidPage(
                                  "vac_3"="vac_3","vac4"="vac4","vac5"="vac5","vac6"="vac6","vac7"="vac7"),
                              width = '100%'),
                  
-                 actionButton("DexploreButton", label = "Go")
+                 #actionButton("DexploreButton", label = "Go")
                  
                  
                )
@@ -760,7 +762,8 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session){
-  
+  danielvalue <- reactiveValues(default =-1)
+  daniel1value <- reactiveValues(default =-1)
   myvalues <- reactiveValues(default = 0)
   mypredictvalue <- reactiveValues(default =0)
   myinitialvalue <- reactiveValues(default =0)
@@ -815,7 +818,7 @@ server <- function(input, output, session){
                          Date, Daily_new_cases,
                          .frequency = "auto", .trend = "auto",
                          .feature_set = c("observed", "season", "trend", "remainder"),
-                         .interactive = TRUE)
+                         .interactive = TRUE, .y_lab = "Number of Cases")
     
     
   })
@@ -826,7 +829,7 @@ server <- function(input, output, session){
       selected <- formatraw(datafile())
     }
     CountrySelected <- getIndividualCountryData(selected,selectedCountry())
-    plot_anomaly_diagnostics(CountrySelected,Date, Daily_new_cases, .facet_ncol = 2)
+    plot_anomaly_diagnostics(CountrySelected,Date, Daily_new_cases, .facet_ncol = 2, .y_lab = "Number of Cases")
     
     
   })
@@ -899,7 +902,8 @@ server <- function(input, output, session){
       plot_modeltime_forecast(
         .legend_max_width = 25, # For mobile screens
         .interactive      = TRUE,
-        .title = selectedCountry()
+        .title = selectedCountry(),
+        .y_lab = "Number of Cases"
       )
     
   })
@@ -956,6 +960,8 @@ server <- function(input, output, session){
     
   })
   
+ 
+ ###################  Daniel's Server Code #########################################
   
   output$dataexplorationtab <- renderPlot({
     display <-  c("age"="age", "gender"="gender", "household_size"="household_size","household_children"="household_children",
@@ -964,33 +970,40 @@ server <- function(input, output, session){
     
     
     dcountry1 <- input$countryofinterest1
-   
     
-    #tvariable <- input$targetVariable
+    tvariable <-input$targetVariable
+    pvariable <- input$predictiveVariable
     
-    observeEvent(input$targetVariable,{
-      tvariable <- input$targetVariable
+   # observe(input$targetVariable,{daniel1value$default <- -1})
+    
+    
+    if(daniel1value$default == -1){
       mydisplay <- setdiff(display, tvariable)
       updateSelectInput(session, "predictiveVariable",choices =mydisplay )
-      
-      
-    })
-    
-    #observeEvent(input$DexploreButton,{
-      tvariable <-input$targetVariable
-      pvariable <- isolate(input$predictiveVariable)
-   # })
-      abc<- mydataexplorationplot(dcountry1,tvariable,pvariable)
-    
-      efg <-reactive(input$DexploreButton,{
-        tvariable <-isolate(input$targetVariable)
-        pvariable <- isolate(input$predictiveVariable)
-        mydataexplorationplot(dcountry1,tvariable,pvariable)
-        
-      })
-      
-      
+      daniel1value$default <- 0
+    }
+   
+   observe({
+     ovar <-input$targetVariable
+     print("come in only")
+     if(ovar != tvariable){
+       print("this is the best")
+       daniel1value$default <- -1
+     }
      
+   })
+    
+    
+    
+   # pfactorselection <- eventReactive(input$DexploreButton, {
+  #    input$factorofinterest
+  #  })
+    
+ #   observeEvent(input$DexploreButton,{
+ #     daniel1value$default <- input$DexploreButton
+ #   })
+    
+    abc<- mydataexplorationplot(dcountry1,tvariable,pvariable)
     plot(abc)
     
   })
@@ -1182,13 +1195,17 @@ server <- function(input, output, session){
     
     confidence_level <- dconfidlvl  
     z_value <- 0
-    if (confidence_level == "0.9") {
+    if (confidence_level == "0.90") {
+      print("not in here 0.9")
       z_value <- 1.645
     } else if (confidence_level == "0.95") {
+      print("not in here 0.95")
       z_value <- 1.96
     } else if (confidence_level == "0.98") {
+      print("not in here 0.98")
       z_value <- 2.33
     } else if (confidence_level == "0.99") {
+      print("not in here 0.99")
       z_value <- 2.58
     }
     
@@ -1225,20 +1242,22 @@ server <- function(input, output, session){
     print(dcountry)
     dstrength <- input$strengthResponse
     print(dstrength)
+    totalselection <- c("vac_1_ag","vac2_1_ag")
+    
+  
+    
+    
+   totalselection <- eventReactive(input$DfactorButton, {
+      input$factorofinterest
+    })
+   
+    observeEvent(input$DfactorButton,{
+      danielvalue$default <- input$DfactorButton
+    })
     
     print("ddnam")
-    dv1 <- input$factorofinterest[1]
-    dv2 <- input$factorofinterest[2]
-    dv3 <- input$factorofinterest[3]
-    dv4 <- input$factorofinterest[4]
-    dv5 <- input$factorofinterest[5]
-    dv6 <- input$factorofinterest[6]
-    dv7 <- input$factorofinterest[7]
-    dv8 <- input$factorofinterest[8]
-    dv9 <- input$factorofinterest[9]
-    dv10 <- input$factorofinterest[10]
-    dv11 <- input$factorofinterest[11]
-    dv12 <- input$factorofinterest[12]
+    print(length(totalselection))
+   
     
     countrySelected = dcountry
     strength = as.integer(dstrength)  # For user to determine level of agreement - 4 Agree, 5 Strongly agree
@@ -1319,8 +1338,68 @@ server <- function(input, output, session){
       TRUE ~ as.integer(0)
     ))
     
-  
+    selectionlist <- vector()
+    if(sum(upset_df$vac7_ag) == 0){
+      selectionlist <- append(selectionlist,"vac7_ag")
+    }
+    if(sum(upset_df$vac6_ag) == 0){
+      selectionlist <- append(selectionlist,"vac6_ag")
+    }
+    if(sum(upset_df$vac5_ag) == 0){
+      selectionlist <- append(selectionlist,"vac5_ag")
+    }
+    if(sum(upset_df$vac4_ag) == 0){
+      selectionlist <- append(selectionlist,"vac4_ag")
+    }
+    if(sum(upset_df$vac_3_ag) == 0){
+      selectionlist <- append(selectionlist,"vac_3_ag")
+    }
+    if(sum(upset_df$vac2_6_ag) == 0){
+      selectionlist <- append(selectionlist,"vac2_6_ag")
+    }
+    if(sum(upset_df$vac2_5_ag) == 0){
+      selectionlist <- append(selectionlist,"vac2_5_ag")
+    }
+    if(sum(upset_df$vac2_4_ag) == 0){
+      selectionlist <- append(selectionlist,"vac2_4_ag")
+    }
+    if(sum(upset_df$vac2_3_ag) == 0){
+      selectionlist <- append(selectionlist,"vac2_3_ag")
+    }
+    if(sum(upset_df$vac2_2_ag) == 0){
+      selectionlist <- append(selectionlist,"vac2_2_ag")
+    }
+    if(sum(upset_df$vac2_1_ag) == 0){
+      selectionlist <- append(selectionlist,"vac_2_ag")
+    }
+    if(sum(upset_df$vac_1_ag) == 0){
+      selectionlist <- append(selectionlist,"vac_1_ag")
+    }
     
+    
+    initiallist <- c(
+      "vac_1_ag" = "vac_1_ag",
+      "vac2_1_ag" = "vac2_1_ag",
+      "vac2_2_ag" = "vac2_2_ag",
+      "vac2_3_ag" = "vac2_3_ag",
+      "vac2_4_ag" = "vac2_4_ag",
+      "vac2_5_ag" = "vac2_5_ag",          
+      "vac2_6_ag" = "vac2_6_ag",
+      "vac_3_ag" = "vac_3_ag",
+      "vac4_ag" = "vac4_ag",
+      "vac5_ag" = "vac5_ag",
+      "vac6_ag" = "vac6_ag",
+      "vac7_ag" = "vac7_ag"
+    )
+    
+    
+    selectionlist <- setdiff(initiallist, selectionlist)
+    
+    if(danielvalue$default == -1){
+    updateSelectInput(session, "factorofinterest",choices = selectionlist) 
+      danielvalue$default <-0
+    }
+   
     
     # create combination matrix
     combiMatrix <- select(upset_df,vac_1_ag,vac2_1_ag,vac2_2_ag,
@@ -1328,18 +1407,35 @@ server <- function(input, output, session){
                           vac2_6_ag,vac_3_ag,vac4_ag,
                           vac5_ag,vac6_ag,vac7_ag)
     
+    
+    if(danielvalue$default > 0){
     combiMatrix <- filter(combiMatrix, vac_1_ag == 1) 
     # UpSetR cannot have 0 length argument (i.e. 0 0 0 0 0) so investigate only vac_1 = 1 cases
     upset(combiMatrix, sets = c("vac_1_ag","vac2_1_ag","vac2_2_ag",
                                 "vac2_3_ag","vac2_4_ag","vac2_5_ag",          
                                 "vac2_6_ag","vac_3_ag","vac4_ag",
                                 "vac5_ag","vac6_ag","vac7_ag"),
-          mb.ratio = c(0.55,0.45), order.by = "freq")
+          mb.ratio = c(0.55,0.45), order.by = "freq",
+          queries = list(
+            list(query = intersects, params = totalselection(), active = T)
+          ))
+    }else{
+      combiMatrix <- filter(combiMatrix, vac_1_ag == 1) 
+      # UpSetR cannot have 0 length argument (i.e. 0 0 0 0 0) so investigate only vac_1 = 1 cases
+      upset(combiMatrix, sets = c("vac_1_ag","vac2_1_ag","vac2_2_ag",
+                                  "vac2_3_ag","vac2_4_ag","vac2_5_ag",          
+                                  "vac2_6_ag","vac_3_ag","vac4_ag",
+                                  "vac5_ag","vac6_ag","vac7_ag"),
+            mb.ratio = c(0.55,0.45), order.by = "freq",
+            queries = list(
+              list(query = intersects, params = c("vac_1_ag","vac2_1_ag"), active = T)
+            ))
+      
+    }
     
   })
   
-  
-  
+
   
   output$likertplot <- renderPlot({
     
@@ -1477,6 +1573,8 @@ server <- function(input, output, session){
            strip = FALSE,
            par.strip.text=list(cex=.7)
     )
+    
+    
     
     
   })
