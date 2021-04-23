@@ -5,7 +5,7 @@ forecastNavUI <- function(id) {
   tagList(
       
       selectInput(NS(id, "Msea"), 'Country', choices = list(
-        Asia = c("Brunei"="Brunei", "Burma"="Burma", "Cambodia"="Cambodia", 
+        Asia = c("Default: Singapore" = "Singapore","Brunei"="Brunei", "Burma"="Burma", "Cambodia"="Cambodia", 
                  "Timor-Leste"="Timor-Leste", "Indonesia"="Indonesia", "Laos"="Laos", "Malaysia"="Malaysia", 
                  "Philippines"="Philippines","Singapore"="Singapore", "Thailand"="Thailand", "Vietnam"="Vietnam"),
         Europe = c("Austria"="Austria", "Belgium" = "Belgium", "Denmark" = "Denmark", "Finland" ="Finland","France" = "France", 

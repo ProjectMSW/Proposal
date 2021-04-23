@@ -35,7 +35,7 @@ source("Modules/survey.R")
 
 
 ui <- fluidPage(
-  titlePanel("Covid Explorer1"),
+  titlePanel("Covid Explorer"),
   
   
   
@@ -763,6 +763,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session){
   danielvalue <- reactiveValues(default =-1)
+  daniel1value <- reactiveValues(default =-1)
   myvalues <- reactiveValues(default = 0)
   mypredictvalue <- reactiveValues(default =0)
   myinitialvalue <- reactiveValues(default =0)
@@ -817,7 +818,7 @@ server <- function(input, output, session){
                          Date, Daily_new_cases,
                          .frequency = "auto", .trend = "auto",
                          .feature_set = c("observed", "season", "trend", "remainder"),
-                         .interactive = TRUE)
+                         .interactive = TRUE, .y_lab = "Number of Cases")
     
     
   })
@@ -828,7 +829,7 @@ server <- function(input, output, session){
       selected <- formatraw(datafile())
     }
     CountrySelected <- getIndividualCountryData(selected,selectedCountry())
-    plot_anomaly_diagnostics(CountrySelected,Date, Daily_new_cases, .facet_ncol = 2)
+    plot_anomaly_diagnostics(CountrySelected,Date, Daily_new_cases, .facet_ncol = 2, .y_lab = "Number of Cases")
     
     
   })
@@ -901,7 +902,8 @@ server <- function(input, output, session){
       plot_modeltime_forecast(
         .legend_max_width = 25, # For mobile screens
         .interactive      = TRUE,
-        .title = selectedCountry()
+        .title = selectedCountry(),
+        .y_lab = "Number of Cases"
       )
     
   })
@@ -958,6 +960,8 @@ server <- function(input, output, session){
     
   })
   
+ 
+ ###################  Daniel's Server Code #########################################
   
   output$dataexplorationtab <- renderPlot({
     display <-  c("age"="age", "gender"="gender", "household_size"="household_size","household_children"="household_children",
@@ -966,31 +970,40 @@ server <- function(input, output, session){
     
     
     dcountry1 <- input$countryofinterest1
-   
     
-    #tvariable <- input$targetVariable
+    tvariable <-input$targetVariable
+    pvariable <- input$predictiveVariable
     
-    observeEvent(input$targetVariable,{
-      tvariable <- input$targetVariable
+   # observe(input$targetVariable,{daniel1value$default <- -1})
+    
+    
+    if(daniel1value$default == -1){
       mydisplay <- setdiff(display, tvariable)
       updateSelectInput(session, "predictiveVariable",choices =mydisplay )
-      
-      
-    })
-    
-    #observeEvent(input$DexploreButton,{
-      tvariable <-input$targetVariable
-      pvariable <- isolate(input$predictiveVariable)
-   # })
-      abc<- mydataexplorationplot(dcountry1,tvariable,pvariable)
-    
-      efg <-reactive(input$DexploreButton,{
-        tvariable <-isolate(input$targetVariable)
-        pvariable <- isolate(input$predictiveVariable)
-        mydataexplorationplot(dcountry1,tvariable,pvariable)
-        
-      })
+      daniel1value$default <- 0
+    }
+   
+   observe({
+     ovar <-input$targetVariable
+     print("come in only")
+     if(ovar != tvariable){
+       print("this is the best")
+       daniel1value$default <- -1
+     }
      
+   })
+    
+    
+    
+   # pfactorselection <- eventReactive(input$DexploreButton, {
+  #    input$factorofinterest
+  #  })
+    
+ #   observeEvent(input$DexploreButton,{
+ #     daniel1value$default <- input$DexploreButton
+ #   })
+    
+    abc<- mydataexplorationplot(dcountry1,tvariable,pvariable)
     plot(abc)
     
   })
@@ -1237,13 +1250,10 @@ server <- function(input, output, session){
    totalselection <- eventReactive(input$DfactorButton, {
       input$factorofinterest
     })
-    #totalselection <-input$factorofinterest
+   
     observeEvent(input$DfactorButton,{
       danielvalue$default <- input$DfactorButton
     })
-    
-    
-    
     
     print("ddnam")
     print(length(totalselection))
