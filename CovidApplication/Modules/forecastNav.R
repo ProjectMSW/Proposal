@@ -3,9 +3,9 @@
 forecastNavUI <- function(id) {
   ns <- NS(id)
   tagList(
-      
-      selectInput(NS(id, "Msea"), 'Country', choices = list(
-        Asia = c("Default: Singapore" = "Singapore","Brunei"="Brunei", "Burma"="Burma", "Cambodia"="Cambodia", 
+      h4("Parameters"),
+      selectInput(NS(id, "Msea"), h5('Country'), choices = list(
+        Asia = c("Brunei"="Brunei", "Burma"="Burma", "Cambodia"="Cambodia", 
                  "Timor-Leste"="Timor-Leste", "Indonesia"="Indonesia", "Laos"="Laos", "Malaysia"="Malaysia", 
                  "Philippines"="Philippines","Singapore"="Singapore", "Thailand"="Thailand", "Vietnam"="Vietnam"),
         Europe = c("Austria"="Austria", "Belgium" = "Belgium", "Denmark" = "Denmark", "Finland" ="Finland","France" = "France", 
@@ -14,8 +14,8 @@ forecastNavUI <- function(id) {
                    "Portugal" = "Portugal","Spain" ="Spain", "Sweden" = "Sweden", "United Kingdom" = "United Kingdom"),
         Australia_Oceania = c("Australia" = "Australia", "New Zealand" = "New Zealand"),
         North_South_America = c("US" = "US", "Mexico" = "Mexico", "Haiti" = "Haiti", "Canada" = "Canada", "Panama"="Panama")
-      ),selectize = FALSE),
-      actionButton(ns("goButton"), label = "Search"),
+      ),selectize = FALSE, selected = "Singapore"),
+      actionButton(ns("goButton"), label = "Go"),
   )
 }
 
@@ -54,7 +54,7 @@ csvFileUI <- function(id, label = "CSV file") {
   
 
   
-  csvFileServer <- function(id, stringsAsFactors,myvalues) {
+csvFileServer <- function(id, stringsAsFactors,myvalues) {
     moduleServer(
       id,
       function(input, output, session) {
@@ -72,5 +72,145 @@ csvFileUI <- function(id, label = "CSV file") {
         })
         return(dataframe)
       }
+  )
+}
+
+
+etsmodelPanelUI <- function(id){
+  ns <- NS(id)
+  tagList(
+    fluidRow(
+      column(2,
+      selectInput("dayselection1", 'Forecast Horizon', choices =
+                    c("60 days"="60 days",
+                      "50 days"="50 days",
+                      "40 days" = "40 days",
+                      "30 days" = "30 days",
+                      "20 days" = "20 days",
+                      "10 days" = "10 days"),
+                  width = '100%'),
+      ),
+      column(6,
+      dateRangeInput("date_range1", "Change dataset Date Range:",
+                     start = "1-23-2020", # Start date of the selected df
+                     end = getMyDate(confirmed_cases_raw), # End date of the selected df
+                     format = "m-d-yyyy")
     )
-  }
+    ),
+    
+    fluidRow(
+      column(4,
+            selectInput("errorinput", 'Error', choices =
+                           c("Additive"="additive",
+                             "Multiplicative"="multiplicative"),
+                         width = '100%')
+             
+      ),
+      column(4, 
+             selectInput("trendinput", 'Trend', choices =
+                           c("Additive"="additive",
+                             "Multiplicative"="multiplicative",
+                             "None" = "none"),
+                         width = '100%')
+      ),
+      column(4,
+             selectInput("seasoninput", 'Season', choices =
+                           c("Additive"="additive",
+                             "Multiplicative"="multiplicative",
+                             "None" = "none"),
+                         width = '100%'),
+             actionButton("ETSGo", label = "Go")
+      )
+    ),
+    fluidRow(
+      column(12,
+             shinycssloaders::withSpinner(plotlyOutput("etspredictive")))),
+    
+    fluidRow(
+      column(12,
+             shinycssloaders::withSpinner(reactableOutput("etspredictiveaccuracy"))))
+  )
+}
+
+
+etsmodelPanelServer <-function(id) {
+  moduleServer(
+    id,
+    function(input, output, session) {
+    }
+  )
+}
+
+
+prophetmodelPanelUI <- function(id){
+  ns <- NS(id)
+  tagList(
+    fluidRow(
+      column(2,
+             selectInput("dayselection2", 'Forecast Horizon', choices =
+                           c("60 days"="60 days",
+                             "50 days"="50 days",
+                             "40 days" = "40 days",
+                             "30 days" = "30 days",
+                             "20 days" = "20 days",
+                             "10 days" = "10 days"),
+                         width = '100%'),
+      ),
+
+      column(6,
+             dateRangeInput("date_range2", "Change dataset Date Range:",
+                            start = "1-23-2020", # Start date of the selected df
+                            end = getMyDate(confirmed_cases_raw), # End date of the selected df
+                            format = "m-d-yyyy")
+      )
+    ),
+  
+    fluidRow(
+      column(4,
+             selectInput("growthinput", 'Growth', choices =
+                           c("Linear"="linear",
+                             "Logistic"="logistic"),
+                         width = '100%')
+             
+      ),
+      column(4, 
+             selectInput("changepointinput", 'changepoint_range', choices =
+                           c("0.1"="0.1",
+                             "0.2"="0.2",
+                             "0.3"="0.3",
+                             "0.4"="0.4",
+                             "0.5"="0.5",
+                             "0.6"="0.6",
+                             "0.7"="0.7",
+                             "0.8" = "0.8",
+                             "0.9" ="0.9"),
+                         width = '100%')
+      ),
+      column(4,
+             selectInput("pseasoninput", 'Season', choices =
+                           c("Additive"="additive",
+                             "Multiplicative"="multiplicative",
+                             "None" = "none"),
+                         width = '100%'),
+             actionButton("ProphetGo", label = "Go")
+      )
+    ),
+    fluidRow(
+      column(12,
+             shinycssloaders::withSpinner(plotlyOutput("prophetpredictive")))),
+    
+    fluidRow(
+      column(12,
+             shinycssloaders::withSpinner(reactableOutput("prophetpredictiveaccuracy")))),
+    br()
+  )
+}
+
+
+prophetmodelPanelServer <-function(id) {
+  moduleServer(
+    id,
+    function(input, output, session) {
+    }
+  )
+}

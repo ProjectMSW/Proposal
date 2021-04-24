@@ -220,20 +220,7 @@ PredictionModel <- function(traindata, modelselection){
     fit(Daily_new_cases ~ Date , data = traindata)
   
   
-  # adding the models to table
-  
-  # USmodels_tbl <- modeltime_table(
-  #   USmodel_fit_arima_no_boost,
-  #  USmodel_fit_arima_boosted,
-  #  USmodel_fit_ets,
-  #   USmodel_fit_prophet,
-  #  USmodel_fit_lm,
-  #  USwflw_fit_mars,
-  #   USmodel_snaive,
-  #  USmodel_ETS
-  # )
-  
-  
+
   a <-modeltime_table(USmodel_fit_arima_boosted)
   b <-modeltime_table(USmodel_fit_ets)
   c1 <-modeltime_table(USmodel_fit_prophet)
@@ -241,15 +228,17 @@ PredictionModel <- function(traindata, modelselection){
   e<- modeltime_table(USwflw_fit_mars)
   f<- modeltime_table(USmodel_snaive)
   g<- modeltime_table(USmodel_ETS)
+  h <- modeltime_table(USmodel_fit_arima_no_boost)
   
-  
-  USmodels_tbl <- modeltime_table(
-    USmodel_fit_arima_no_boost
-  )
+  USmodels_tbl <- modeltime_table()
   
   
   
   for(c in modelselection){
+    if(c == "arima"){
+      print("i am here pleassssssssssssss")
+      USmodels_tbl <- combine_modeltime_tables(USmodels_tbl,h)
+    }
     if(c == "arima_boosted"){
       USmodels_tbl <- combine_modeltime_tables(USmodels_tbl,a)
     }
@@ -287,6 +276,44 @@ PredictionModel1 <- function(traindata){
   
   USmodels_tbl <- modeltime_table(
     USmodel_fit_arima_no_boost
+  )
+  
+  return(USmodels_tbl)
+  
+}
+
+
+ETSModel <- function(traindata,e,t,s){
+  
+  USmodel_ETS <- exp_smoothing( 
+    error = e,
+    trend = t,
+    season = s,) %>%
+    set_engine(engine = "ets") %>%
+    fit(Daily_new_cases ~ Date , data = traindata)
+  
+  USmodels_tbl <- modeltime_table(
+    USmodel_ETS
+  )
+  
+  return(USmodels_tbl)
+  
+}
+
+
+
+ProphetModel <- function(traindata,e,t,s){
+  
+  USmodel_fit_prophet <- prophet_reg(
+    growth = e,
+    changepoint_num = t,
+    season = s
+  ) %>%
+    set_engine(engine = "prophet") %>%
+    fit(Daily_new_cases ~ Date, data = traindata)
+  
+  USmodels_tbl <- modeltime_table(
+    USmodel_fit_prophet
   )
   
   return(USmodels_tbl)

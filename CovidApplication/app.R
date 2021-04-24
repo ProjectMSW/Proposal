@@ -23,8 +23,9 @@ library(olsrr)
 library(recipes)
 library(gridExtra)
 
+library(shinyjs)
 
-import::from(HH,likert)
+#import::from(HH,likert)
 import::from(naniar,replace_with_na)
 
 
@@ -37,14 +38,15 @@ source("Modules/survey.R")
 ui <- fluidPage(
   titlePanel("Covid Explorer"),
   
-  
+  shinyjs::useShinyjs(),
   
   navbarPage(
     theme = shinytheme("sandstone"),
-    "Menu",
+    "Home:",
     tabPanel("Forecasting Positive Cases",
              sidebarPanel(
-               csvFileUI("datafile", "Select File to Load (or default dataset will be used)"),
+               h4("Dataset"),
+               csvFileUI("datafile", h5("Select File to Load (or default dataset will be used)")),hr(),
                conditionalPanel(
                  condition = "input.tabs == 'Explore Country Data' || input.tabs == 'Prediction' ",
                  forecastNavUI("datafile"),hr(),
@@ -53,46 +55,80 @@ ui <- fluidPage(
                conditionalPanel(
                  condition = "input.tabs == 'Prediction'",
                  
-                 checkboxGroupInput("variable1", "Model Selection",
-                                    c("arima_boosted" ="arima_boosted", "ets" = "ets", "prophet"="prophet",
-                                      "lm" = "lm", "mars" = "mars", "snaive" ="snaive", "ETS"="ETS")),
-                 actionButton("ModelgoButton", label = "Go"),
-                 hr(),
-                 
-                 
-                 dateRangeInput("date_range", "Change Date Range for the dataset.:",
-                                start = "1-23-2020", # Start date of the selected df
-                                end = getMyDate(confirmed_cases_raw), # End date of the selected df
-                                format = "m-d-yyyy")
-                 
+                 checkboxGroupInput("variable1", h5("Model Selection - (Default Parameters)"),
+                                    c("Arima"="arima","Arima_Boosted" ="arima_boosted", "Exponential Smoothing (ETS)" = "ets", "Prophet"="prophet",
+                                      "Linear Regression" = "lm", "MARS" = "mars", "SNAIVE" ="snaive", "ETS"="ETS"),selected =c("arima")),
+                
+                 actionButton("ModelgoButton", label = "Go"),hr(),
+                 a(id = "toggleAdvanced", h5("Advance - Model Parameters Selection"), href = "#"),
+                 shinyjs::hidden(
+                   div(id = "advanced",
+                       checkboxInput("variable4", "ETS",value=FALSE),
+                       checkboxInput("variable5", "Prophet",value=FALSE)
+                   )
+                 ),
                )
              ),
              mainPanel(
                tabsetPanel(id="tabs",
-                           
-                           tabPanel("Raw Data", 
-                                    textOutput("initialtext"),hr(),
-                                    dataTableOutput("table") ),
+                          
                            tabPanel("Explore Country Data",
-                                    textOutput("initialtext1"),
-                                    plotlyOutput("distPlot"),
-                                    plotlyOutput("anomalyPlot"),
-                                    plotlyOutput("acfPlot"),
-                                    plotlyOutput("stlPlot")
+                                    br(),
+                                    span( textOutput("initialtext1"), style="font-size:18px"),
+                                    hr(),
+                                    shinycssloaders::withSpinner(plotlyOutput("distPlot")),
+                                    hr(),
+                                    shinycssloaders::withSpinner(plotlyOutput("anomalyPlot")),
+                                    hr(),
+                                    shinycssloaders::withSpinner(plotlyOutput("acfPlot")),
+                                    hr(),
+                                    shinycssloaders::withSpinner(plotlyOutput("stlPlot")),
+                                    br(),
+                                    br()
                                     
                            ),
                            tabPanel("Prediction",
+                              hr(),
+                              tabsetPanel(id="tabs1",
+                                tabPanel("Model Comparison",
                                     conditionalPanel(
                                       condition = "input.tabs == 'Prediction'",
                                       textOutput("initialdisplay")
                                     ),
-                                    plotlyOutput("predictive"),
-                                    reactableOutput("accuracy")
-                           )
+                                    flowLayout(
+                                    selectInput("dayselection", h5('Forecast Horizon'), choices =
+                                                  c("60 days"="60 days",
+                                                    "50 days"="50 days",
+                                                    "40 days" = "40 days",
+                                                    "30 days" = "30 days",
+                                                    "20 days" = "20 days",
+                                                    "10 days" = "10 days"),
+                                                width = '100%'),
+                                    
+                                    dateRangeInput("date_range", h5("Change dataset Date Range:"),
+                                                   start = "1-23-2020", # Start date of the selected df
+                                                   end = getMyDate(confirmed_cases_raw), # End date of the selected df
+                                                   format = "m-d-yyyy")
+                                    ),
+                                    h4("Time Series Forecast"),
+                                    shinycssloaders::withSpinner(plotlyOutput("predictive")),
+                                    hr(),
+                                    h4("Model Assessment Metrics"),
+                                    shinycssloaders::withSpinner(reactableOutput("accuracy")),
+                                    br(),
+                                    br()
+                                )
+                                )      
+                                     
+                           ),
+                           tabPanel("Data Table", 
+                                    span( textOutput("initialtext"), style="font-size:18px"),hr(),
+                                    dataTableOutput("table") )
+                           
                )
              )
     ),
-    tabPanel("Death",
+    tabPanel("Exploring Death",
              sidebarLayout(
                sidebarPanel(
                  conditionalPanel(
@@ -572,7 +608,7 @@ ui <- fluidPage(
                        
                        hr(),
                        
-                       plotOutput("scatterplot")
+                       shinycssloaders::withSpinner(plotOutput("scatterplot"))
                        
                      ), # End conditionalPanel
                      
@@ -582,7 +618,7 @@ ui <- fluidPage(
                        
                        h3("Funnel plot with rate distribution"),
                        
-                       plotlyOutput("funnelplot")
+                       shinycssloaders::withSpinner(plotlyOutput("funnelplot"))
                        
                      ) # End conditionalPanel
                      
@@ -621,7 +657,7 @@ ui <- fluidPage(
                                             || input.vsMethod == 'both_aic')",
                          ns = NS(NULL),
                          
-                         plotOutput("VSMResultsPlot", height = 250, width = 500)
+                         shinycssloaders::withSpinner(plotOutput("VSMResultsPlot", height = 250, width = 500))
                          
                        ), # End conditionalPanel for plotResults
                        
@@ -631,11 +667,11 @@ ui <- fluidPage(
                          
                          h4("Model diagnostics:"),
                          h6("Model fit assessment and assumptions validation"),
-                         plotOutput("BaseDiagnosticsPlot1", height = 200),
-                         plotOutput("BaseDiagnosticsPlot2", height = 200),
+                         shinycssloaders::withSpinner(plotOutput("BaseDiagnosticsPlot1", height = 200)),
+                         shinycssloaders::withSpinner(plotOutput("BaseDiagnosticsPlot2", height = 200)),
                          hr(),
                          h6("Measures of influence"),
-                         plotOutput("BaseDiagnosticsPlot3", height = 200),
+                         shinycssloaders::withSpinner(plotOutput("BaseDiagnosticsPlot3", height = 200)),
                          hr(),
                          h6("Collinearity"),
                          verbatimTextOutput("BaseCollResultsText")
@@ -652,6 +688,7 @@ ui <- fluidPage(
              sidebarPanel(
                conditionalPanel(
                  condition = "input.danieltab == 'Survey Finding' ",
+                 h4("Parameters"),
                  selectInput("qn", 'Select Question', choices =
                                c("Proportion who are willing to take vaccine"="vac_1",
                                  "Proportion worried about getting COVID-19"="vac2_1",
@@ -661,9 +698,9 @@ ui <- fluidPage(
                                  "Proportion confident vaccine will completely prevent transmission of COVID-19 from recipient to others"="vac2_5",
                                  "Proportion who feel they will regret if they do not take the vaccine"="vac2_6",
                                  "Proportion who will take the vaccine if available in 1 year"="vac_3"),
-                             width = '100%'),
-                 
-                 selectInput("responselvl", 'Response Level', choices =
+                             width = '100%'),hr(),
+                 h4("Plot Options"),
+                 selectInput("responselvl", h5('Response Level'), choices =
                                c("Strongly Agreed"="5",
                                  "Agreed"="4",
                                  "Neutral"="3",
@@ -671,7 +708,7 @@ ui <- fluidPage(
                                  "Strongly Disagreed" = "1"),
                              width = '100%'),
                  
-                 selectInput("confidlvl", 'Response Level', choices =
+                 selectInput("confidlvl", h5('Confidence Interval for Error Bar'), choices =
                                c("0.90"="0.90",
                                  "0.95"="0.95",
                                  "0.98"="0.98",
@@ -685,7 +722,8 @@ ui <- fluidPage(
                
                conditionalPanel(
                  condition = "input.danieltab == 'Association of Factors' ",
-               selectInput("countryofinterest", 'Select Country', choices = 
+                 h4("Parameters"),
+               selectInput("countryofinterest", h5('Select Country'), choices = 
                              c("Australia" ="Australia","Canada" ="Canada","Denmark"="Denmark",
                                "Finland"="Finland","France"="France","Germany"="Germany",
                                "Israel"="Israel","Italy"="Italy","Japan"="Japan",
@@ -693,14 +731,14 @@ ui <- fluidPage(
                                "South Korea"="South Korea","Spain"="Spain","Sweden"="Sweden",
                                "United Kingdom"="United Kingdom","United States"="United States"),
                            width = '100%'),
-               
-               selectInput("strengthResponse", 'Strength of Response', choices = 
+               h4("Plot Options"),
+               selectInput("strengthResponse", h5('Strength of Response'), choices = 
                              c("Strongly Agreed"="5", 
                                "Agreed"="4"),
                            width = '100%'),
                              
                            selectizeInput("factorofinterest",
-                                          "Factor of Interest", 
+                                          h5("Factor of Interest"), 
                                           list(
                                             "vac_1_ag" = "vac_1_ag",
                                             "vac2_1_ag" = "vac2_1_ag",
@@ -715,14 +753,15 @@ ui <- fluidPage(
                                             "vac6_ag" = "vac6_ag",
                                             "vac7_ag" = "vac7_ag"
                                           ), # End list
-                                          multiple = TRUE),  
+                                          multiple = TRUE, selected=c("vac_1_ag","vac2_1_ag")),  
                
-               actionButton("DfactorButton", label = "Go")
+               actionButton("DfactorButton", label = "Click to refresh plot")
                              
                ), 
                conditionalPanel(
                  condition = "input.danieltab == 'Data Exploration' ",
-                 selectInput("countryofinterest1", 'Select Country', choices = 
+                 h4("Parameters"),
+                 selectInput("countryofinterest1", h5('Select Country'), choices = 
                                c("Australia" ="Australia","Canada" ="Canada","Denmark"="Denmark",
                                  "Finland"="Finland","France"="France","Germany"="Germany",
                                  "Israel"="Israel","Italy"="Italy","Japan"="Japan",
@@ -730,14 +769,14 @@ ui <- fluidPage(
                                  "South Korea"="South Korea","Spain"="Spain","Sweden"="Sweden",
                                  "United Kingdom"="United-Kingdom","United States"="United-States"),
                              width = '100%'),
-                 
-                 selectInput("targetVariable", 'Select Target Variable', choices = 
+                 h4("Plot Options"),
+                 selectInput("targetVariable", h5('Select Target Variable'), choices = 
                                c("gender"="gender", "household_size"="household_size","household_children"="household_children",
                                  "vac_1"="vac_1","vac2_1"="vac2_1","vac2_2"="vac2_2","vac2_3"="vac2_3","vac2_4"="vac2_4","vac2_5"="vac2_5","vac2_6"="vac2_6",
                                  "vac_3"="vac_3","vac4"="vac4","vac5"="vac5","vac6"="vac6","vac7"="vac7"),
                              width = '100%'),
                  
-                 selectInput("predictiveVariable", 'Select Predictive Variable', choices = 
+                 selectInput("predictiveVariable", h5('Select Predictive Variable'), choices = 
                                c("age"="age", "gender"="gender", "household_size"="household_size","household_children"="household_children",
                                  "vac_1"="vac_1","vac2_1"="vac2_1","vac2_2"="vac2_2","vac2_3"="vac2_3","vac2_4"="vac2_4","vac2_5"="vac2_5","vac2_6"="vac2_6",
                                  "vac_3"="vac_3","vac4"="vac4","vac5"="vac5","vac6"="vac6","vac7"="vac7"),
@@ -752,9 +791,10 @@ ui <- fluidPage(
              mainPanel(
                tabsetPanel(id="danieltab",
                  tabPanel("Survey Finding", 
-                          plotOutput("likertplot"),plotOutput("errorbars")),
-                 tabPanel("Association of Factors", plotOutput("factorInterest")),
-                 tabPanel("Data Exploration", plotOutput("dataexplorationtab"))
+                          shinycssloaders::withSpinner(plotOutput("likertplot")),
+                          shinycssloaders::withSpinner(plotOutput("errorbars"))),
+                 tabPanel("Association of Factors",  shinycssloaders::withSpinner(plotOutput("factorInterest"))),
+                 tabPanel("Data Exploration",  shinycssloaders::withSpinner(plotOutput("dataexplorationtab")))
                )
              )
     )
@@ -767,10 +807,12 @@ server <- function(input, output, session){
   myvalues <- reactiveValues(default = 0)
   mypredictvalue <- reactiveValues(default =0)
   myinitialvalue <- reactiveValues(default =0)
+  myetsvalue <- reactiveValues(default = 0)
+  myprophetvalue <- reactiveValues(default = 0)
   datafile <- csvFileServer("datafile", stringsAsFactors = FALSE,myvalues)
   output$initialtext <- renderText(
     if(myvalues$default == 0){ 
-      paste("Please Upload the latest file from Johns Hopkins University. Exisitng Dataset as follows:", "", sep="\n\n\n")
+      paste("Please Upload the latest file from Johns Hopkins University. Exisitng Dataset as follows (caa 27 Mar 2021):", "", sep="\n\n\n")
     }else{
       ""
     }
@@ -803,7 +845,7 @@ server <- function(input, output, session){
     }
     CountrySelected <- getIndividualCountryData(selected,selectedCountry())
     plot_time_series(CountrySelected,Date, Daily_new_cases,
-                     .facet_ncol =3, .facet_scales = "free",
+                     .facet_scales = "free",
                      .interactive = TRUE,.plotly_slider = TRUE,  .y_lab = "Number of Cases")
     
   })
@@ -818,7 +860,7 @@ server <- function(input, output, session){
                          Date, Daily_new_cases,
                          .frequency = "auto", .trend = "auto",
                          .feature_set = c("observed", "season", "trend", "remainder"),
-                         .interactive = TRUE, .y_lab = "Number of Cases")
+                         .interactive = TRUE, .y_lab = "Number of Cases", .x_lab = "Date")
     
     
   })
@@ -834,6 +876,14 @@ server <- function(input, output, session){
     
   })
   
+  
+
+  
+etsmodelPanelServer("datafile")
+  
+prophetmodelPanelServer("datafile")
+
+  
   output$acfPlot <- renderPlotly({
     selected <- formatraw(confirmed_cases_raw)
     if(myvalues$default == 1){
@@ -847,12 +897,289 @@ server <- function(input, output, session){
     
   })
   
+
+  
+  output$etspredictive <- renderPlotly({
+    
+    observeEvent(input$ETSGo,{
+      myetsvalue$default <- input$ETSGo
+    })
+    
+    
+     etserrorselection <- eventReactive(input$ETSGo, {
+       isolate(input$errorinput)
+     })
+     etstrendselection <- eventReactive(input$ETSGo, {
+       isolate(input$trendinput)
+     })
+     etsseasonselection <- eventReactive(input$ETSGo, {
+       isolate(input$seasoninput)
+     })
+    
+    date_start <- input$date_range1[1]
+    date_start <- date_start+1
+    x <- format(date_start, "%d-%m-%Y")
+    x<-geYearMonth(x)
+    y<-geYearMonth("27-03-2021")
+    
+    
+    selected <- formatraw(confirmed_cases_raw)
+    if(myvalues$default == 1){
+      selected <- formatraw(datafile())
+      updateDateRangeInput(session, "date_range",end = getMyDate(datafile()))
+      date_end <- input$date_range[2]
+      date_end <-  date_end+1
+      y <- format(date_end, "%d-%m-%Y")
+      y<-geYearMonth(y)
+    }
+    selected <- getDataByTime(selected,x,y)
+    CountrySelected <- getIndividualCountryData(selected,selectedCountry())
+    traindata <- createTrainData(CountrySelected)
+    testdata <- createTestData(CountrySelected)
+    
+    USmodels_tbl <- ETSModel(traindata,"additive","additive","additive")
+    
+    if(myetsvalue$default == 1){
+    USmodels_tbl <- ETSModel(traindata,etserrorselection(),etstrendselection(),etsseasonselection())
+    }
+
+    UScalibration_tbl <- USmodels_tbl %>%
+      modeltime_calibrate(new_data = testdata)
+    
+    UScalibration_tbl %>%
+      modeltime_accuracy() 
+    
+    USrefit_tbl <- UScalibration_tbl %>%
+      modeltime_refit(data = CountrySelected)
+    
+    mydayselection <- input$dayselection1
+    
+    USrefit_tbl %>%
+      modeltime_forecast(h = mydayselection, actual_data = CountrySelected) %>%
+      plot_modeltime_forecast(
+        .legend_max_width = 25, # For mobile screens
+        .interactive      = TRUE,
+        .title = selectedCountry(),
+        .y_lab = "Number of Cases"
+      )
+   
+  })
   
   
   
+  output$etspredictiveaccuracy <- renderReactable({
+    etserrorselection <- eventReactive(input$ETSGo, {
+      isolate(input$errorinput)
+    })
+    etstrendselection <- eventReactive(input$ETSGo, {
+      isolate(input$trendinput)
+    })
+    etsseasonselection <- eventReactive(input$ETSGo, {
+      isolate(input$seasoninput)
+    })
+    
+    date_start <- input$date_range1[1]
+    date_start <- date_start+1
+    x <- format(date_start, "%d-%m-%Y")
+    
+    x<-geYearMonth(x)
+    y<-geYearMonth("27-03-2021")
+    
+    selected <- formatraw(confirmed_cases_raw)
+    if(myvalues$default == 1){
+      selected <- formatraw(datafile())
+      updateDateRangeInput(session, "date_range",end = getMyDate(datafile()))
+      date_end <- input$date_range[2]
+      date_end <-  date_end+1
+      y <- format(date_end, "%d-%m-%Y")
+      y<-geYearMonth(y)
+    }
+    selected <- getDataByTime(selected,x,y)
+    CountrySelected <- getIndividualCountryData(selected,selectedCountry())
+    traindata <- createTrainData(CountrySelected)
+    testdata <- createTestData(CountrySelected)
+    
+    USmodels_tbl <- ETSModel(traindata,"additive","additive","additive")
+    
+    if(myetsvalue$default == 1){
+    USmodels_tbl <- ETSModel(traindata,etserrorselection(),etstrendselection(),etsseasonselection())
+    }
+    
+    UScalibration_tbl <- USmodels_tbl %>%
+      modeltime_calibrate(new_data = testdata)
+    
+    UScalibration_tbl %>%
+      modeltime_accuracy() 
+
+
+    USrefit_tbl <- UScalibration_tbl %>%
+      modeltime_refit(data = CountrySelected)
+    
+    mydayselection <- input$dayselection1
+    
+    USrefit_tbl %>%
+      modeltime_forecast(h = mydayselection, actual_data = CountrySelected)
+    
+    USrefit_tbl %>%
+      modeltime_accuracy() %>%
+      table_modeltime_accuracy(
+        .interactive = TRUE,
+        .title = selectedCountry()
+      )
+  })
+  
+  
+  output$prophetpredictive <- renderPlotly({
+    
+    observeEvent(input$ProphetGo,{
+      myprophetvalue$default <- input$ProphetGo
+    })
+    
+    
+    growthselection <- eventReactive(input$ProphetGo, {
+      isolate(input$growthinput)
+    })
+    changepointselection <- eventReactive(input$ProphetGo, {
+      isolate(input$changepointinput)
+    })
+    pseasonselection <- eventReactive(input$ProphetGo, {
+      isolate(input$pseasoninput)
+    })
+    
+    date_start <- input$date_range2[1]
+    date_start <- date_start+1
+    x <- format(date_start, "%d-%m-%Y")
+    x<-geYearMonth(x)
+    y<-geYearMonth("27-03-2021")
+    
+    
+    selected <- formatraw(confirmed_cases_raw)
+    if(myvalues$default == 1){
+      selected <- formatraw(datafile())
+      updateDateRangeInput(session, "date_range",end = getMyDate(datafile()))
+      date_end <- input$date_range[2]
+      date_end <-  date_end+1
+      y <- format(date_end, "%d-%m-%Y")
+      y<-geYearMonth(y)
+    }
+    selected <- getDataByTime(selected,x,y)
+    CountrySelected <- getIndividualCountryData(selected,selectedCountry())
+    traindata <- createTrainData(CountrySelected)
+    testdata <- createTestData(CountrySelected)
+    
+    USmodels_tbl <- ProphetModel(traindata,"linear",0.25,"additive")
+ 
+    if(myprophetvalue$default == 1){
+      USmodels_tbl <- ProphetModel(traindata,growthselection(),   as.numeric(changepointselection()),pseasonselection())
+    }
+    
+    UScalibration_tbl <- USmodels_tbl %>%
+      modeltime_calibrate(new_data = testdata)
+    
+    UScalibration_tbl %>%
+      modeltime_accuracy() 
+    
+    USrefit_tbl <- UScalibration_tbl %>%
+      modeltime_refit(data = CountrySelected)
+    
+    mydayselection <- input$dayselection2
+    
+    USrefit_tbl %>%
+      modeltime_forecast(h = mydayselection, actual_data = CountrySelected) %>%
+      plot_modeltime_forecast(
+        .legend_max_width = 25, # For mobile screens
+        .interactive      = TRUE,
+        .title = selectedCountry(),
+        .y_lab = "Number of Cases"
+      )
+    
+  })
+  
+  output$prophetpredictiveaccuracy <- renderReactable({
+    
+    observeEvent(input$ProphetGo,{
+      myprophetvalue$default <- input$ProphetGo
+    })
+    
+    
+    growthselection <- eventReactive(input$ProphetGo, {
+      isolate(input$growthinput)
+    })
+    changepointselection <- eventReactive(input$ProphetGo, {
+      isolate(input$changepointinput)
+    })
+    pseasonselection <- eventReactive(input$ProphetGo, {
+      isolate(input$pseasoninput)
+    })
+    
+    date_start <- input$date_range2[1]
+    date_start <- date_start+1
+    x <- format(date_start, "%d-%m-%Y")
+    x<-geYearMonth(x)
+    y<-geYearMonth("27-03-2021")
+    
+    
+    selected <- formatraw(confirmed_cases_raw)
+    if(myvalues$default == 1){
+      selected <- formatraw(datafile())
+      updateDateRangeInput(session, "date_range",end = getMyDate(datafile()))
+      date_end <- input$date_range[2]
+      date_end <-  date_end+1
+      y <- format(date_end, "%d-%m-%Y")
+      y<-geYearMonth(y)
+    }
+    selected <- getDataByTime(selected,x,y)
+    CountrySelected <- getIndividualCountryData(selected,selectedCountry())
+    traindata <- createTrainData(CountrySelected)
+    testdata <- createTestData(CountrySelected)
+    
+    USmodels_tbl <- ProphetModel(traindata,"linear",0.25,"additive")
+    
+    if(myprophetvalue$default == 1){
+      USmodels_tbl <- ProphetModel(traindata,growthselection(),   as.numeric(changepointselection()),pseasonselection())
+    }
+    
+    UScalibration_tbl <- USmodels_tbl %>%
+      modeltime_calibrate(new_data = testdata)
+    
+    UScalibration_tbl %>%
+      modeltime_accuracy() 
+    
+    USrefit_tbl <- UScalibration_tbl %>%
+      modeltime_refit(data = CountrySelected)
+    
+    mydayselection <- input$dayselection2
+    
+    USrefit_tbl %>%
+      modeltime_forecast(h = mydayselection, actual_data = CountrySelected)
+    
+    USrefit_tbl %>%
+      modeltime_accuracy() %>%
+      table_modeltime_accuracy(
+        .interactive = TRUE,
+        .title = selectedCountry()
+      )
+    
+  })
+  
+  
+
+
+  
+
+  shinyjs::onclick("toggleAdvanced",
+                   shinyjs::toggle(id = "advanced", anim = TRUE))  
+ 
+ 
   modelselection <- eventReactive(input$ModelgoButton, {
+    validate(
+      need(input$variable1, 'No model selected. Please select a model!')
+     
+    )
     isolate(input$variable1)
   })
+  
+  
   
   observeEvent(input$ModelgoButton,{
     myinitialvalue$default <- input$ModelgoButton
@@ -860,6 +1187,10 @@ server <- function(input, output, session){
   
   
   output$predictive <- renderPlotly({
+    
+   
+    
+    
     date_start <- input$date_range[1]
     date_start <- date_start+1
     x <- format(date_start, "%d-%m-%Y")
@@ -897,8 +1228,10 @@ server <- function(input, output, session){
     USrefit_tbl <- UScalibration_tbl %>%
       modeltime_refit(data = CountrySelected)
     
+    mydayselection <- input$dayselection
+    
     USrefit_tbl %>%
-      modeltime_forecast(h = "10 days", actual_data = CountrySelected) %>%
+      modeltime_forecast(h = mydayselection, actual_data = CountrySelected) %>%
       plot_modeltime_forecast(
         .legend_max_width = 25, # For mobile screens
         .interactive      = TRUE,
@@ -947,9 +1280,10 @@ server <- function(input, output, session){
     USrefit_tbl <- UScalibration_tbl %>%
       modeltime_refit(data = CountrySelected)
     
-    USrefit_tbl %>%
-      modeltime_forecast(h = "10 days", actual_data = CountrySelected) 
+    mydayselection <- input$dayselection
     
+    USrefit_tbl %>%
+      modeltime_forecast(h = mydayselection, actual_data = CountrySelected)
     
     USrefit_tbl %>%
       modeltime_accuracy() %>%
@@ -957,8 +1291,7 @@ server <- function(input, output, session){
         .interactive = TRUE,
         .title = selectedCountry()
       )
-    
-  })
+    })
   
  
  ###################  Daniel's Server Code #########################################
@@ -993,15 +1326,7 @@ server <- function(input, output, session){
      
    })
     
-    
-    
-   # pfactorselection <- eventReactive(input$DexploreButton, {
-  #    input$factorofinterest
-  #  })
-    
- #   observeEvent(input$DexploreButton,{
- #     daniel1value$default <- input$DexploreButton
- #   })
+
     
     abc<- mydataexplorationplot(dcountry1,tvariable,pvariable)
     plot(abc)
@@ -1086,12 +1411,55 @@ server <- function(input, output, session){
     return(cat_num)
   }
   
+  ###################################################################################
+  
+
+  
+  observeEvent(input$variable4, {
+    if(input$variable4 == FALSE){
+      print("here here?")
+      myetsvalue$default <- 0
+      removeTab(inputId = "tabs1", target = "ETS Model")
+    }
+   else{
+      print("not here?")
+      insertTab(inputId = "tabs1",
+                tabPanel("ETS Model", etsmodelPanelUI("datafile")),
+                target = "Model Comparison"
+      )
+      
+      updateTabsetPanel(session, "tabs1",
+                        selected = "ETS Model"
+      )
+      
+    }
+  })
+  
+  
+  observeEvent(input$variable5, {
+    if(input$variable5 == FALSE){
+      print("here here?")
+     # myetsvalue$default <- 0
+      removeTab(inputId = "tabs1", target = "Prophet Model")
+    }
+    else{
+      print("not here?")
+      insertTab(inputId = "tabs1",
+                tabPanel("Prophet Model", prophetmodelPanelUI("datafile")),
+                target = "Model Comparison"
+      )
+      
+      updateTabsetPanel(session, "tabs1",
+                        selected = "Prophet Model"
+      )
+      
+    }
+  })
+  
   
   output$errorbars <- renderPlot({
     dresponselvl <- input$responselvl
-    print(dresponselvl)
     dconfidlvl <- input$confidlvl
-    print(dconfidlvl)
     
     
     #recode variables
@@ -1396,7 +1764,7 @@ server <- function(input, output, session){
     selectionlist <- setdiff(initiallist, selectionlist)
     
     if(danielvalue$default == -1){
-    updateSelectInput(session, "factorofinterest",choices = selectionlist) 
+    updateSelectInput(session, "factorofinterest",choices = selectionlist, selected=c("vac_1_ag","vac2_1_ag")) 
       danielvalue$default <-0
     }
    
@@ -1439,10 +1807,7 @@ server <- function(input, output, session){
   
   output$likertplot <- renderPlot({
     
-    
-    
     dqn <- input$qn
-    print(dqn)
    
     
     #recode variables
@@ -1563,7 +1928,7 @@ server <- function(input, output, session){
     }
     
     
-    likert(Country ~ .,data = vac_1_df, ylab = NULL,
+    HH::likert(Country ~ .,data = vac_1_df, ylab = NULL,
            RefernceZero = 3, as.percent=TRUE,
            positive.order=TRUE,
            main = list(div_chart_title, 
@@ -1573,9 +1938,6 @@ server <- function(input, output, session){
            strip = FALSE,
            par.strip.text=list(cex=.7)
     )
-    
-    
-    
     
   })
   
