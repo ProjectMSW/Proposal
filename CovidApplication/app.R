@@ -688,7 +688,7 @@ ui <- fluidPage(
              sidebarPanel(
                conditionalPanel(
                  condition = "input.danieltab == 'Survey Finding' ",
-                 h4("Parameters"),
+                 h4("View country responses to survey questions"),
                  selectInput("qn", 'Select Question', choices =
                                c("Proportion who are willing to take vaccine"="vac_1",
                                  "Proportion worried about getting COVID-19"="vac2_1",
@@ -698,22 +698,9 @@ ui <- fluidPage(
                                  "Proportion confident vaccine will completely prevent transmission of COVID-19 from recipient to others"="vac2_5",
                                  "Proportion who feel they will regret if they do not take the vaccine"="vac2_6",
                                  "Proportion who will take the vaccine if available in 1 year"="vac_3"),
-                             width = '100%'),hr(),
-                 h4("Plot Options"),
-                 selectInput("responselvl", h5('Response Level'), choices =
-                               c("Strongly Agreed"="5",
-                                 "Agreed"="4",
-                                 "Neutral"="3",
-                                 "Disagreed"="2",
-                                 "Strongly Disagreed" = "1"),
-                             width = '100%'),
-                 
-                 selectInput("confidlvl", h5('Confidence Interval for Error Bar'), choices =
-                               c("0.90"="0.90",
-                                 "0.95"="0.95",
-                                 "0.98"="0.98",
-                                 "0.99"="0.99"),
                              width = '100%')
+                
+                 
                ),
                
                
@@ -722,7 +709,7 @@ ui <- fluidPage(
                
                conditionalPanel(
                  condition = "input.danieltab == 'Association of Factors' ",
-                 h4("Parameters"),
+                 h4("View correlation between factors and responses for individual countries using the UpSet plot."),
                selectInput("countryofinterest", h5('Select Country'), choices = 
                              c("Australia" ="Australia","Canada" ="Canada","Denmark"="Denmark",
                                "Finland"="Finland","France"="France","Germany"="Germany",
@@ -732,13 +719,13 @@ ui <- fluidPage(
                                "United Kingdom"="United Kingdom","United States"="United States"),
                            width = '100%'),
                h4("Plot Options"),
-               selectInput("strengthResponse", h5('Strength of Response'), choices = 
+               selectInput("strengthResponse", h5('Select level of agreement to be reflected in Upset plot'), choices = 
                              c("Strongly Agreed"="5", 
                                "Agreed"="4"),
                            width = '100%'),
                              
                            selectizeInput("factorofinterest",
-                                          h5("Factor of Interest"), 
+                                          h5("Select factors of interest to view association (in blue) in Upset plot"), 
                                           list(
                                             "vac_1_ag" = "vac_1_ag",
                                             "vac2_1_ag" = "vac2_1_ag",
@@ -770,19 +757,19 @@ ui <- fluidPage(
                                  "United Kingdom"="United-Kingdom","United States"="United-States"),
                              width = '100%'),
                  h4("Plot Options"),
-                 selectInput("targetVariable", h5('Select Target Variable'), choices = 
+                 selectInput("targetVariable", h5('Select Target Variable (variable 1 (y-axis))'), choices = 
                                c("gender"="gender", "household_size"="household_size","household_children"="household_children",
                                  "vac_1"="vac_1","vac2_1"="vac2_1","vac2_2"="vac2_2","vac2_3"="vac2_3","vac2_4"="vac2_4","vac2_5"="vac2_5","vac2_6"="vac2_6",
                                  "vac_3"="vac_3","vac4"="vac4","vac5"="vac5","vac6"="vac6","vac7"="vac7"),
                              width = '100%'),
                  
-                 selectInput("predictiveVariable", h5('Select Predictive Variable'), choices = 
+                 selectInput("predictiveVariable", h5('Select Predictive Variable (variable 2 (x-axis))'), choices = 
                                c("age"="age", "gender"="gender", "household_size"="household_size","household_children"="household_children",
                                  "vac_1"="vac_1","vac2_1"="vac2_1","vac2_2"="vac2_2","vac2_3"="vac2_3","vac2_4"="vac2_4","vac2_5"="vac2_5","vac2_6"="vac2_6",
                                  "vac_3"="vac_3","vac4"="vac4","vac5"="vac5","vac6"="vac6","vac7"="vac7"),
                              width = '100%'),
                  
-                 #actionButton("DexploreButton", label = "Go")
+               
                  
                  
                )
@@ -791,16 +778,101 @@ ui <- fluidPage(
              mainPanel(
                tabsetPanel(id="danieltab",
                  tabPanel("Survey Finding", 
-                          shinycssloaders::withSpinner(plotOutput("likertplot")),
+                          shinycssloaders::withSpinner(plotOutput("likertplot")),hr(),hr(),
+                          
+                          fluidRow(
+                            column(6,
+                                   selectInput("responselvl", h5('Response Level'), choices =
+                                                 c("Strongly Agreed"="5",
+                                                   "Agreed"="4",
+                                                   "Neutral"="3",
+                                                   "Disagreed"="2",
+                                                   "Strongly Disagreed" = "1"),
+                                               width = '100%')
+                                   ),
+                          
+                        
+                            column(6,
+                                   selectInput("confidlvl", h5('Confidence interval for error bar'), choices =
+                                                 c("0.90"="0.90",
+                                                   "0.95"="0.95",
+                                                   "0.98"="0.98",
+                                                   "0.99"="0.99"),
+                                               width = '100%')
+                                   )
+                          ),
                           shinycssloaders::withSpinner(plotOutput("errorbars"))),
-                 tabPanel("Association of Factors",  shinycssloaders::withSpinner(plotOutput("factorInterest"))),
+                 tabPanel("Association of Factors",  
+                          
+                          fluidRow(
+                            column(12, h3("UpSet plot reflecting association between questions and socio-determinants"))
+                          ),
+                          fluidRow(
+                            column(12, h5("The UpSet plot shows the co-occurrence between various questions and socio-determinants. 
+                            The bar chart on the left shows the frequency of the factors of interest, 
+                            while the column chart above shows the number of occurrences of the combination of factors 
+                            directly below each bar. From the UpSet plot, we will be able to observe which combinations of 
+                            factors are more frequent."))
+
+                          ),
+                          fluidRow(
+                            column(12,  shinycssloaders::withSpinner(plotOutput("factorInterest")))
+                          ),
+                          hr(),
+                          fluidRow(
+                            column(12,h3("Legend"))
+                          ),
+                                   
+                          fluidRow(
+                              column(4,    
+                                  "vac_1 = Willing to take vaccine"),
+                              column(4,    
+                                     "vac2_1 = Fear of getting COVID19"),
+                              column(4,    
+                                     "vac2_2 = Concern on vaccine side effects")
+                             
+                          ),
+                              
+                          fluidRow(
+                            column(3,    
+                                   "vac2_3 = Confidence in vaccine efficacy"),
+                            column(4,    
+                                   "vac2_4 = Vaccine will protect recipient from COVID19 health effects"),
+                            column(5,    
+                                   "vac2_5 = Vaccine will prevent transmission of COVID from recipient")
+                            
+                          ),    
+                                   
+                          fluidRow(
+                            column(3,    
+                                   "vac2_6 = Will regret if don't take vaccine"),
+                            column(4,    
+                                   "vac_3 = Will take vaccine 1 year later"),
+                            column(5,    
+                                   "vac4 = Vaccine is important for health")
+                           
+                          ),
+                          
+                          fluidRow(
+                            column(3,    
+                                   "vac5 = Will get vaccine if available"),
+                            column(4,    
+                                   "vac6 = Family and friends will want respondent to be vaccinated"),
+                            column(5,    
+                                   "vac7 = Trust COVID19 vaccines")
+                            
+                          )
+                          
+                          
+                                   
+                      ),
+                         
                  tabPanel("Data Exploration",  shinycssloaders::withSpinner(plotOutput("dataexplorationtab")))
                )
              )
     )
   )
 )
-
 server <- function(input, output, session){
   danielvalue <- reactiveValues(default =-1)
   daniel1value <- reactiveValues(default =-1)
@@ -1307,8 +1379,7 @@ prophetmodelPanelServer("datafile")
     tvariable <-input$targetVariable
     pvariable <- input$predictiveVariable
     
-   # observe(input$targetVariable,{daniel1value$default <- -1})
-    
+   
     
     if(daniel1value$default == -1){
       mydisplay <- setdiff(display, tvariable)
@@ -1318,15 +1389,11 @@ prophetmodelPanelServer("datafile")
    
    observe({
      ovar <-input$targetVariable
-     print("come in only")
      if(ovar != tvariable){
-       print("this is the best")
        daniel1value$default <- -1
      }
      
    })
-    
-
     
     abc<- mydataexplorationplot(dcountry1,tvariable,pvariable)
     plot(abc)
@@ -1592,7 +1659,12 @@ prophetmodelPanelServer("datafile")
     #vertical bar chart with error plots
     a <- ggplot(propSA_df) +
       geom_bar(aes(reorder(country,propSA),y = propSA), 
-               stat = "identity", fill ="dodgerblue3", alpha = 0.8) +
+               stat = "identity", fill ="dodgerblue3", alpha = 0.8) +labs(title="Proportion of Respondents who provided the Response Level selected", x="Country", y="Proportion") + 
+      theme(axis.title.y = element_text(size = rel(2), angle = 90)) +
+      theme(axis.title.x = element_text(size = rel(2), angle = 0)) +
+      theme(axis.text.x = element_text(color="black", size=16, angle=0)) +
+      theme(axis.text.y = element_text(color="black", size=16, angle=0)) +
+      theme(legend.title = element_text(colour="black", size=18, face="bold")) +
       geom_errorbar(aes(x = country, ymin = LowLim, ymax = UppLim), 
                     width = 0.5, colour = "firebrick2",
                     alpha = 0.9, size = 0.6) +
@@ -1623,8 +1695,7 @@ prophetmodelPanelServer("datafile")
       danielvalue$default <- input$DfactorButton
     })
     
-    print("ddnam")
-    print(length(totalselection))
+  
    
     
     countrySelected = dcountry
@@ -1793,7 +1864,7 @@ prophetmodelPanelServer("datafile")
       upset(combiMatrix, sets = c("vac_1_ag","vac2_1_ag","vac2_2_ag",
                                   "vac2_3_ag","vac2_4_ag","vac2_5_ag",          
                                   "vac2_6_ag","vac_3_ag","vac4_ag",
-                                  "vac5_ag","vac6_ag","vac7_ag"),
+                                  "vac5_ag","vac6_ag","vac7_ag"), 
             mb.ratio = c(0.55,0.45), order.by = "freq",
             queries = list(
               list(query = intersects, params = c("vac_1_ag","vac2_1_ag"), active = T)
