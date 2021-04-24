@@ -76,13 +76,13 @@ ui <- fluidPage(
                                     br(),
                                     span( textOutput("initialtext1"), style="font-size:18px"),
                                     hr(),
-                                    plotlyOutput("distPlot"),
+                                    shinycssloaders::withSpinner(plotlyOutput("distPlot")),
                                     hr(),
-                                    plotlyOutput("anomalyPlot"),
+                                    shinycssloaders::withSpinner(plotlyOutput("anomalyPlot")),
                                     hr(),
-                                    plotlyOutput("acfPlot"),
+                                    shinycssloaders::withSpinner(plotlyOutput("acfPlot")),
                                     hr(),
-                                    plotlyOutput("stlPlot"),
+                                    shinycssloaders::withSpinner(plotlyOutput("stlPlot")),
                                     br(),
                                     br()
                                     
@@ -111,10 +111,10 @@ ui <- fluidPage(
                                                    format = "m-d-yyyy")
                                     ),
                                     h4("Time Series Forecast"),
-                                    plotlyOutput("predictive"),
+                                    shinycssloaders::withSpinner(plotlyOutput("predictive")),
                                     hr(),
                                     h4("Model Assessment Metrics"),
-                                    reactableOutput("accuracy"),
+                                    shinycssloaders::withSpinner(reactableOutput("accuracy")),
                                     br(),
                                     br()
                                 )
@@ -608,7 +608,7 @@ ui <- fluidPage(
                        
                        hr(),
                        
-                       plotOutput("scatterplot")
+                       shinycssloaders::withSpinner(plotOutput("scatterplot"))
                        
                      ), # End conditionalPanel
                      
@@ -618,7 +618,7 @@ ui <- fluidPage(
                        
                        h3("Funnel plot with rate distribution"),
                        
-                       plotlyOutput("funnelplot")
+                       shinycssloaders::withSpinner(plotlyOutput("funnelplot"))
                        
                      ) # End conditionalPanel
                      
@@ -657,7 +657,7 @@ ui <- fluidPage(
                                             || input.vsMethod == 'both_aic')",
                          ns = NS(NULL),
                          
-                         plotOutput("VSMResultsPlot", height = 250, width = 500)
+                         shinycssloaders::withSpinner(plotOutput("VSMResultsPlot", height = 250, width = 500))
                          
                        ), # End conditionalPanel for plotResults
                        
@@ -667,11 +667,11 @@ ui <- fluidPage(
                          
                          h4("Model diagnostics:"),
                          h6("Model fit assessment and assumptions validation"),
-                         plotOutput("BaseDiagnosticsPlot1", height = 200),
-                         plotOutput("BaseDiagnosticsPlot2", height = 200),
+                         shinycssloaders::withSpinner(plotOutput("BaseDiagnosticsPlot1", height = 200)),
+                         shinycssloaders::withSpinner(plotOutput("BaseDiagnosticsPlot2", height = 200)),
                          hr(),
                          h6("Measures of influence"),
-                         plotOutput("BaseDiagnosticsPlot3", height = 200),
+                         shinycssloaders::withSpinner(plotOutput("BaseDiagnosticsPlot3", height = 200)),
                          hr(),
                          h6("Collinearity"),
                          verbatimTextOutput("BaseCollResultsText")
@@ -791,10 +791,10 @@ ui <- fluidPage(
              mainPanel(
                tabsetPanel(id="danieltab",
                  tabPanel("Survey Finding", 
-                          plotOutput("likertplot"),
-                          plotOutput("errorbars")),
-                 tabPanel("Association of Factors", plotOutput("factorInterest")),
-                 tabPanel("Data Exploration", plotOutput("dataexplorationtab"))
+                          shinycssloaders::withSpinner(plotOutput("likertplot")),
+                          shinycssloaders::withSpinner(plotOutput("errorbars"))),
+                 tabPanel("Association of Factors",  shinycssloaders::withSpinner(plotOutput("factorInterest"))),
+                 tabPanel("Data Exploration",  shinycssloaders::withSpinner(plotOutput("dataexplorationtab")))
                )
              )
     )
@@ -916,7 +916,7 @@ prophetmodelPanelServer("datafile")
        isolate(input$seasoninput)
      })
     
-    date_start <- input$date_range[1]
+    date_start <- input$date_range1[1]
     date_start <- date_start+1
     x <- format(date_start, "%d-%m-%Y")
     x<-geYearMonth(x)
@@ -952,7 +952,7 @@ prophetmodelPanelServer("datafile")
     USrefit_tbl <- UScalibration_tbl %>%
       modeltime_refit(data = CountrySelected)
     
-    mydayselection <- input$dayselection
+    mydayselection <- input$dayselection1
     
     USrefit_tbl %>%
       modeltime_forecast(h = mydayselection, actual_data = CountrySelected) %>%
@@ -978,7 +978,7 @@ prophetmodelPanelServer("datafile")
       isolate(input$seasoninput)
     })
     
-    date_start <- input$date_range[1]
+    date_start <- input$date_range1[1]
     date_start <- date_start+1
     x <- format(date_start, "%d-%m-%Y")
     
@@ -1015,7 +1015,7 @@ prophetmodelPanelServer("datafile")
     USrefit_tbl <- UScalibration_tbl %>%
       modeltime_refit(data = CountrySelected)
     
-    mydayselection <- input$dayselection
+    mydayselection <- input$dayselection1
     
     USrefit_tbl %>%
       modeltime_forecast(h = mydayselection, actual_data = CountrySelected)
@@ -1046,7 +1046,7 @@ prophetmodelPanelServer("datafile")
       isolate(input$pseasoninput)
     })
     
-    date_start <- input$date_range[1]
+    date_start <- input$date_range2[1]
     date_start <- date_start+1
     x <- format(date_start, "%d-%m-%Y")
     x<-geYearMonth(x)
@@ -1082,7 +1082,7 @@ prophetmodelPanelServer("datafile")
     USrefit_tbl <- UScalibration_tbl %>%
       modeltime_refit(data = CountrySelected)
     
-    mydayselection <- input$dayselection
+    mydayselection <- input$dayselection2
     
     USrefit_tbl %>%
       modeltime_forecast(h = mydayselection, actual_data = CountrySelected) %>%
@@ -1112,7 +1112,7 @@ prophetmodelPanelServer("datafile")
       isolate(input$pseasoninput)
     })
     
-    date_start <- input$date_range[1]
+    date_start <- input$date_range2[1]
     date_start <- date_start+1
     x <- format(date_start, "%d-%m-%Y")
     x<-geYearMonth(x)
@@ -1148,7 +1148,7 @@ prophetmodelPanelServer("datafile")
     USrefit_tbl <- UScalibration_tbl %>%
       modeltime_refit(data = CountrySelected)
     
-    mydayselection <- input$dayselection
+    mydayselection <- input$dayselection2
     
     USrefit_tbl %>%
       modeltime_forecast(h = mydayselection, actual_data = CountrySelected)

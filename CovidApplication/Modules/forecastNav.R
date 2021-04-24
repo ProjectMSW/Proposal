@@ -80,8 +80,8 @@ etsmodelPanelUI <- function(id){
   ns <- NS(id)
   tagList(
     fluidRow(
-      column(6,
-      selectInput("dayselection", 'Forecast Horizon', choices =
+      column(2,
+      selectInput("dayselection1", 'Forecast Horizon', choices =
                     c("60 days"="60 days",
                       "50 days"="50 days",
                       "40 days" = "40 days",
@@ -91,7 +91,7 @@ etsmodelPanelUI <- function(id){
                   width = '100%'),
       ),
       column(6,
-      dateRangeInput("date_range", "Change dataset Date Range:",
+      dateRangeInput("date_range1", "Change dataset Date Range:",
                      start = "1-23-2020", # Start date of the selected df
                      end = getMyDate(confirmed_cases_raw), # End date of the selected df
                      format = "m-d-yyyy")
@@ -124,11 +124,11 @@ etsmodelPanelUI <- function(id){
     ),
     fluidRow(
       column(12,
-             plotlyOutput("etspredictive"))),
+             shinycssloaders::withSpinner(plotlyOutput("etspredictive")))),
     
     fluidRow(
       column(12,
-             reactableOutput("etspredictiveaccuracy")))
+             shinycssloaders::withSpinner(reactableOutput("etspredictiveaccuracy"))))
   )
 }
 
@@ -146,8 +146,8 @@ prophetmodelPanelUI <- function(id){
   ns <- NS(id)
   tagList(
     fluidRow(
-      column(6,
-             selectInput("dayselection", 'Forecast Horizon', choices =
+      column(2,
+             selectInput("dayselection2", 'Forecast Horizon', choices =
                            c("60 days"="60 days",
                              "50 days"="50 days",
                              "40 days" = "40 days",
@@ -156,14 +156,15 @@ prophetmodelPanelUI <- function(id){
                              "10 days" = "10 days"),
                          width = '100%'),
       ),
+
       column(6,
-             dateRangeInput("date_range", "Change dataset Date Range:",
+             dateRangeInput("date_range2", "Change dataset Date Range:",
                             start = "1-23-2020", # Start date of the selected df
                             end = getMyDate(confirmed_cases_raw), # End date of the selected df
                             format = "m-d-yyyy")
       )
     ),
-    
+  
     fluidRow(
       column(4,
              selectInput("growthinput", 'Growth', choices =
@@ -196,11 +197,11 @@ prophetmodelPanelUI <- function(id){
     ),
     fluidRow(
       column(12,
-             plotlyOutput("prophetpredictive"))),
+             shinycssloaders::withSpinner(plotlyOutput("prophetpredictive")))),
     
     fluidRow(
       column(12,
-             reactableOutput("prophetpredictiveaccuracy"))),
+             shinycssloaders::withSpinner(reactableOutput("prophetpredictiveaccuracy")))),
     br()
   )
 }
