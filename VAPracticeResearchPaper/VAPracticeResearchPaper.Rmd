@@ -127,6 +127,9 @@ Data visualisation is the quickest way to communicate information in a clear and
 
 ## New cases
 
+```{r}
+
+```
 
 
 ## Deaths
