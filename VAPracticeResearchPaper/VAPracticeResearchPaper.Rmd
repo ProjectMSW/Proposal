@@ -1,5 +1,5 @@
 ---
-title: IVAR - Interactive Visual Analysis with R for Exploring COVID-19 Data
+title: IVAR-Shiny - Interactive Visual Analysis with R Shiny for Exploring COVID-19 Data
 author:
   - name: Lin Yongyan
     email: yongyan.lin.2020@mitb.smu.edu.sg
@@ -11,7 +11,7 @@ author:
     email: amandatan.2020@mitb.smu.edu.sg
     affiliation: Masters of IT in Business (MITB), Singapore Management University (SMU)
 abstract: |
-  This is the abstract.
+  In today's Data Age, data on COVID-19 are related data available, visualisations and studies.
 
   It consists of two paragraphs.
 bibliography: sigproc.bib
@@ -22,7 +22,11 @@ output: rticles::acm_article
 
 # Introduction 
 
-The Coronavirus (COVID-19) has caught the world’s attention with the first COVID-19 cases reported in Wuhan, Hubei, China, in December 2019. In the global battle against the virus, countries seek to understand the virus, its spread, impact and more recently, receptivity towards the COVID-19 vaccination. In today's Data Age, there are many COVID-19 related data available across various platforms. We aim to leverage the richness of the available data to provide an interactive experience in generating insights and analyses from the key COVID-19 trends: (1) new cases; (2) deaths; and (3) vaccination receptivity.
+The Coronavirus (COVID-19) has caught the world’s attention with the first COVID-19 cases reported in Wuhan, Hubei, China, in December 2019. In the global battle against the virus, countries seek to understand the virus, its spread, impact and more recently, receptivity towards the COVID-19 vaccination. We are currently living in the Data Age, where many COVID-19 related data are made available on the Internet. This has facilitated numerous, but not limited to, epidemiology and statistical studies across the globe. 
+
+In the data science realm, many data-driven applications are developed to provide a one-stop information hub for the public. These applications are typically developed using programming languages such as HTML, Java and JavaScript. With the growing popularity of R, and its ability to create web applications using the R Shiny package, the creation of interactive visualisations without having in-depth web programming knowledge has been made possible. 
+
+In this paper, we aim to leverage the richness of the COVID-19 data to provide an interactive experience in generating insights and analyses using R Shiny from three key aspects: (1) new cases; (2) deaths; and (3) vaccination receptivity.
 
 # Motivation of the application
 
@@ -38,7 +42,7 @@ Data is obtained from several sources: Center for Systems Science and Engineerin
 
 # Review and critic on past works
 
-The selected aspects have varying degrees of current and past works. The discussion is done separately for each aspect.
+As there are three components to the application, the discussion is done separately for each component.
 
 ## New cases
 
@@ -58,23 +62,15 @@ To allow user to have a more holistic predictive analysis of the new cases, the 
 
 All the one-stop COVID-19 applications report the death toll by location using geo-spatial, time-series and/or in tabular form (see Figure 1). There are lesser analyses that study the relationship between deaths or death rates with other indicators, with the majority of them seeking to explain a causal relationship between the COVID-19 numbers and the indicators. The review will focus on the analysis and visualisations used in these analyses.
 
-### Scatterplot
+The scatterplot (Figure 3a) is useful in showing the relationship between two independent variables. Scales can be employed to encode useful variables not represented on the plot. However, it may be difficult to clearly differentiate points on the plot when the number of data points increases. 
 
-The scatterplot is useful in showing the relationship between two independent variables. The scatterplot in Figure 3 uses size and colour scales to encode number of deaths and continent respectively. The size of the data points are not obvious from the graph and the overlap in data points belonging to the same continent also make it difficult to identify the data points. The strength of the relationship between the two variables can only be gleaned visually. There is also no interactivity provided for users to explore the data further.
+![*(a)* Scatterplot on change in GDP per capita against deaths per million @smithson2020. *(b)* Funnel plot on case fatality rate against number of confirmed cases @wicklin2020.](images/deaths-currbiv.jpg)
 
-![Scatterplot on change in GDP per capita against deaths per million. Source: https://theconversation.com/data-from-45-countries-show-containing-covid-vs-saving-the-economy-is-a-false-dichotomy-150533](images/deaths-currscatterplot.jpg)
+The funnel plot (Figure 3b) is another graph that shows the relationship between two variables that are dependent on each other e.g. case fatality rate against the number of confirmed cases, where case fatality rate is calculated as a ratio of the number of deaths to the number of confirmed cases. It is similar to the scatterplot, and additionally seeks to highlight any anomalies from the expected range of the numerical values based on statistical concepts.
 
-### Funnel plot
+There are very few multivariate analysis done, and of those conducted, most of them are presented in tabular form or described in text. Only one study on regression models presented its findings visually in a scatterplot with fit lines (Figure 5).
 
-The funnel plot is another graph that shows the relationship between two variables that are dependent on each other e.g. case fatality rate against the number of confirmed cases, where case fatality rate is calculated as a ratio of the number of deaths to the number of confirmed cases. There are two similar visualisations created specifically for COVID-19 case fatality rate for counties in the US by a SAS researcher Rick Wicklin (see Figure 4). The funnel plot seeks to highlight any anomalies from the expected range of the numerical values based on statistical concepts. The drawback of the visualisation is that the funnel plots are static with no interactivity: users are unable to identify the other data points that are not labelled and do further exploration with other variables.
-
-![Funnel plot on case fatality rate against number of confirmed cases. Source: https://blogs.sas.com/content/iml/2020/04/22/funnel-plot-covid-us.html](images/deaths-currfunnelplot.jpg)
-
-### Multiple regression model
-
-The visualisations discussed thus far are bivariate in nature: analysis of each factor with the number of deaths. There are very few multivariate analysis done, and of those conducted, most of them are presented in tabular form or described in text. There is one study on regression models to predict the number of COVID-19 new deaths, which presents its findings visually in the research paper (see Figure 5).
-
-![*(Top)* Table showing the regression models summaries and parameter estimates to predict new COVID-19 deaths. *(Bottom)* Scatterplot with fit lines comparing the regression models built to predict new COVID-19 deaths by day. Source: https://www.medrxiv.org/content/10.1101/2020.09.04.20188094v1.full.pdf](images/deaths-currMLR.jpg)
+![*(Top)* Table showing the regression models summaries and parameter estimates to predict new COVID-19 deaths. *(Bottom)* Scatterplot with fit lines comparing the regression models built to predict new COVID-19 deaths by day @argawu2020.](images/deaths-currMLR.jpg)
 
 There are gaps in the current visualisations in supporting the intended analysis. The majority of interactive visualisations are univariate analysis presented on maps or in time series, while the bivariate and multivariate analysis of the country indicators and the number of deaths are largely static. The application will attempt to create interactive visualisations for bivariate (scatterplot and funnel plot) and multivariate analysis (multiple linear regression). The focus will be on the cumulative or total number of deaths, so that more meaningful relationships can be observed between the COVID-19 related data and national aggregate indicators.
 
@@ -84,29 +80,14 @@ The review of current visual analytic techniques of survey data can be categoris
 
 ### Representation of Likert scales
 
-There are several ways to visually represent Likert scales.
+Likert scales are most commonly presented in pie charts and variations of the bar chart. Salient points regarding each chart type (Figure 6) are highlighted:- 
 
-#### Grouped column/bar charts
+* Pie charts: depict the proportions of responses to a question, but is difficult to compare and visualize the differences in proportion between the questions
+* Grouped column/bar charts: allow easy comparison on frequency of response levels within a question, but is difficult to compare proportions of the response levels across questions
+* Stacked bar charts: show proportion of various response levels for each question while allowing sufficient comparison of response levels across questions. Use of colour is important to facilitate user interpretation of the graph.
+* Diverging stacked bar charts:
 
-Responses by questions (or other categories) can be grouped and represented as column or bar charts, with the Likert score represented by each column/bar, as shown in Figure 6.
-
-![Grouped bar chart representing responses to a Likert scale survey](images/survey-ColumnCharts.jpg)
-
-While bar charts allow easy comparison on the count (frequency) of responses across the different Likert scores, they do not allow the easy comparison of proportions of the responses (e.g., proportion of respondents who strongly agree or agree to a question).
-
-#### Pie charts
-
-While pie charts depict the proportions of responses to a question, it is difficult to compare and visualize the differences in proportion between the questions (Figure 7).
-
-![Multiple pie charts representing responses to a Likert scale survey](images/survey-PieChart.jpeg)
-
-#### Stacked bar charts
-
-Stacked bar charts clearly shows the proportion of the various responses for each question asked in a survey (Figure 8). The use of different tones of colours (i.e. light green to dark green) provides the reader with an idea of increasing levels of responses (i.e. Agree to Strongly Agree). 
-
-![Stacked bar charts representing responses to Likert scale survey](images/survey-StackedBarCharts.jpg)
-
-A benefit of stacked bar charts is that it allows readers to compare different proportions across different bars since each set of stacked bar sums up to 100%. In Figure 8, it is evident that while a large proportion agreed that they liked the presentation, a lower proportion actually felt that they learnt something from the presentation.
+![Grouped bar chart representing responses to a Likert scale survey](images/survey-likert.jpg)
 
 #### Diverging stacked bar chart
 
@@ -116,7 +97,7 @@ Another way of representing responses to a Likert scale survey is the diverging 
 
 The diverging stacked bar chart is most appropriate to represent responses from Likert scale surveys as it allows easy interpretation and comparison of multiple categories. 
 
-#### Comparing the mean Likert score
+#### Numerical representation of Likert score
 
 While it may seem appropriate to compare the mean Likert score of each category, there is a potential pitfall in doing so. Referring to Figure 10, the mean score for the three courses are similar, yet it is evident that the distribution and spread of the responses are very different.
 
@@ -134,7 +115,7 @@ As surveys are usually conducted on a small sample, there is some degree of unce
 
 Insights on the relationship between survey responses can be gained from studying the correlation to understand if there are certain determinants or factors that affect the response of certain questions. It would be useful to investigate if vaccination inclination is dependent on certain socio-demographical factors (e.g., age, gender, household size or number of children in the household) or certain attitudes or beliefs (e.g., confidence of vaccine efficacy, or concerns on the side effects of the vaccine).
 
-*Correlation matrix* or *correlation scatterplot* are common methods used to depict the correlation between **continuous** variables (Figure 12 and Figure 13). For correlations between **categorical** variables, the UpSet plot can be used via the use of the UpSetR function (Figure 14).
+Correlation matrix or correlation scatterplot are common methods used to depict the correlation between **continuous** variables (Figure 12 and Figure 13). For correlations between **categorical** variables, the UpSet plot can be used via the UpSetR function (Figure 14).
 
 ![Correlation matrix](images/survey-CorrMatrix.jpg)
 
@@ -148,18 +129,56 @@ The application will employ the use of the diverging stacked bar chart to visual
 
 # Design framework
 
+The purpose of the application is to provide users with an interactive visual experience for in-depth exploration and analysis of the COVID-19 data. With this in mind, the design focus would be centred on *user interaction* and *user experience* with the R Shiny application.
+
+User interaction is not a new concept and has been applied in web-based learning as *learner-content interaction*^[@northrup2001]^ and product design as *interaction design*^[@idf2002]^ for many years. It is concerned with how the user interact with a product or application that meets the users' needs. Interaction design is closely linked to user experience (UX) design, where the design of the product is centred around the experience of the user. In the design of this application, the following areas are considered:-
+
+* Who: the target audience and user of the application
+* Why: the motivation behind using the application
+* What: functionalities and features of the application
+* How: interaction with the functionalities and features
+
+The application is designed for users who wish to find out more about COVID-19 beyond the "standard" reported figures. These users are likely to be curious individuals with an inquisitive mind, and are likely to have some experience and knowledge in statistical analysis. As such, the application needs to be flexible to support exploration of the data while providing clear and easy-to-understand information with statistical metrics. 
+
+Data visualisation is the quickest way to communicate information in a clear and easy-to-understand format. Statistical metrics would be presented visually, where appropriate and relevant. To meet the need of flexible data exploration, interactivity would be a key feature of the application, where by the user is able to (1) select and try different combination of variables and parameters to explore the data; and (2) interact with the visualisation to discover trends and insights. As with all applications, the user interface should be kept as simple as possible, and where not possible, to provide information or markers to direct how the user should interact with the application. Finer details of how the design framework is applied to each aspect (new cases, deaths and vaccination receptivity) is discussed in the next few sections.
+
+*- take screenshot of main new case tab*
+*- briefly explain the interactivity features and visualisation and statistical stuff*
+
+## New cases
+
+
+
+## Deaths
+
+
+
+## Vaccination receptivity
+
 
 # Demonstration
 
+*USE CASE*
+**
+
+## New cases
+
+## Deaths
+
+## Vaccination receptivity
 
 # Discussion
 
 
+
+
 # Future work
 
+Due to resource constraints, 
 
 # Conclusion
 
+The use of interactive techniques
 
 # References
 
@@ -171,102 +190,128 @@ references:
   - family: Pagano
     given: Bob
   type: misc
+  note: 'https://bobpagano.com/us/'
   issued:
     year: 2021
-  note: https://bobpagano.com/us/
-- id: fenner2012a
-  title: One-click science marketing
+    month: 4
+- id: google2021
+  title: U.S. COVID-19 Public Forecasts
   author:
-  - family: Fenner
-    given: Martin
-  container-title: Nature Materials
-  volume: 11
-  URL: 'https://doi.org/10.1038/nmat3283'
-  DOI: 10.1038/nmat3283
-  issue: 4
-  publisher: Nature Publishing Group
-  page: 261-263
-  type: article-journal
+  - family: Google
+  type: misc
+  note: 'https://doi.org/10.1038/nmat3283'
   issued:
-    year: 2012
-    month: 3
-- id: meier2012
-  title: Professinal Android 4 Application Development
+    year: 2021
+    month: 4
+- id: unimelbourne2021
+  title: United States of America Coronavirus 10-day forecast
   author: 
-  - family: Meier
-    given: Reto
-  type: book
-  publisher: John Wiley & Sons, Inc.
+  - family: University of Melbourne
+  type: misc
+  note: 'http://us.covid19forecast.science.unimelb.edu.au/'
   issued:
-    year: 2012
-    month: 5
-- id: fenner2012a
-  title: One-click science marketing
+    year: 2021
+    month: 4
+- id: bestboice2021
+  title: Where the Latest COVID-19 Models Think We're Headed - And Why They Disagree
   author:
-  - family: Fenner
-    given: Martin
-  container-title: Nature Materials
-  volume: 11
-  URL: 'https://doi.org/10.1038/nmat3283'
-  DOI: 10.1038/nmat3283
-  issue: 4
-  publisher: Nature Publishing Group
-  page: 261-263
-  type: article-journal
+  - family: Best
+    given: Ryan
+  - family: Boice
+    given: Jay
+  journal: FiveThirtyEight
+  type: misc
+  note: 'https://projects.fivethirtyeight.com/covid-forecasts/'
   issued:
-    year: 2012
-    month: 3
-- id: meier2012
-  title: Professinal Android 4 Application Development
+    year: 2021
+    month: 4
+- id: csse2020
+  title: COVID-19 Data Repository
   author: 
-  - family: Meier
-    given: Reto
-  type: book
-  publisher: John Wiley & Sons, Inc.
+  - family: Center for Systems Science and Engineering (CSSE)
+  organisation: Center for Systems Science and Engineering (CSSE), John Hopkins University
+  type: misc
+  note: 'https://github.com/CSSEGISandData/COVID-19'
   issued:
-    year: 2012
-    month: 5
-- id: fenner2012a
-  title: One-click science marketing
+    year: 2020
+    month: 2
+    day: 19
+- id: smithson2020
+  title: Data from 45 countries show containing COVID vs saving the economy is a false dichotomy
   author:
-  - family: Fenner
-    given: Martin
-  container-title: Nature Materials
-  volume: 11
-  URL: 'https://doi.org/10.1038/nmat3283'
-  DOI: 10.1038/nmat3283
-  issue: 4
-  publisher: Nature Publishing Group
-  page: 261-263
-  type: article-journal
+  - family: Smithson
+    given: Michael
+  journal: The Conversation
+  type: misc
+  URL: 'https://theconversation.com/data-from-45-countries-show-containing-covid-vs-saving-the-economy-is-a-false-dichotomy-150533'
   issued:
-    year: 2012
-    month: 3
-- id: meier2012
-  title: Professinal Android 4 Application Development
-  author: 
-  - family: Meier
-    given: Reto
-  type: book
-  publisher: John Wiley & Sons, Inc.
-  issued:
-    year: 2012
-    month: 5
-- id: fenner2012a
-  title: One-click science marketing
+    year: 2020
+    month: 11
+    day: 26
+- id: wicklin2020
+  title: Visualize the case fatality rate for COVID-19 in US counties
   author:
-  - family: Fenner
-    given: Martin
-  container-title: Nature Materials
-  volume: 11
-  URL: 'https://doi.org/10.1038/nmat3283'
-  DOI: 10.1038/nmat3283
-  issue: 4
-  publisher: Nature Publishing Group
-  page: 261-263
-  type: article-journal
+  - family: Wicklin
+    given: Rick
+  journal: The DO Loop
+  organisation: SAS
+  type: misc
+  URL: 'https://blogs.sas.com/content/iml/2020/04/22/funnel-plot-covid-us.html'
   issued:
-    year: 2012
-    month: 3
+    year: 2020
+    month: 4
+    day: 22
+- id: argawu2020
+  title: Regression Models for Predictions of COVID-19 New Cases and New Deaths Based on May/June Data in Ethiopia
+  author:
+  - family: Argawu
+    given: Alemayehu Siffir
+  journal: medRxiv
+  publisher: Cold Spring Harbor Laboratory Press
+  type: journal
+  doi: 'https://doi.org/10.1101/2020.09.04.20188094'
+  URL: 'https://www.medrxiv.org/content/10.1101/2020.09.04.20188094v1.full.pdf'
+  issued:
+    year: 2020
+    month: 9
+- id: owidcoronavirus2020
+  title: Coronavirus Pandemic (COVID-19)
+  author:
+  - family: Roser
+    given: Max
+  - family: Ritchie
+    given: Hannah
+  - family: Ortiz-Ospina
+    given: Esteban
+  - family: Hasell
+    given: Joe
+  journal: Our World in Data
+  note: 'https://ourworldindata.org/coronavirus'
+  type: misc
+  issued:
+    year: 2020
+- id: northrup2001
+  title: A Framework for Designing Interactivity into Web-Based Instruction
+  author:
+  - family: Northrup
+    given: Pam
+  journal: Educational Technology
+  volume: 41
+  number: 2
+  page: 31-39
+  URL: 'http://www.jstor.org/stable/44428657'
+  publisher: Educational Technology Publications, Inc.
+  type: article
+  issued:
+    year: 2001
+- id: idf2002
+  title: User Experience (UX) Design
+  author:
+  - family: Interaction Design Foundation
+  URL: 'https://www.interaction-design.org/literature/topics/ux-design'
+  type: misc
+  issued:
+    year: 2002
+
 ...
 
