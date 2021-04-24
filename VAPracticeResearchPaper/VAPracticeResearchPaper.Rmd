@@ -48,17 +48,17 @@ As there are three components to the application, the discussion is done separat
 
 Most studies that forecast the number of new cases use time series charts with confidence interval of the predicted values. The use of the confidence interval shows the range in which the predicted values will fall within and provides a sense of the prediction variation. Most predictive models used and the model input parameters are usually pre-defined, with only a handful of studies comparing the results from different models. The visualisation in Figure 1 compares the time-series chart of different assumptions made in the predictive analysis, while not providing information on the predictive model used. The model input parameters is also limited to the starting month to based the forecast on.
 
-![Comparison of predictive models with option for user to select starting month that forecasts will be based on. Source: https://projects.fivethirtyeight.com/covid-forecasts/](images/cases-currmodelcompare.jpg)
+![Comparison of predictive models with option for user to select starting month that forecasts will be based on @bestboice2021.](images/cases-currmodelcompare.jpg)
 
 Another predictive analysis (Figure 2) allows more flexibility to the users, whereby the user can select between two simple models (constant or time-varying growth) with model input parameters such as the time period to calculate the predicted values. Other parameters such as country and graph scales are also available for selection. In this visualisation, the available models are limited and simplistic and there is a lack of model assessment metrics e.g. Root Mean Square Error (RMSE).
 
-![Time-series forecasting with model options, model input parameters and graph scale options. Source: http://us.covid19forecast.science.unimelb.edu.au/](images/cases-currmodel.jpg)
+![Time-series forecasting with model options, model input parameters and graph scale options @unimelbourne2021.](images/cases-currmodel.jpg)
 
 Majority of the visualisations reviewed do not allow users to explore and understand the data before proceeding to the forecast. 
 
 To allow user to have a more holistic predictive analysis of the new cases, the application will attempt to combine data exploration of the trend, seasonality and anomaly (if any) of the time-series data and predictive modeling. For the predictive modeling, users will be given the option to select and compare the predictive models, and define model parameters such as the date range to be used for the forecasting. Model assessment measures will also be included.
 
-## Deaths and death rates with health, economic and population structure indicators
+## Deaths and death rates
 
 All the one-stop COVID-19 applications report the death toll by location using geo-spatial, time-series and/or in tabular form (see Figure 1). There are lesser analyses that study the relationship between deaths or death rates with other indicators, with the majority of them seeking to explain a causal relationship between the COVID-19 numbers and the indicators. The review will focus on the analysis and visualisations used in these analyses.
 
@@ -68,9 +68,9 @@ The scatterplot (Figure 3a) is useful in showing the relationship between two in
 
 The funnel plot (Figure 3b) is another graph that shows the relationship between two variables that are dependent on each other e.g. case fatality rate against the number of confirmed cases, where case fatality rate is calculated as a ratio of the number of deaths to the number of confirmed cases. It is similar to the scatterplot, and additionally seeks to highlight any anomalies from the expected range of the numerical values based on statistical concepts.
 
-There are very few multivariate analysis done, and of those conducted, most of them are presented in tabular form or described in text. Only one study on regression models presented its findings visually in a scatterplot with fit lines (Figure 5).
+There are very few multivariate analysis done, and of those conducted, most of them are presented in tabular form or described in text. Only one study on regression models^[@argawu2020]^ presented its findings visually in a scatterplot with fit lines (Figure 4).
 
-![*(Top)* Table showing the regression models summaries and parameter estimates to predict new COVID-19 deaths. *(Bottom)* Scatterplot with fit lines comparing the regression models built to predict new COVID-19 deaths by day @argawu2020.](images/deaths-currMLR.jpg)
+![*(Top)* Table showing the regression models summaries and parameter estimates to predict new COVID-19 deaths. *(Bottom)* Scatterplot with fit lines comparing the regression models built to predict new COVID-19 deaths by day.](images/deaths-currMLR.jpg)
 
 There are gaps in the current visualisations in supporting the intended analysis. The majority of interactive visualisations are univariate analysis presented on maps or in time series, while the bivariate and multivariate analysis of the country indicators and the number of deaths are largely static. The application will attempt to create interactive visualisations for bivariate (scatterplot and funnel plot) and multivariate analysis (multiple linear regression). The focus will be on the cumulative or total number of deaths, so that more meaningful relationships can be observed between the COVID-19 related data and national aggregate indicators.
 
@@ -80,34 +80,18 @@ The review of current visual analytic techniques of survey data can be categoris
 
 ### Representation of Likert scales
 
-Likert scales are most commonly presented in pie charts and variations of the bar chart. Salient points regarding each chart type (Figure 6) are highlighted:- 
+Likert scales are most commonly presented in pie charts and variations of the bar chart, where proportion of response levels are used to describe the data. Salient points regarding each chart type (Figure 5) are highlighted:- 
 
 * Pie charts: depict the proportions of responses to a question, but is difficult to compare and visualize the differences in proportion between the questions
 * Grouped column/bar charts: allow easy comparison on frequency of response levels within a question, but is difficult to compare proportions of the response levels across questions
 * Stacked bar charts: show proportion of various response levels for each question while allowing sufficient comparison of response levels across questions. Use of colour is important to facilitate user interpretation of the graph.
-* Diverging stacked bar charts:
+* Diverging stacked bar charts: similar to stacked bar chart, comparison of response level proportion across questions is made easier by aligning the neutral response along a vertical baseline.
 
-![Grouped bar chart representing responses to a Likert scale survey](images/survey-likert.jpg)
-
-#### Diverging stacked bar chart
-
-Another way of representing responses to a Likert scale survey is the diverging stacked bar chart (Figure 9). This visualization is similar to the Stacked Bar Chart but differs in that the bars have a common vertical baseline located in the the centre of the diagram. The lengths of the segments of the bar charts are proportional to the number of responses for each value of the Likert scale for each question. Segments which represent favourable responses are usually on the right of the baseline while those that are unfavourable are on the left. Neutral responses are located on the central baseline.
-
-![Diverging stacked bar charts representing responses to Likert scale survey](images/survey-DivergingStackedBarChart.jpg)
-
-The diverging stacked bar chart is most appropriate to represent responses from Likert scale surveys as it allows easy interpretation and comparison of multiple categories. 
-
-#### Numerical representation of Likert score
-
-While it may seem appropriate to compare the mean Likert score of each category, there is a potential pitfall in doing so. Referring to Figure 10, the mean score for the three courses are similar, yet it is evident that the distribution and spread of the responses are very different.
-
-![Grouped bar chart with mean score of Likert scale survey](images/survey-ColumnChartsMean.jpg)
-
-It would be more appropriate to make comparisons based on the proportion of responses that meet a certain value (e.g. proportion of respondents who gave a 4 or 5 score).
+![*(From top left)* Pie chart, grouped bar chart, stacked bar chart and diverging stacked bar chart representation of Likert scale survey response levels.](images/survey-likertscales.jpg)
 
 ### Visualising uncertainty
 
-As surveys are usually conducted on a small sample, there is some degree of uncertainty that the survey results may deviate from the actual viewpoint of the population. Confidence intervals give an indication of that uncertainty and can be represented with error bars (Figure 11).
+As surveys are usually conducted on a small sample, there is some degree of uncertainty that the survey results may deviate from the actual viewpoint of the population. Confidence intervals give an indication of that uncertainty and can be represented with error bars (Figure 6).
 
 ![Bar plots with error bars](images/survey-BarPlotErrorBars.jpg)
 
@@ -115,15 +99,11 @@ As surveys are usually conducted on a small sample, there is some degree of unce
 
 Insights on the relationship between survey responses can be gained from studying the correlation to understand if there are certain determinants or factors that affect the response of certain questions. It would be useful to investigate if vaccination inclination is dependent on certain socio-demographical factors (e.g., age, gender, household size or number of children in the household) or certain attitudes or beliefs (e.g., confidence of vaccine efficacy, or concerns on the side effects of the vaccine).
 
-Correlation matrix or correlation scatterplot are common methods used to depict the correlation between **continuous** variables (Figure 12 and Figure 13). For correlations between **categorical** variables, the UpSet plot can be used via the UpSetR function (Figure 14).
+Correlation matrix or correlation scatterplot are common methods used to depict the correlation between **continuous** variables (Figure 7). For correlations between **categorical** variables, the UpSet plot (Figure 8) allows users to see how frequently each combination or intersection of different factors takes place. Combinations that occur more frequently indicate a stronger correlation between the factors in the combination.
 
-![Correlation matrix](images/survey-CorrMatrix.jpg)
-
-![Correlation scatterplot](images/survey-CorrPlot.jpg)
+![Correlation matrix and correlation scatterplot](images/survey-CorrPlots.jpg)
 
 ![UpSet plot](images/survey-UpsetPlot.jpg)
-
-The UpSet plot allows the user to see how frequently each combination or intersection of different factors takes place. Combinations that occur more frequently indicate a stronger correlation between the factors in the combination.
 
 The application will employ the use of the diverging stacked bar chart to visualise the responses from a Likert scale survey, bar plot with error bars to show the uncertainty in survey data and the UpSet plot to understand associations between the categorical variables in the survey.
 
