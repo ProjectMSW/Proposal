@@ -20,7 +20,6 @@ library(naniar)
 library(ggstatsplot)
 library(ggExtra)
 library(olsrr)
-library(recipes)
 library(gridExtra)
 
 library(shinyjs)
@@ -607,6 +606,8 @@ ui <- fluidPage(
                        ), # End selectInput
                        
                        hr(),
+                       
+                       h3("Scatterplot with marginal distribution"),
                        
                        shinycssloaders::withSpinner(plotOutput("scatterplot"))
                        
@@ -2047,7 +2048,6 @@ prophetmodelPanelServer("datafile")
                      smooth.line.args = list(color = NA, 
                                              se = FALSE),
                      marginal.type = input$marginal.type, # marginal distribution
-                     title = "Scatterplot with marginal distribution",
                      ggtheme = ggplot2::theme(legend.position = "bottom"))
     } else if (input$selectedContinent == "None") {
       ggscatterstats(data = death_df,
@@ -2065,7 +2065,6 @@ prophetmodelPanelServer("datafile")
                      smooth.line.args = list(color = NA, 
                                              se = FALSE),
                      marginal.type = input$marginal.type, # marginal distribution
-                     title = "Scatterplot with marginal distribution",
                      ggtheme = ggplot2::theme(legend.position = "bottom"))
     } else {
       ggscatterstats(data = death_df,
@@ -2084,7 +2083,6 @@ prophetmodelPanelServer("datafile")
                      smooth.line.args = list(color = NA, 
                                              se = FALSE),
                      marginal.type = input$marginal.type, # marginal distribution
-                     title = "Scatterplot with marginal distribution",
                      ggtheme = ggplot2::theme(legend.position = "bottom"))
     } # End if else
     
