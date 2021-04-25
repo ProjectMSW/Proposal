@@ -812,12 +812,9 @@ ui <- fluidPage(
                             column(12, h3("Association between questions and socio-determinants"))
                           ),
                           fluidRow(
-                            column(12, h5("The UpSet plot shows the co-occurrence between various questions and socio-determinants. 
-                            The bar chart on the left shows the frequency of the factors of interest, 
-                            while the column chart above shows the number of occurrences of the combination of factors 
-                            directly below each bar. From the UpSet plot, we will be able to observe which combinations of 
-                            factors are more frequent."))
-
+                            column(12, h5("- Bar chart on the left shows the frequency of the factors of interest")),
+                            column(12, h5("- Column chart above shows the number of occurrences of the combination of factors
+                                          directly below each bar"))
                           ),
                           fluidRow(
                             column(12,  shinycssloaders::withSpinner(plotOutput("factorInterest")))
@@ -872,7 +869,11 @@ ui <- fluidPage(
                                    
                       ),
                          
-                 tabPanel("Data Exploration",  shinycssloaders::withSpinner(plotOutput("dataexplorationtab")),
+                 tabPanel("Data Exploration",  
+                          fluidRow(
+                            column(12,h3("Distribution between 2 variables"))
+                          ),
+                          shinycssloaders::withSpinner(plotOutput("dataexplorationtab")),
                           hr(),
                           fluidRow(
                             column(12,h3("Legend"))
