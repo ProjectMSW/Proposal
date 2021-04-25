@@ -1,5 +1,5 @@
 ---
-title: "Visualisation and Analysis of Patient Psychosocial Acuity"
+title: "COVID ExploreR - Interactive Visual Analysis with R Shiny for Exploring COVID-19 Data"
 description: |
   Project Proposal
 author:
