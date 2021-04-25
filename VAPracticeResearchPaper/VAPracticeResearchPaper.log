@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.4.19)  25 APR 2021 20:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.4.19)  25 APR 2021 22:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -672,216 +672,208 @@ File: images/cases-ptsUI.jpg Graphic file (type jpg)
 <use images/cases-ptsUI.jpg>
 Package pdftex.def Info: images/cases-ptsUI.jpg  used on input line 520.
 (pdftex.def)             Requested size: 240.0pt x 155.27739pt.
-<VAPracticeResearchPaper_files/figure-latex/unnamed-chunk-2-1.pdf, id=135, 469.
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.548 
+       [5pdfTeX warning (ext4): destination with the same identifier (name{figu
+re.9}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.548 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+10}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.548 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.1
+}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.548 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+11}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.548 
+       <./images/cases-ts.jpg> <./images/cases-etsUI.jpg> <./images/cases-ptsUI
+.jpg>]
+<VAPracticeResearchPaper_files/figure-latex/unnamed-chunk-2-1.pdf, id=143, 469.
 755pt x 325.215pt>
 File: VAPracticeResearchPaper_files/figure-latex/unnamed-chunk-2-1.pdf Graphic 
 file (type pdf)
 <use VAPracticeResearchPaper_files/figure-latex/unnamed-chunk-2-1.pdf>
 Package pdftex.def Info: VAPracticeResearchPaper_files/figure-latex/unnamed-chu
-nk-2-1.pdf  used on input line 546.
+nk-2-1.pdf  used on input line 551.
 (pdftex.def)             Requested size: 240.0pt x 166.1552pt.
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 551.
+               Default added (so using `tbp') on input line 556.
 
 
-Overfull \hbox (6.45975pt too wide) in paragraph at lines 552--567
+Overfull \hbox (6.45975pt too wide) in paragraph at lines 557--572
 [][]
  []
 
+<images/deaths-spUI.jpg, id=144, 1125.45468pt x 624.83438pt>
+File: images/deaths-spUI.jpg Graphic file (type jpg)
+<use images/deaths-spUI.jpg>
+Package pdftex.def Info: images/deaths-spUI.jpg  used on input line 590.
+(pdftex.def)             Requested size: 240.0pt x 133.24034pt.
+<images/deaths-fpUI.jpg, id=145, 1123.94907pt x 446.41782pt>
+File: images/deaths-fpUI.jpg Graphic file (type jpg)
+<use images/deaths-fpUI.jpg>
+Package pdftex.def Info: images/deaths-fpUI.jpg  used on input line 596.
+(pdftex.def)             Requested size: 240.0pt x 95.32402pt.
+<images/deaths-mlrUI.jpg, id=146, 1112.65688pt x 609.77812pt>
+File: images/deaths-mlrUI.jpg Graphic file (type jpg)
+<use images/deaths-mlrUI.jpg>
+Package pdftex.def Info: images/deaths-mlrUI.jpg  used on input line 602.
+(pdftex.def)             Requested size: 240.0pt x 131.52774pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.582 
-       [5pdfTeX warning (ext4): destination with the same identifier (name{figu
-re.9}) has been already used, duplicate ignored
+l.623 
+       [6pdfTeX warning (ext4): destination with the same identifier (name{figu
+re.12}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.582 
-      pdfTeX warning (ext4): destination with the same identifier (name{figure.
-10}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.582 
-      pdfTeX warning (ext4): destination with the same identifier (name{table.1
+l.623 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.2
 }) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.582 
-      pdfTeX warning (ext4): destination with the same identifier (name{figure.
-11}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.582 
-      pdfTeX warning (ext4): destination with the same identifier (name{figure.
-12}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.582 
-       <./images/cases-ts.jpg> <./images/cases-etsUI.jpg> <./images/cases-ptsUI
-.jpg> <./VAPracticeResearchPaper_files/figure-latex/unnamed-chunk-2-1.pdf>]
-<images/deaths-spUI.jpg, id=158, 1125.45468pt x 624.83438pt>
-File: images/deaths-spUI.jpg Graphic file (type jpg)
-<use images/deaths-spUI.jpg>
-Package pdftex.def Info: images/deaths-spUI.jpg  used on input line 585.
-(pdftex.def)             Requested size: 240.0pt x 133.24034pt.
-<images/deaths-fpUI.jpg, id=159, 1123.94907pt x 446.41782pt>
-File: images/deaths-fpUI.jpg Graphic file (type jpg)
-<use images/deaths-fpUI.jpg>
-Package pdftex.def Info: images/deaths-fpUI.jpg  used on input line 591.
-(pdftex.def)             Requested size: 240.0pt x 95.32402pt.
-<images/deaths-mlrUI.jpg, id=160, 1112.65688pt x 609.77812pt>
-File: images/deaths-mlrUI.jpg Graphic file (type jpg)
-<use images/deaths-mlrUI.jpg>
-Package pdftex.def Info: images/deaths-mlrUI.jpg  used on input line 597.
-(pdftex.def)             Requested size: 240.0pt x 131.52774pt.
-
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 619.
-
-<images/vac-edaUI.jpg, id=161, 1129.21875pt x 649.67719pt>
-File: images/vac-edaUI.jpg Graphic file (type jpg)
-<use images/vac-edaUI.jpg>
-Package pdftex.def Info: images/vac-edaUI.jpg  used on input line 645.
-(pdftex.def)             Requested size: 240.0pt x 138.07191pt.
-<images/vac-assocUI.jpg, id=162, 1112.65688pt x 600.74437pt>
-File: images/vac-assocUI.jpg Graphic file (type jpg)
-<use images/vac-assocUI.jpg>
-Package pdftex.def Info: images/vac-assocUI.jpg  used on input line 651.
-(pdftex.def)             Requested size: 240.0pt x 129.57918pt.
-<images/vac-exploreUI.jpg, id=163, 1115.367pt x 522.15076pt>
-File: images/vac-exploreUI.jpg Graphic file (type jpg)
-<use images/vac-exploreUI.jpg>
-Package pdftex.def Info: images/vac-exploreUI.jpg  used on input line 657.
-(pdftex.def)             Requested size: 240.0pt x 112.34785pt.
-pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
-een already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.671 
-       [6pdfTeX warning (ext4): destination with the same identifier (name{tabl
-e.2}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.671 
+l.623 
       pdfTeX warning (ext4): destination with the same identifier (name{figure.
 13}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.671 
+l.623 
       pdfTeX warning (ext4): destination with the same identifier (name{figure.
 14}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.671 
+l.623 
       pdfTeX warning (ext4): destination with the same identifier (name{figure.
 15}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.671 
-      pdfTeX warning (ext4): destination with the same identifier (name{table.3
-}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.671 
-       <./images/deaths-spUI.jpg> <./images/deaths-fpUI.jpg> <./images/deaths-m
-lrUI.jpg>]
-<images/demo1.jpg, id=174, 465.53925pt x 343.88475pt>
+l.623 
+       <./VAPracticeResearchPaper_files/figure-latex/unnamed-chunk-2-1.pdf> <./
+images/deaths-spUI.jpg> <./images/deaths-fpUI.jpg> <./images/deaths-mlrUI.jpg>]
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `tbp') on input line 624.
+
+<images/vac-edaUI.jpg, id=169, 1129.21875pt x 649.67719pt>
+File: images/vac-edaUI.jpg Graphic file (type jpg)
+<use images/vac-edaUI.jpg>
+Package pdftex.def Info: images/vac-edaUI.jpg  used on input line 650.
+(pdftex.def)             Requested size: 240.0pt x 138.07191pt.
+<images/vac-assocUI.jpg, id=170, 1112.65688pt x 600.74437pt>
+File: images/vac-assocUI.jpg Graphic file (type jpg)
+<use images/vac-assocUI.jpg>
+Package pdftex.def Info: images/vac-assocUI.jpg  used on input line 656.
+(pdftex.def)             Requested size: 240.0pt x 129.57918pt.
+<images/vac-exploreUI.jpg, id=171, 1115.367pt x 522.15076pt>
+File: images/vac-exploreUI.jpg Graphic file (type jpg)
+<use images/vac-exploreUI.jpg>
+Package pdftex.def Info: images/vac-exploreUI.jpg  used on input line 662.
+(pdftex.def)             Requested size: 240.0pt x 112.34785pt.
+<images/demo1.jpg, id=172, 465.53925pt x 343.88475pt>
 File: images/demo1.jpg Graphic file (type jpg)
 <use images/demo1.jpg>
-Package pdftex.def Info: images/demo1.jpg  used on input line 682.
+Package pdftex.def Info: images/demo1.jpg  used on input line 687.
 (pdftex.def)             Requested size: 240.0pt x 177.28365pt.
 
-Overfull \hbox (3.71544pt too wide) in paragraph at lines 689--698
+Overfull \hbox (3.71544pt too wide) in paragraph at lines 694--703
 \T1/aer/m/n/9 have a rel-a-tively low pro-por-tion of peo-ple who strongly agre
 ed
  []
 
 
-Overfull \hbox (12.20837pt too wide) in paragraph at lines 699--710
+Overfull \hbox (12.20837pt too wide) in paragraph at lines 704--715
 \T1/aer/m/n/9 concern-regret, willingness-concern-confidence in efficacy-regret
 
  []
 
-<images/demo2.jpg, id=175, 899.61093pt x 575.90157pt>
+<images/demo2.jpg, id=173, 899.61093pt x 575.90157pt>
 File: images/demo2.jpg Graphic file (type jpg)
 <use images/demo2.jpg>
-Package pdftex.def Info: images/demo2.jpg  used on input line 713.
+Package pdftex.def Info: images/demo2.jpg  used on input line 718.
 (pdftex.def)             Requested size: 240.0pt x 153.64133pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.725 
-       [7pdfTeX warning (ext4): destination with the same identifier (name{figu
-re.16}) has been already used, duplicate ignored
+l.730 
+       [7pdfTeX warning (ext4): destination with the same identifier (name{tabl
+e.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.725 
+l.730 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+16}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.730 
       pdfTeX warning (ext4): destination with the same identifier (name{figure.
 17}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.725 
+l.730 
       pdfTeX warning (ext4): destination with the same identifier (name{figure.
 18}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.725 
-      pdfTeX warning (ext4): destination with the same identifier (name{figure.
-19}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.725 
+l.730 
        <./images/vac-edaUI.jpg> <./images/vac-assocUI.jpg> <./images/vac-explor
-eUI.jpg> <./images/demo1.jpg>]
-<images/demo3.jpg, id=184, 934.24031pt x 496.10344pt>
+eUI.jpg>]
+<images/demo3.jpg, id=183, 934.24031pt x 496.10344pt>
 File: images/demo3.jpg Graphic file (type jpg)
 <use images/demo3.jpg>
-Package pdftex.def Info: images/demo3.jpg  used on input line 728.
+Package pdftex.def Info: images/demo3.jpg  used on input line 733.
 (pdftex.def)             Requested size: 240.0pt x 127.43958pt.
 
-Overfull \hbox (8.05316pt too wide) in paragraph at lines 754--758
+Overfull \hbox (8.05316pt too wide) in paragraph at lines 759--763
 \T1/aer/m/n/9 un-der-stand-ing the re-la-tion-ship be-tween a coun-try's rank-
  []
 
 
-Overfull \hbox (3.85738pt too wide) in paragraph at lines 765--774
+Overfull \hbox (3.85738pt too wide) in paragraph at lines 770--779
 \T1/aer/m/n/9 Due to re-source con-straints, only three as-pects of the COVID-
- []
-
-
-Overfull \hbox (3.39175pt too wide) in paragraph at lines 811--814
-[]\T1/aer/m/n/9 Compare vac-ci-na-tion re-cep-tiv-ity with other fac-tors such
  []
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.832 
+l.779 
        [8pdfTeX warning (ext4): destination with the same identifier (name{figu
-re.20}) has been already used, duplicate ignored
+re.19}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.832 
+l.779 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+20}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.779 
       pdfTeX warning (ext4): destination with the same identifier (name{figure.
 21}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.832 
-       <./images/demo2.jpg> <./images/demo3.jpg>]
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 840--844
-[] [] 
+l.779 
+       <./images/demo1.jpg> <./images/demo2.jpg> <./images/demo3.jpg>]
+Overfull \hbox (3.39175pt too wide) in paragraph at lines 816--819
+[]\T1/aer/m/n/9 Compare vac-ci-na-tion re-cep-tiv-ity with other fac-tors such
  []
 
 
 Overfull \hbox (2.05199pt too wide) in paragraph at lines 845--849
-[][][] [] 
+[] [] 
  []
 
 
@@ -890,32 +882,32 @@ Overfull \hbox (2.05199pt too wide) in paragraph at lines 850--854
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 855--858
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 855--859
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 859--863
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 860--863
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 864--869
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 864--868
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 870--873
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 869--874
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 874--877
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 875--878
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 878--882
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 879--882
 [][][] [] 
  []
 
@@ -929,14 +921,17 @@ Overfull \hbox (2.05199pt too wide) in paragraph at lines 888--892
 [][][] [] 
  []
 
+
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 893--897
+[][][] [] 
+ []
+
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.896 \end{document}
-                     [9
-
-] (./VAPracticeResearchPaper.aux)
+l.901 \end{document}
+                     [9] (./VAPracticeResearchPaper.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -963,7 +958,7 @@ c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb><c:/texlive
 t/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/u
 rw/times/utmb8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmri8a.p
 fb>
-Output written on VAPracticeResearchPaper.pdf (9 pages, 2203246 bytes).
+Output written on VAPracticeResearchPaper.pdf (9 pages, 2203993 bytes).
 PDF statistics:
  266 PDF objects out of 1000 (max. 8388607)
  219 compressed objects within 3 object streams
