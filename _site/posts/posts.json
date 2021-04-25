@@ -1,22 +1,5 @@
 [
   {
-    "path": "posts/2021-04-25-application/",
-    "title": "Application",
-    "description": "Link to Shiny Application",
-    "author": [
-      {
-        "name": "Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda",
-        "url": "www.smu.edu.sg"
-      }
-    ],
-    "date": "2021-04-25",
-    "categories": [],
-    "contents": "\r\nThis is the link to the shiny application: https://mcsiow.shinyapps.io/CovidApplication/#\r\n\r\n\r\n\r\n",
-    "preview": {},
-    "last_modified": "2021-04-25T20:03:40+08:00",
-    "input_file": {}
-  },
-  {
     "path": "posts/2021-04-25-project-proposal/",
     "title": "COVID ExploreR - Interactive Visual Analysis with R Shiny for Exploring COVID-19 Data",
     "description": "Project Proposal",
@@ -66,6 +49,23 @@
     "preview": {},
     "last_modified": "2021-04-25T20:47:30+08:00",
     "input_file": "report.utf8.md"
+  },
+  {
+    "path": "posts/2021-04-25-application/",
+    "title": "COVID ExploreR Application",
+    "description": "Link to Shiny Application",
+    "author": [
+      {
+        "name": "Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda",
+        "url": "www.smu.edu.sg"
+      }
+    ],
+    "date": "2021-04-25",
+    "categories": [],
+    "contents": "\r\nThis is the link to the shiny application: https://mcsiow.shinyapps.io/CovidApplication/#\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-04-25T21:00:31+08:00",
+    "input_file": "application.utf8.md"
   },
   {
     "path": "posts/2021-03-27-covid-deaths/",
