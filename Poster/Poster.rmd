@@ -1,6 +1,6 @@
 ---
 # Title Box
-title: IVAR - Interactive Visual Analysis with R <br>for Exploring COVID-19 Data <br>
+title: COVID ExploreR <br>
 title_textsize: "70pt"
 author_textsize: "30pt"
 affiliation_textsize: "45pt"
