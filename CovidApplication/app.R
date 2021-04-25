@@ -901,7 +901,7 @@ ui <- fluidPage(
                           fluidRow(
                             column(12,h3("Distribution between 2 variables"))
                           ),
-                          shinycssloaders::withSpinner(plotOutput("dataexplorationtab")),
+                          shinycssloaders::withSpinner(plotlyOutput("dataexplorationtab")),
                           hr(),
                           fluidRow(
                             column(8,h3("Legend")),
@@ -1455,7 +1455,7 @@ prophetmodelPanelServer("datafile")
  
  ###################  Daniel's Server Code #########################################
   
-  output$dataexplorationtab <- renderPlot({
+  output$dataexplorationtab <- renderPlotly({
     display <-  c("age"="age", "gender"="gender", "household_size"="household_size","household_children"="household_children",
                   "vac_1"="vac_1","vac2_1"="vac2_1","vac2_2"="vac2_2","vac2_3"="vac2_3","vac2_4"="vac2_4","vac2_5"="vac2_5","vac2_6"="vac2_6",
                   "vac_3"="vac_3","vac4"="vac4","vac5"="vac5","vac6"="vac6","vac7"="vac7")
