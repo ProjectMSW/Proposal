@@ -20,18 +20,19 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -51,7 +52,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
@@ -85,18 +86,18 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-<title>Covid Explorer: Visualisation and Analysis of Patient Psychosocial Acuity</title>
+<title>Covid Explorer: COVID ExploreR - Interactive Visual Analysis with R Shiny for Exploring COVID-19 Data</title>
 
 <meta property="description" itemprop="description" content="Project Proposal"/>
 
 
 <!--  https://schema.org/Article -->
-<meta property="article:published" itemprop="datePublished" content="2021-02-23"/>
-<meta property="article:created" itemprop="dateCreated" content="2021-02-23"/>
+<meta property="article:published" itemprop="datePublished" content="2021-04-25"/>
+<meta property="article:created" itemprop="dateCreated" content="2021-04-25"/>
 <meta name="article:author" content="Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-<meta property="og:title" content="Covid Explorer: Visualisation and Analysis of Patient Psychosocial Acuity"/>
+<meta property="og:title" content="Covid Explorer: COVID ExploreR - Interactive Visual Analysis with R Shiny for Exploring COVID-19 Data"/>
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="Project Proposal"/>
 <meta property="og:locale" content="en_US"/>
@@ -104,19 +105,19 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 <!--  https://dev.twitter.com/cards/types/summary -->
 <meta property="twitter:card" content="summary"/>
-<meta property="twitter:title" content="Covid Explorer: Visualisation and Analysis of Patient Psychosocial Acuity"/>
+<meta property="twitter:title" content="Covid Explorer: COVID ExploreR - Interactive Visual Analysis with R Shiny for Exploring COVID-19 Data"/>
 <meta property="twitter:description" content="Project Proposal"/>
 
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Visualisation and Analysis of Patient Psychosocial Acuity"]},{"type":"character","attributes":{},"value":["Project Proposal"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda"]},{"type":"character","attributes":{},"value":["www.smu.edu.sg"]}]}]},{"type":"character","attributes":{},"value":["02-23-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["COVID ExploreR - Interactive Visual Analysis with R Shiny for Exploring COVID-19 Data"]},{"type":"character","attributes":{},"value":["Project Proposal"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda"]},{"type":"character","attributes":{},"value":["www.smu.edu.sg"]}]}]},{"type":"character","attributes":{},"value":["04-25-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["image/Sketch_cluster_analysis.jpg","image/Sketch_data_exploration.jpg","image/Sketch_regression_prediction.jpg","image/Sketch_TSGS_analysis.jpg","image/Timeline1.jpg","visual-analystic-project-proposal_files/anchor-4.2.2/anchor.min.js","visual-analystic-project-proposal_files/bowser-1.9.3/bowser.min.js","visual-analystic-project-proposal_files/distill-2.2.21/template.v2.js","visual-analystic-project-proposal_files/header-attrs-2.6/header-attrs.js","visual-analystic-project-proposal_files/jquery-1.11.3/jquery.min.js","visual-analystic-project-proposal_files/popper-2.6.0/popper.min.js","visual-analystic-project-proposal_files/tippy-6.2.7/tippy-bundle.umd.min.js","visual-analystic-project-proposal_files/tippy-6.2.7/tippy-light-border.css","visual-analystic-project-proposal_files/tippy-6.2.7/tippy.css","visual-analystic-project-proposal_files/tippy-6.2.7/tippy.umd.min.js","visual-analystic-project-proposal_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["images/bivariate.jpg","images/multivariate.jpg","images/pg1.jpg","images/pg2.jpg","images/SketchDiverging.jpg","images/SketchEDA.png","images/SketchUpset.jpg","images/Timeline1.jpg","project-proposal_files/anchor-4.2.2/anchor.min.js","project-proposal_files/bowser-1.9.3/bowser.min.js","project-proposal_files/distill-2.2.21/template.v2.js","project-proposal_files/jquery-1.11.3/jquery.min.js","project-proposal_files/popper-2.6.0/popper.min.js","project-proposal_files/tippy-6.2.7/tippy-bundle.umd.min.js","project-proposal_files/tippy-6.2.7/tippy-light-border.css","project-proposal_files/tippy-6.2.7/tippy.css","project-proposal_files/tippy-6.2.7/tippy.umd.min.js","project-proposal_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2040,7 +2041,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!--/radix_placeholder_distill-->
-  <script src="../../site_libs/header-attrs-2.6/header-attrs.js"></script>
   <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
   <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -2061,7 +2061,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Visualisation and Analysis of Patient Psychosocial Acuity","description":"Project Proposal","authors":[{"author":"Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda","authorURL":"www.smu.edu.sg","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-02-23T00:00:00.000+08:00","citationText":"Amanda, 2021"}
+{"title":"COVID ExploreR - Interactive Visual Analysis with R Shiny for Exploring COVID-19 Data","description":"Project Proposal","authors":[{"author":"Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda","authorURL":"www.smu.edu.sg","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-04-25T00:00:00.000+08:00","citationText":"Amanda, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2087,7 +2087,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Visualisation and Analysis of Patient Psychosocial Acuity</h1>
+<h1>COVID ExploreR - Interactive Visual Analysis with R Shiny for Exploring COVID-19 Data</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
 <p><p>Project Proposal</p></p>
@@ -2096,87 +2096,113 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="d-byline">
   Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda www.smu.edu.sg 
   
-<br/>02-23-2021
+<br/>04-25-2021
 </div>
 
 <div class="d-article">
 <h2 id="introduction">Introduction</h2>
-<p>One of the three shifts that the Singapore government is making to keep healthcare affordable and sustainable is to bring healthcare closer to homes and support ageing in the community. To achieve this, public healthcare services are organised into three clusters overseeing a specific region:</p>
-<ul>
-<li>Central region: National Healthcare Group (NHG)</li>
-<li>Eastern region: Singapore Health Services (SingHealth)</li>
-<li>Western region: National University Health System (NUHS)</li>
-</ul>
-<p>This segregation would allow the clusters to better coordinate care delivery along the care continuum from primary, acute, intermediate to long-term care, in their respective regions (Ministry of Health, Singapore, 2018).</p>
-<p>In Singapore General Hospital, part of the SingHealth cluster, the Community Care Team (CCT), comprising of Medical Social Workers (MSWs), was formed in mid 2018. The aim of the CCT is to facilitate person-centred care in the community and to enable patients to remain in the community as long as possible. This is achieved through collaboration with community partners to meet patient psychosocial needs with health and social issues.</p>
-<p>In order to explore the breadth and depth of psychosocial needs in the community and to devise targeted intervention strategies to address them, the Psychosocial Acuity Scale (PAS), established in the University of Michigan Health System, Ann Arbor, was introduced and is being used to capture patient’s data based on their psychosocial needs (Klett, Firn, Abney, Battles, Harrington &amp; Vantine, 2014). The PAS is a clinical measure and tool used to assess the patient/family/community situation prior to any social work involvement. It consists of seven domains, with each domain having four acuity levels.</p>
-<p>This project looks at providing an application to aid in the visualisation and analysis of the data collected by the CCT MSWs.</p>
+<p>The Coronavirus (COVID-19) has caught the world’s attention with the first COVID-19 cases reported in Wuhan, Hubei, China, in December 2019. In the global battle against the virus, countries seek to understand the virus, its spread,impact and more recently, receptivity towards the COVID-19 vaccination. We are currently living in the Data Age,where many COVID-19 related data are made available on the Internet. This has facilitated numerous, but not limited to epidemiology and statistical studies across the globe.</p>
+<p>In the data science realm, many data-driven applications are developed to provide a one-stop information hub for the public. These applications are typically developed using programming languages such as HTML, Java and JavaScript. With the growing popularity of R, and its ability to create web applications using the R Shiny package, the creation of interactive visualisations without having in-depth web programming knowledge has been made possible.</p>
+<p>This project looks to leverage the richness of the COVID-19 data to provide an interactive experience in generating insights and analyses using R Shiny from three key aspects: (1) new cases; (2) deaths; and (3) vaccination receptivity.</p>
 <h2 id="motivation">Motivation</h2>
-<p>The project team is motivated to help the CCT MSWs to discover trends and gain insights on the psychosocial acuity of patients in the community. The analysis tool will enable the MSW team to identify current trends and service needs, which would in turn inform the MSWs on the potential intervention strategies required in the community. This would have both practice and health and social care policy implications on enabling patients to age well in the community.</p>
-<p>While the dataset is meant for data analysis, it has been mainly used for case monitoring and workload statistics purposes. To enhance and facilitate the analysis task for the MSWs, the project team will attempt to provide an easy-to-use and interactive application. It is also an opportune time to start analysing their data, after allowing the CCT team’s systems and processes to stabilise since its formation in mid 2018.</p>
+<p>There are several one-stop applications that allow interactive visualisation of COVID-19 related data across time. These applications typically report number of events i.e. number of new cases/deaths/tests conducted, number of people vaccinated. Deeper exploration and analysis on COVID-19 trends and relationships with other factors or indicators are done in silos and majority of such studies report their findings based on pre-defined variables and specific analysis models. With this application, we hope to combine and provide an interactive experience for in-depth exploration and analysis of the COVID-19 data.</p>
 <h2 id="data">Data</h2>
-<p>The data is split into three files, one for each MSW. The fields can be categorised into the following areas:</p>
+<p>The data is obtained from several sources:</p>
 <ul>
-<li>Patient’s sociodemographics and postal code</li>
-<li>Referral details</li>
-<li>MSW assessment details including the PAS levels</li>
+<li>Center for Systems Science and Engineering (CSSE) at Johns Hopkins University for COVID-related data</li>
+<li>Our World in Data, World Bank</li>
+<li>UNdata, United Nations Development Programme (UNDP) for health, economic and population structure indicators</li>
+<li>Imperial College London YouGov COVID-19 Behaviour Tracker Data Hub for survey data on virus perception and vaccination receptivity</li>
 </ul>
-<p>Each file contains the patient assessment records done by the respective MSW from mid 2018 to 2020. There could be repeated assessments for the same patient at different times.</p>
 <h2 id="methodology-and-approach">Methodology and Approach</h2>
 <p>The following is the proposed scope of the project.</p>
+<ul>
+<li>Predictive analysis of new cases</li>
+<li>Bivariate and multivariate analysis of deaths and death rates with health, economic and population structure indicators</li>
+<li>Exploratory and bivariate analysis of vaccination receptivity with virus perception and demographics</li>
+</ul>
+<p>The following methodology would be employed:</p>
 <ol type="1">
-<li>Analysis and preparation of PAS dataset</li>
+<li>Analysis and preparation of dataset</li>
 <li>Exploratory Data Analysis (EDA)</li>
-<li>Time Series and Geo-spatial Analysis</li>
-<li>Clustering Analysis</li>
+<li>Time Series Analysis</li>
 <li>Multiple Linear Regression (MLR) and Predictive Modelling</li>
 <li>Development of R-Shiny mobile application for user interactivity</li>
 </ol>
 <h2 id="storyboard">Storyboard</h2>
-<p>There will be four sections in the final app. The first section will be on Time Series and Geo-spatial Analysis. The second section will be on Clustering Analysis and the third section will be on Regression and Prediction Modelling. The fourth section will allow the user to explore with the data used in the application.</p>
+<p>There will be three sections in the final app. The first section will be on Predictive analysis of new cases. Under this section, users should be allowed to compare the result of different prediction models and view the characteristics of the time series data.</p>
+<p>The second section will be on Bivariate and multivariate analysis of deaths and death rates with health, economic and population structure indicators. Users will be allowed to choose and compare each of the parameters.</p>
+<p>The third section will be on Exploratory and bivariate analysis of vaccination receptivity with virus perception and demographics. Users are allow to explore the survey results for each of the countries and do comparison.</p>
 <p>Proposed layouts and features of the sections are as follow.</p>
-<h3 id="time-series-geo-spatial-analysis">Time Series &amp; Geo-Spatial Analysis</h3>
+<h3 id="predictive-analysis-of-new-cases">Predictive analysis of new cases</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="figure"><span id="fig:pressure1"></span>
-<img src="image/Sketch_TSGS_analysis.jpg" alt="Proposed screen for Time Series and Geo-Spatial Analysis" width="100%" />
+<img src="images/pg1.jpg" alt="Proposed screen for Time Series Analysis" width="100%" />
 <p class="caption">
-Figure 1: Proposed screen for Time Series and Geo-Spatial Analysis
+Figure 1: Proposed screen for Time Series Analysis
 </p>
 </div>
 </div>
-<h3 id="clustering-analysis">Clustering Analysis</h3>
+<br>
 <div class="layout-chunk" data-layout="l-body">
 <div class="figure"><span id="fig:pressure2"></span>
-<img src="image/Sketch_cluster_analysis.jpg" alt="Proposed screen for Clustering Analysis" width="100%" />
+<img src="images/pg2.jpg" alt="Proposed screen for Time Series Analysis" width="100%" />
 <p class="caption">
-Figure 2: Proposed screen for Clustering Analysis
+Figure 2: Proposed screen for Time Series Analysis
 </p>
 </div>
 </div>
-<h3 id="regression-and-predictive-modelling">Regression and Predictive Modelling</h3>
+<h3 id="bivariate-and-multivariate-analysis-of-deaths-and-death-rates">Bivariate and multivariate analysis of deaths and death rates</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="figure"><span id="fig:pressure3"></span>
-<img src="image/Sketch_regression_prediction.jpg" alt="Proposed screen for Regression and Predictive Modelling" width="100%" />
+<img src="images/bivariate.jpg" alt="Proposed screen for Bivariate and multivariate analysis of deaths and death rates" width="100%" />
 <p class="caption">
-Figure 3: Proposed screen for Regression and Predictive Modelling
+Figure 3: Proposed screen for Bivariate and multivariate analysis of deaths and death rates
 </p>
 </div>
 </div>
-<h3 id="data-exploration">Data Exploration</h3>
+<br>
 <div class="layout-chunk" data-layout="l-body">
 <div class="figure"><span id="fig:pressure4"></span>
-<img src="image/Sketch_data_exploration.jpg" alt="Proposed screen for Data Exploration" width="100%" />
+<img src="images/multivariate.jpg" alt="Proposed screen for Bivariate and multivariate analysis of deaths and death rates" width="100%" />
 <p class="caption">
-Figure 4: Proposed screen for Data Exploration
+Figure 4: Proposed screen for Bivariate and multivariate analysis of deaths and death rates
+</p>
+</div>
+</div>
+<h3 id="exploratory-and-bivariate-analysis-of-vaccination-receptivity">Exploratory and bivariate analysis of vaccination receptivity</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure5"></span>
+<img src="images/SketchDiverging.jpg" alt="Proposed screen for Exploratory and bivariate analysis of vaccination receptivity" width="100%" />
+<p class="caption">
+Figure 5: Proposed screen for Exploratory and bivariate analysis of vaccination receptivity
+</p>
+</div>
+</div>
+<br>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure6"></span>
+<img src="images/SketchEDA.png" alt="Proposed screen for Exploratory and bivariate analysis of vaccination receptivity" width="100%" />
+<p class="caption">
+Figure 6: Proposed screen for Exploratory and bivariate analysis of vaccination receptivity
+</p>
+</div>
+</div>
+<br>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:pressure7"></span>
+<img src="images/SketchUpset.jpg" alt="Proposed screen for Exploratory and bivariate analysis of vaccination receptivity" width="100%" />
+<p class="caption">
+Figure 7: Proposed screen for Exploratory and bivariate analysis of vaccination receptivity
 </p>
 </div>
 </div>
 <h2 id="project-timeline">Project Timeline</h2>
 <div class="layout-chunk" data-layout="l-body">
-<div class="figure"><span id="fig:pressure5"></span>
-<img src="image/Timeline1.jpg" alt="Project Timeline" width="100%" />
+<div class="figure"><span id="fig:pressure8"></span>
+<img src="images/Timeline1.jpg" alt="Project Timeline" width="100%" />
 <p class="caption">
-Figure 5: Project Timeline
+Figure 8: Project Timeline
 </p>
 </div>
 </div>
@@ -2196,16 +2222,20 @@ Figure 5: Project Timeline
 <li>shinyWidgets: <a href="https://cran.r-project.org/web/packages/shinyWidgets" class="uri">https://cran.r-project.org/web/packages/shinyWidgets</a></li>
 <li>tidyverse: <a href="https://www.tidyverse.org" class="uri">https://www.tidyverse.org</a></li>
 <li>corrplot: <a href="https://cran.r-project.org/web/packages/corrplot" class="uri">https://cran.r-project.org/web/packages/corrplot</a></li>
-<li>purr: <a href="https://cran.r-project.org/web/packages/purrr/index.html" class="uri">https://cran.r-project.org/web/packages/purrr/index.html</a></li>
 <li>rgdal: <a href="https://cran.r-project.org/web/packages/rgdal" class="uri">https://cran.r-project.org/web/packages/rgdal</a></li>
 <li>rgeos: <a href="https://cran.r-project.org/web/packages/rgeos" class="uri">https://cran.r-project.org/web/packages/rgeos</a></li>
-<li>cluster: <a href="https://cran.r-project.org/web/packages/cluster/index.html" class="uri">https://cran.r-project.org/web/packages/cluster/index.html</a></li>
 <li>dendextend <a href="https://cran.r-project.org/web/packages/dendextend" class="uri">https://cran.r-project.org/web/packages/dendextend</a></li>
 <li>MASS: <a href="https://cran.r-project.org/web/packages/MASS/index.html" class="uri">https://cran.r-project.org/web/packages/MASS/index.html</a></li>
+<li>UpSetR: <a href="https://cran.r-project.org/web/packages/UpSetR/index.html" class="uri">https://cran.r-project.org/web/packages/UpSetR/index.html</a></li>
+<li>timetk: <a href="https://cran.r-project.org/web/packages/timetk/index.html" class="uri">https://cran.r-project.org/web/packages/timetk/index.html</a></li>
+<li>modeltime: <a href="https://cran.r-project.org/web/packages/modeltime/index.html" class="uri">https://cran.r-project.org/web/packages/modeltime/index.html</a></li>
+<li>tidymodels: <a href="https://cran.r-project.org/web/packages/tidymodels/index.html" class="uri">https://cran.r-project.org/web/packages/tidymodels/index.html</a></li>
+<li>fpp3: <a href="https://cran.r-project.org/web/packages/fpp3/index.html" class="uri">https://cran.r-project.org/web/packages/fpp3/index.html</a></li>
+<li>earth: <a href="https://cran.r-project.org/web/packages/earth/index.html" class="uri">https://cran.r-project.org/web/packages/earth/index.html</a></li>
+<li>olsrr: <a href="https://cran.r-project.org/web/packages/olsrr/index.html" class="uri">https://cran.r-project.org/web/packages/olsrr/index.html</a></li>
+<li>naniar: <a href="https://cran.r-project.org/web/packages/naniar/index.html" class="uri">https://cran.r-project.org/web/packages/naniar/index.html</a></li>
+<li>dlookr: <a href="https://cran.r-project.org/web/packages/dlookr/index.html" class="uri">https://cran.r-project.org/web/packages/dlookr/index.html</a></li>
 </ul>
-<h2 id="references">References</h2>
-<p>Ministry of Health, Singapore (14 Aug 2018). Opening Address by Dr Amy Khor, Senior Minister of State, Ministry of Health, at the Singapore Healthcare Management Congress 2018, 14 August 2018. Retrieved from <a href="https://www.moh.gov.sg/news-highlights/details/opening-address-by-dr-amy-khor-senior-minister-of-state-ministry-of-health-at-the-singapore-healthcare-management-congress-2018-14-august-2018" class="uri">https://www.moh.gov.sg/news-highlights/details/opening-address-by-dr-amy-khor-senior-minister-of-state-ministry-of-health-at-the-singapore-healthcare-management-congress-2018-14-august-2018</a></p>
-<p>Klett, S., Firn, J., Abney, N., Battles, A., Harrington, J., &amp; Vantine, A. (2014). Developing a reliable and valid scale to measure psychosocial acuity. <em>Social work in health care, 53</em>(5), 503–517. <a href="https://doi.org/10.1080/00981389.2014.898726" class="uri">https://doi.org/10.1080/00981389.2014.898726</a></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
