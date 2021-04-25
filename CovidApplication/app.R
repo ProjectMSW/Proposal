@@ -764,7 +764,7 @@ ui <- fluidPage(
                              width = '100%'),
                  h4("Plot Options"),
                  selectInput("targetVariable", 
-                             h5('Select Target Variable (variable 1 (y-axis))'), 
+                             h5('Select Variable 1 (y-axis)'), 
                              choices = 
                                c("Gender"="gender", 
                                  "Household size"="household_size",
@@ -784,7 +784,7 @@ ui <- fluidPage(
                              width = '100%'),
                  
                  selectInput("predictiveVariable", 
-                             h5('Select Predictive Variable (variable 2 (x-axis))'), 
+                             h5('Select Variable 2 (x-axis)'), 
                              choices = 
                                c("Age"="age", 
                                  "Gender"="gender", 
@@ -858,7 +858,7 @@ ui <- fluidPage(
                             column(12,   
                                    "vac2_1_ag = Fear of getting COVID19"),
                             column(12,   
-                                   "vac2_2_ag = Concern on vaccine side effects")
+                                   "vac2_2_ag = Not concerned about vaccine side effects")
                             
                           ),
                           
@@ -904,24 +904,35 @@ ui <- fluidPage(
                           shinycssloaders::withSpinner(plotOutput("dataexplorationtab")),
                           hr(),
                           fluidRow(
-                            column(12,h3("Legend"))
+                            column(8,h3("Legend")),
+                            column(4,h3("Response Scale"))
                           ),
                           
                           fluidRow(
-                            column(12,   
+                            column(8,   
                                    "vac_1_ag = Willing to take vaccine"),
-                            column(12,   
+                            column(4,   
+                                   "5 = Strongly Agree"),
+                            column(8,   
                                    "vac2_1_ag = Fear of getting COVID19"),
-                            column(12,   
-                                   "vac2_2_ag = Concern on vaccine side effects")
+                            column(4,   
+                                   "4 = Agree"),
+                            column(8,   
+                                   "vac2_2_ag = Concern on vaccine side effects"),
+                            column(4,   
+                                   "3 = Neutral")
                             
                           ),
                           
                           fluidRow(
-                            column(12,   
+                            column(8,   
                                    "vac2_3_ag = Confidence in vaccine efficacy"),
-                            column(12,   
+                            column(4,   
+                                   "2 = Disagree"),
+                            column(8,   
                                    "vac2_4_ag = Vaccine will protect recipient from COVID19 health effects"),
+                            column(4,   
+                                   "1 = Strongly Disagree"),
                             column(12,   
                                    "vac2_5_ag = Vaccine will prevent transmission of COVID from recipient")
                             
