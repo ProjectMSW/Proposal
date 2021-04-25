@@ -10,7 +10,7 @@ navbar:
     - text: "Proposal"
       href: posts/2021-04-25-project-proposal/index.html
     - text: "Report"
-      href: about.html
+      href: posts/2021-04-25-report/index.html
     - text: "Application"
       href: posts/2021-04-25-application/index.html
     - text: "User Guide"

@@ -1,0 +1,18 @@
+---
+title: "Report"
+description: |
+  A short description of the post.
+author:
+  - name: Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda
+    url: www.smu.edu.sg
+date: 04-25-2021
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+This is the link to the report: https://github.com/ProjectMSW/Proposal/blob/69c5c67db2146679ea8d937947e9c3327eb94d8a/VAPracticeResearchPaper/VAPracticeResearchPaper.pdf
