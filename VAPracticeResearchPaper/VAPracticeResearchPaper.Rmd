@@ -118,37 +118,203 @@ User interaction is not a new concept and has been applied in web-based learning
 * What: functionalities and features of the application
 * How: interaction with the functionalities and features
 
-The application is designed for users who wish to find out more about COVID-19 beyond the "standard" reported figures. These users are likely to be curious individuals with an inquisitive mind, and are likely to have some experience and knowledge in statistical analysis. As such, the application needs to be flexible to support exploration of the data while providing clear and easy-to-understand information with statistical metrics. 
+The application is designed for users who wish to find out more about COVID-19 beyond the "standard" reported figures. These users are likely to be curious individuals with an inquisitive mind, and are likely to have some experience and knowledge in statistical analysis. As such, the design principle of the application is that the application should be flexible to support exploration of the data while providing clear and easy-to-understand information with statistical metrics. 
 
 Data visualisation is the quickest way to communicate information in a clear and easy-to-understand format. Statistical metrics would be presented visually, where appropriate and relevant. To meet the need of flexible data exploration, interactivity would be a key feature of the application, where by the user is able to (1) select and try different combination of variables and parameters to explore the data; and (2) interact with the visualisation to discover trends and insights. As with all applications, the user interface should be kept as simple as possible, and where not possible, to provide information or markers to direct how the user should interact with the application. Finer details of how the design framework is applied to each aspect (new cases, deaths and vaccination receptivity) is discussed in the next few sections.
 
-*- take screenshot of main new case tab*
-*- briefly explain the interactivity features and visualisation and statistical stuff*
+```{r packages, echo=FALSE, warning=FALSE, message=FALSE}
+packages = c('tidyverse',
+             'timetk', 'modeltime', 'tidymodels', 'tsibble', 'fpp3', 'earth', 'reactable',
+             'UpSetR', 'dlookr', 'naniar',
+             'ggstatsplot', 'ggExtra', 'olsrr', 'gridExtra',
+             'plotly')
+for(p in packages){
+  if(!require(p, character.only = T)){
+  install.packages(p)
+  }
+  library(p, character.only = T)
+}
+```
+
+```{r importData, echo=FALSE, warning=FALSE, message=FALSE}
+case_df <- read_csv("data/time_series_covid19_confirmed_global.csv")
+death_df <- read_csv("data/deaths_tidy.csv")
+vac_df <- read_csv("data/main_df.csv")
+
+case_df <- case_df %>%
+  gather(Date,Total_Cases,-'Province/State',-'Country/Region',-Lat,-Long) %>%
+  group_by(`Country/Region`,Date) %>%
+  summarize(total = sum(Total_Cases)) %>% 
+     select(`Country/Region`, Date, total) %>%
+     set_names(c("Country", "Date", "TotalCases")) %>%
+  ungroup()
+
+case_df$Date <- as.Date(case_df$Date,format="%m/%d/%y")
+
+case_df <- case_df %>%
+  group_by(Country) %>%
+  arrange(Country,Date)%>%
+  mutate(Daily_new_cases = TotalCases - lag(TotalCases, n =1))%>%
+  drop_na()
+```
 
 ## New cases
 
-```{r}
+In the prediction of new cases, considerations of how the user would proceed with the analysis were included in the system architecture. In time-series forecasting, it is important to understand the characteristics of the time-series data, i.e. trend, cycle, seasonality etc., so as to better interpret and even improve the forecast results. The design also take into account the constantly evolving COVID-19 situation that users are in. New data is available on a daily basis and users would want to analyse the latest data. As such, two components on exploring the dataset (using the `timetk` package) and a function for user to upload the latest dataset are added to the predictive analysis of new confirmed COVID-19 cases.
 
+In the exploratory time-series analysis, the time series plot is straight-forward and is interactive. Figure 9 shows the development of the base plot. The `timetk` package also provided diagnostic plots to study the trend, seasonality and remainder, anomalies and lag if present in the time-series. The UI is simple, whereby users need only to select the country of interest to commence their exploration (Figure #).
+
+```{r eval= FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+SG <- filter(case_df, Country == "Singapore")
+
+ts1 <- SG %>%
+   plot_time_series(Date, Daily_new_cases,
+                   .interactive = TRUE)
+
+ts2 <- SG %>%
+   plot_time_series(Date, Daily_new_cases,
+                   .interactive = TRUE,
+                   .plotly_slider = TRUE)
 ```
 
+![Development of base exploratory time series plot](images/cases-ts.jpg)
 
-## Deaths
+![Final UI for exploratory time-series analysis](images/cases-etsUI.jpg)
 
+The focus of the predictive analysis is to allow users to compare and assess the performance of the predictive models provided. The design caters to two types of users: (1) trained user with basic knowledge in predictive time-series analysis; and (2) trained user with good knowledge and experience in predictive time-series analysis. The first type of user would be more interested to know what are the available models for predictive time-series analysis and to compare these models, whereas the second type of user is better equipped to understand and change more advanced model parameters. 
 
+Basic model parameters, such as country, date range in which the forecast is based on, and the forecast horizon, would be provided as a basic feature to explore the predictive time-series analysis. For the first type of users, the emphasis is on the comparison between models, and this comparison would be based on the same input parameters. The functionality to customise the input parameters for selected models would be provided for the more knowledgeable user (Table 1). For both groups of user, it is important to have evidence-based comparison based on established metrics such as the mean absolute error (MAE), root mean square error (RMSE), R-squared (RSQ) etc. The figures ## show the UI of the predictive time-series analysis.
+
+\begin{table}[]
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Tool}              & \textbf{Input Parameters}     \\ \midrule
+Exploratory time-series    & Country                       \\ \midrule
+Predictive time-series     & Country, forecast date range, \\
+                           & forecast horizon              \\
+- model comparison         & Models                        \\
+- advance analysis         & Selected models               \\
+\textgreater ETS model     & Error, trend, season          \\
+\textgreater Prophet model & Growth, change-point range,   \\
+                           & season                        \\ \bottomrule
+\end{tabular}
+\caption{Parameters for the exploratory time-series and predictive time-series analyses}
+\label{tab:my-table}
+\end{table}
+
+![Final UI for predictive time-series analysis](images/cases-ptsUI.jpg)
+
+## Deaths and death rates
+
+The bivariate and multivariate analyses employed to explore the relationship between total number of deaths, death rates, health, economic and population structure indicators are the scatterplot (`ggstatsplot` package), funnel plot (`ggplot2` package) and multiple linear regression (`olsrr` package). 
+
+The key design principle behind this sub-module is to allow users to interactively explore the relationships of the number of deaths or death rates with the other variables, and to provide users with the flexibility to choose plot or model parameters. The scatterplot from the `ggstatsplot` package was chosen for the statistical tests conducted on the variables, to cater for the statistically trained user. For the scatterplot and funnel plot, additional considerations were made as to what information should be displayed in the base plot. Figure 9 shows the development process of the base scatterplot. The parameters for user selection were identified for each analysis (Table 2).
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.cap="Development of the base scatterplot to include colour and size scales, and data labels"}
+sp1 <- ggscatterstats(death_df,
+                      x = hospital_beds_per_thousand,
+                      y = total_deaths_log,
+                      smooth.line.args = list(color = NA, 
+                                         se = FALSE))
+  
+sp2 <- ggscatterstats(death_df,
+                      x = hospital_beds_per_thousand,
+                      y = total_deaths_log,
+                      smooth.line.args = list(color = NA, 
+                                         se = FALSE),
+                      point.args = list(aes(colour=continent,
+                                       size=population),
+                                       alpha = 0.4),
+                      ggtheme = theme(legend.position = "none"))
+
+sp3 <- ggscatterstats(death_df,
+                      x = hospital_beds_per_thousand,
+                      y = total_deaths_log,
+                      smooth.line.args = list(color = NA, 
+                                         se = FALSE),
+                      point.args = list(aes(colour=continent,
+                                       size=population),
+                                       alpha = 0.4),
+                      ggtheme = theme(legend.position = "none"),
+                      label.var = location,
+                      label.expression = continent == "Oceania")
+
+grid.arrange(sp1,sp2,sp3, ncol=2)
+```
+
+\begin{table}[]
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Analysis} & \textbf{Input Parameters} & \textbf{Output Options} \\ \midrule
+Scatterplot               & Statistical test,         & Range of data           \\
+                          & confidence level          & labels to display       \\
+                          & used in test, marginal    &                         \\
+                          & distribution type,        &                         \\
+                          & regression smooth         &                         \\
+                          & line                      &                         \\ \midrule
+Funnel plot               & Confidence interval       & None as able to         \\
+                          & for the expected          & achieve interactivity   \\
+                          & range of values           &                         \\ \midrule
+MLR                       & Regression model,         & Plot model results,     \\
+                          & selection methods         & plot model diagnostics  \\ \bottomrule
+\end{tabular}
+\caption{Parameters for the scatterplot, funnel plot and multiple linear regression (MLR) analyses}
+\label{tab:my-table}
+\end{table}
+
+For the Shiny app UI, careful considerations were made not to overwhelm the user. The output is dependent on the type of variables that the user selects i.e. funnel plot is more appropriate for death rate analysis, MLR is more appropriate for exploring relationship with multiple independent variables. The UI is designed based on how the user would conduct the analysis, instead of the type of output. The output is dependent on the variables that the user select, and the parameters are in turn dependent on the output that is to be shown. Due to the multiple layers of conditions, the `conditionalPanel` function is employed in the R Shiny code. The UIs of the three outputs are shown in Figures 10-12.
+
+![Final UI for scatterplot](images/deaths-spUI.jpg)
+
+![Final UI for funnel plot](images/deaths-fpUI.jpg)
+
+![Final UI for multivariate analysis](images/deaths-mlrUI.jpg)
+
+It is possible to collapse the bivariate and multivariate analysis tabs and generate the output solely based on the variables that the user has chosen. It is also possible to build a regression model with only one independent variable. As such, the decision was made to separate the UI by the type of analysis. 
 
 ## Vaccination receptivity
 
+This sub-module considers how the user would explore a survey data. Users would want to compare proportion of responses across countries for a particular survey question (diverging stacked bar chart and bar plot with error bar) and/or find out if certain profile of respondents (based on reported socio-demographic or perception questions in the survey) have an impact on vaccination receptivity (UpSet plot, density plot and mosaic plot). The parameters to support interactivity and exploration differ for the two analyses (Table 3). 
+
+\begin{table}[]
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Exploratory Tool} & \textbf{Input Parameters}         \\ \midrule
+Diverging stacked         & Survey question                   \\
+bar chart                 &                                   \\ \midrule
+Bar plot with             & Response level                    \\
+error bar                 & Confidence interval for error bar \\ \midrule
+UpSet plot                & Country, response level,          \\
+                          & survey question                   \\ \midrule
+Density plot,             & Country, x- and y-variables       \\
+mosaic plot               &                                   \\ \bottomrule
+\end{tabular}
+\caption{Parameters for the diverging stacked bar chart, bar plot with error bar, UpSet plot, density plot and mosaic plot analyses}
+\label{tab:my-table}
+\end{table}
+
+Within the association analysis plots, the UpSet plot is able to support multiple variables, whereas the density plot and mosaic plot are more appropriate for bivariate association. As such, the UI is designed to have three separate tabs for each group of identified analysis.
+
+![Final UI for exploratory analysis](images/vac-edaUI.jpg)
+
+![Final UI for association analysis](images/vac-assocUI.jpg)
 
 # Demonstration
 
-*USE CASE*
-**
+Vaccination is believed to play a key role in curbing the spread of COVID-19 and bringing an end to the global pandemic. However, vaccination rates are slow with some countries and it is important to understand the reasons of not wanting to be vaccinated, in order to develop targeted strategies to increase vaccination rates. We will demonstrate the use case of understanding vaccination receptivity with our application.
 
-## New cases
+Using the *diverging stacked bar chart*, we are able to visualize the responses to the different questions and hence get a deeper understanding of the possible association and determinants behind the attitudes and inclination towards vaccination. The question on whether one is worried about the side effects of COVID-19 vaccines is selected.
 
-## Deaths
+![Diverging stacked bar chart showing the proportion of respondents who are worried about side effects of COVID-19 vaccines](images/demo1.jpg)
 
-## Vaccination receptivity
+From Figure ##, it is observed that Spain and France have a relatively high proportion of people who strongly agreed that they were worried about the side effects of the COVID-19 vaccine. Comparing it to their vaccination rates taken from @owidcoronavirus2020, this could explain why Spain and France have was one of the countries that were more inclined to vaccination.
+
+
+
+Singapore on the other hand, had most respondents disagreeing that there were worried about getting COVID-19. Closer examination would be needed to understand the factors that could be affecting different countries’ inclination towards vaccination.
+
+
+
 
 # Discussion
 
@@ -157,7 +323,23 @@ Data visualisation is the quickest way to communicate information in a clear and
 
 # Future work
 
-Due to resource constraints, 
+Due to resource constraints, only three aspects of the COVID-19 data were selected for further exploration in our application. The application could be developed to include other aspects such as COVID-19 testing, hospitalisation and vaccination rates in the future. In the current application, some functionalities were not included and may be considered for future works.
+
+#### New cases
+
+* Exploratory time-series analysis: explore and compare trends across different countries
+* Predictive time-series analysis: compare two or more models based on different input parameters, and include more models for advance analysis
+
+#### Deaths and death rates
+
+* Inclusion of more global indicators
+* Scatterplot: further customisation of statistical test to be used, customisation of scale encodings
+* Funnel plot: customisation of scale encodings
+* MLR: include more regression models
+
+#### Vaccination receptivity
+
+* 
 
 # Conclusion
 
