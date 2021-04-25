@@ -1714,16 +1714,12 @@ prophetmodelPanelServer("datafile")
     confidence_level <- dconfidlvl  
     z_value <- 0
     if (confidence_level == "0.90") {
-      print("not in here 0.9")
       z_value <- 1.645
     } else if (confidence_level == "0.95") {
-      print("not in here 0.95")
       z_value <- 1.96
     } else if (confidence_level == "0.98") {
-      print("not in here 0.98")
       z_value <- 2.33
     } else if (confidence_level == "0.99") {
-      print("not in here 0.99")
       z_value <- 2.58
     }
     
@@ -1762,14 +1758,10 @@ prophetmodelPanelServer("datafile")
   output$factorInterest <- renderPlot({
     
     dcountry <- input$countryofinterest
-    print(dcountry)
     dstrength <- input$strengthResponse
-    print(dstrength)
     totalselection <- c("vac_1_ag","vac2_1_ag")
     
   
-    
-    
    totalselection <- eventReactive(input$DfactorButton, {
       input$factorofinterest
     })

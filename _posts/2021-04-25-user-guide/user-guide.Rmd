@@ -1,7 +1,7 @@
 ---
 title: "User Guide"
 description: |
-  A short description of the post.
+  Step-by-step guide on how to use the data visualisation functions designed
 author:
   - name: Daniel Lin Yong Yan, Siow Mun Chai, Tan Wei Li Amanda
     url: {}
@@ -136,6 +136,95 @@ Use this tab to forecast the number of positive cases.
 
 1. Use this tab to have a quick overview of the raw data.
 
-2. If dataset was uploaded, the tab will show the uploaded dataset. Else, the default dataset details will be shown.
+2. If dataset is uploaded, the tab will show the uploaded dataset. Else, the default dataset details will be shown.
 
 ![](images/screenshot.185.jpg){width=100%} <br>
+
+# Exploring Death
+
+Use this tab to causal examine the causal relationship between the COVID-19 numbers and the indicators.
+
+### Bivariate Analysis Tab
+
+1. Use this tab to explore the relationship between total number of deaths, death rates,
+health, economic and population structure indicators.
+
+2. Users are able to select the parameters to be plotted (x and y variables). If the selection is "Total Death" or "Log(Total Death)" for the Y-Axis, Scatterplot would be plotted. If "Fatality Rate" is chosen, Funnelplot would be plotted.
+
+![](images/screenshot.187.jpg){width=100%} <br><br>
+![](images/screenshot.188.jpg){width=100%} <br>
+
+3. After user has selected the variables, user are able to calibrate the plot-specific options. The following are the options that users can alter.
+  - Statistical Test
+  - Confidence level for statistical test
+  - Marginal Distribution
+  - Regression Line
+  
+4. If "Show Statistical Test" checkbox is left uncheck, users would only be allow to change the Marginal Distribution and Regression Line options.
+
+![](images/screenshot.191.jpg){width=100%} <br>
+
+5. Users are also able to select the label to be shown for the scatterplot.
+
+![](images/screenshot.193.jpg){width=100%} <br>
+
+### Multivariate Analysis Tab
+
+1. Use this tab to causal examine the causal relationship between the COVID-19 numbers and multiple indicators at same time.
+
+2. Similar to bivariate, users will need to select the y and x variables for the multivariate analysis. Model summary result would be shown.
+
+![](images/screenshot.194.jpg){width=100%} <br>
+
+3. Users can then proceed to include the "Interaction Terms" by checking on the checkbox (if Least Squares Method is chosen).
+
+![](images/screenshot.195.jpg){width=100%} <br>
+
+4. If "Variable Selection Method" is chosen, users would be given additional options of changing the "Variable Selection Method" and plotting the model.
+
+![](images/screenshot.196.jpg){width=100%} <br>
+5. Checking the "Plot Model Diagnostic" checkbox, will have additional output on the main panel.
+
+![](images/screenshot.197.jpg){width=100%} <br>
+
+
+# Understanding Vaccination Sentiments
+
+Use this tab to do exploratory and bivariate analysis of vaccination receptivity with virus perception and demographics.
+
+### Survey Finding Tab
+
+1. Use this tab to compare proportion of responses across countries for a particular survey question.
+
+2. Users would need to select the question to see the survey respond. A diverging stacked bar chart and bar plot with error bar chart would be plotted.
+
+![](images/screenshot.198.jpg){width=100%} <br>
+
+3. Users are able to change the parameters (Respond Level and Confidence Interval for error bar) for the bar plot with error bar chart to better explore the result for different countries. 
+
+![](images/screenshot.199.jpg){width=100%} <br>
+
+### Association of Factors Tab
+
+1. Use this tab to find out if certain profile of respondents (based on reported socio-demographic or perception questions in the
+survey) have an impact on vaccination receptivity.
+
+2. Users are select the country to be plotted. An UpSet-plot would be plotted.  
+
+![](images/screenshot.200.jpg){width=100%} <br>
+3. Users can change the "Level of Agreement" and "Factor of Interest" in the plot option to better explore the chart. Users can select multiple variables under "Factor of Interest" for display.
+
+![](images/screenshot.201.jpg){width=100%} <br>
+
+### Data Exploration Tab
+
+1. Use this tab to conduct bivariate analysis on the survey result.
+
+2. Users need to select a country result for the analysis.
+
+![](images/screenshot.202.jpg){width=100%} <br>
+
+3. Users can select the variables (x and y variables) for comparison. If continuous datatype is chosen (Age), a density plot would be shown. Else, mosaics plot would be plotted.
+
+![](images/screenshot.203.jpg){width=100%} <br><br>
+![](images/screenshot.204.jpg){width=100%} <br><br>
