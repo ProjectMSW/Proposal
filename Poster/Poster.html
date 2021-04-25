@@ -297,35 +297,19 @@ font-size: 20pt;
 
 <div class='poster_body_wrap'>
 <div class='poster_body'>
-<style type="text/css">
-section {
-  border: 2px solid red;
-  margin-top: 0px;
-  padding-top: 10px;
-}
-
-h2 {
-  column-span: all;
-  background: #7FD9CC;
-  padding: 10px;
-}
-
-h4 {
-  column-span: 1;
-  background: #bdded5;
-  padding: 8px;
-}
-</style>
-<div id="introduction-and-motivation" class="section level2">
-<h2>Introduction and Motivation</h2>
+<div id="introduction-and-motivation" class="section level1">
+<h1>Introduction and Motivation</h1>
 <p><strong>Background</strong><br>
 In the global battle against the Coronavirus (COVID-19), countries seek to understand the virus, its spread, impact and more recently, receptivity towards COVID-19 vaccination. In today’s Data Age, there are many COVID-19 related data available across various platforms. Careful examination and derivation of insights from the data will support global efforts to mitigate the spread and impact of the virus.</p>
 <p><strong>Motivation</strong><br>
 To develop a consolidated interactive visualization tool to allow in-depth exploration and analysis of COVID-19 data for the generation of insights on key COVID-19 trends: <em>(1) new cases; (2) deaths;</em> and <em>(3) vaccination receptivity</em>.</p>
-<p><strong>Design Principles</strong><br></p>
+<p><strong>Design Principles</strong><br>
+</p>
 <ul>
-<li><p><u>Simplicity and Clarity</u> - Seamless user experience, easy to understand and aesthetically pleasing visualizations and statistical information</p></li>
-<li><p><u>Interactivity</u> - Flexibility to allow exploration of data to meet the specific needs of the user</p></li>
+<li><p><u>Simplicity and Clarity</u> - Seamless user experience, easy to understand and aesthetically pleasing visualizations and statistical information
+</p></li>
+<li><p><u>Interactivity</u> - Flexibility to allow exploration of data to meet the specific needs of the user
+</p></li>
 <li><p><u>Utility</u> - Tools provided to generate useful and relevant insights from updated data</p></li>
 </ul>
 <p><strong>Analytical Approach</strong><br>
@@ -342,46 +326,59 @@ Data wrangling and transformation was first carried out on the separate sets of 
 <p><strong>Tools Used</strong><br>
 <img src="package_icons3.png" width="100%" /></p>
 </div>
-<div id="analysis-and-insights" class="section level2">
-<h2>Analysis and Insights</h2>
+<div id="analysis-and-insights" class="section level1">
+<h1>Analysis and Insights</h1>
 <div id="new-cases" class="section level4">
 <h4>NEW CASES</h4>
 <p><strong>Exploratory Time-Series Analysis</strong><br>
 The <em>timetk</em> package was used to provide diagnostic plots to study trends, seasonality and
-remainder, anomalies and lag if present in the time-series.</p>
-<p><img src="images/cases-etsUI.jpg" width="100%" /></p>
-<p><strong>Predictive Time-Series Analysis</strong><br>
+remainder, anomalies and lag if present in the time-series.
+
+<img src="images/cases-etsUI.jpg" width="100%" />
+
+<strong>Predictive Time-Series Analysis</strong><br>
 The focus here is to allow users to compare and assess the performance of the predictive models
-provided. The tool allows the user to explore and compare models available for predictive time-series analysis. The tool also allows advanced users to change more advanced parameters.</p>
-<p><img src="images/cases-ptsUI.jpg" width="100%" /></p>
+provided. The tool allows the user to explore and compare models available for predictive time-series analysis. The tool also allows advanced users to change more advanced parameters.
+
+<img src="images/cases-ptsUI.jpg" width="100%" />
+</p>
 </div>
-<div id="deaths-and-death-rates" class="section level4">
-<h4>DEATHS AND DEATH RATES</h4>
-<p>The guiding design principle was to allow users to interactively explore relationships of the number of deaths or death rates with other variables. The tool is designed such that the output is dependent on the type of variables selected and how the user plans to conduct the analysis.</p>
-<p><strong>Scatterplot</strong>
+<div id="deaths-and-death-rates" class="section level3">
+<h3>DEATHS AND DEATH RATES</h3>
+<p>The interactive visualization tool is designed such that the output is dependent on the type of variables selected and how the user plans to conduct the analysis.
+</p>
+<p><strong>Scatterplot</strong><br>
 The scatterplot from <em>ggstatsplot</em> package was chosen for the statistical tests conducted on the variables.
-<img src="images/deaths-spUI.jpg" width="100%" /></p>
-<p><strong>Funnel Plot</strong>
+
+<img src="images/deaths-spUI.jpg" width="100%" />
+
+<strong>Funnel Plot</strong><br>
 The <em>ggplot2</em> package was used to generate the funnel plot, which is more appropriate for death rate analysis.
+
 <img src="images/deaths-fpUI.jpg" width="100%" /></p>
-<p><strong>Multiple Linear Regression</strong>
+<p><strong>Multiple Linear Regression</strong><br>
 The <em>olsrr</em> package was used to generate the UI for the multivariate analysis, which is more appropriate for exploring relationships with multiple independent variables.
-<img src="images/deaths-mlrUI.jpg" width="100%" /></p>
+
+<img src="images/deaths-mlrUI.jpg" width="100%" />
+</p>
 </div>
-<div id="vaccination-receptivity" class="section level4">
-<h4>VACCINATION RECEPTIVITY</h4>
-<p><strong>Exploratory Analysis</strong>
-The <em>HH</em> package was used to generate the diverging stacked bar chart to allow users to view different countries receptivity towards vaccination. Error bars were also used to help users visualize uncertainty.</p>
-<p><img src="images/vac-edaUI.jpg" width="100%" /></p>
-<p><strong>Association Analysis</strong>
-The UpSet plot was used to display associations between vaccination attitudes and other factors.</p>
-<p><img src="images/vac-assocUI.jpg" width="100%" /></p>
+<div id="vaccination-receptivity" class="section level3">
+<h3>VACCINATION RECEPTIVITY</h3>
+<p><strong>Exploratory Analysis</strong><br>
+The <em>HH</em> package was used to generate the diverging stacked bar chart to allow users to view different countries receptivity towards vaccination. Error bars were also used to help users visualize uncertainty.
+
+<img src="images/vac-edaUI.jpg" width="100%" />
+
+<strong>Association Analysis</strong><br>
+The UpSet plot was used to display associations between vaccination attitudes and other factors.
+
+<img src="images/vac-assocUI.jpg" width="100%" /></p>
 </div>
-<div id="future-works" class="section level4">
-<h4>FUTURE WORKS</h4>
+</div>
+<div id="future-works" class="section level1">
+<h1>FUTURE WORKS</h1>
 <p><strong>1. Scope</strong> - The application can be developed to include other aspects of COVID-19 such as testing, hospitalisation and vaccination rates.<br>
 <strong>2. Analysis</strong> - More analysis can be included e.g. Trends of New Cases across countries, inclusion of more regression models for COVID-19 Deaths.</p>
-</div>
 </div>
 </div>
 </div>
