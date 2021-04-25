@@ -305,14 +305,11 @@ Vaccination is believed to play a key role in curbing the spread of COVID-19 and
 
 Using the *diverging stacked bar chart*, we are able to visualize the responses to the different questions and hence get a deeper understanding of the possible association and determinants behind the attitudes and inclination towards vaccination. The question on whether one is worried about the side effects of COVID-19 vaccines is selected.
 
-![Diverging stacked bar chart showing the proportion of respondents who are worried about side effects of COVID-19 vaccines](images/demo1.jpg)
+![Diverging stacked bar chart showing the proportion of respondents who are worried about getting COVID-19 and bar plot with error bar showing the proportion of respondents with "strongly agreed"](images/demo1.jpg)
 
-From Figure ##, it is observed that Spain and France have a relatively high proportion of people who strongly agreed that they were worried about the side effects of the COVID-19 vaccine. Comparing it to their vaccination rates taken from @owidcoronavirus2020, this could explain why Spain and France have was one of the countries that were more inclined to vaccination.
+From Figure ##, it is observed that South Korea and Japan have a relatively low proportion of people who strongly agreed and agree that they were worried about getting COVID-19. Comparing it to their vaccination rates taken from @owidcoronavirus2020, this could be one possible explanation for the low vaccination rate of South Korean and Japan (0.15% and 0.67% of population fully vaccinated as of 22 Apr 2021). From the bar plot with error bar, we are fairly confident that the proportion of responses for "Strongly Agree" would not change much due to the short error bar.
 
-
-
-Singapore on the other hand, had most respondents disagreeing that there were worried about getting COVID-19. Closer examination would be needed to understand the factors that could be affecting different countries’ inclination towards vaccination.
-
+Closer examination would be needed to understand the factors that could be affecting different countries’ inclination towards vaccination, which would provide useful insights on possible strategies to improve vaccination rates, such as vaccination awareness campaigns.
 
 
 
@@ -339,7 +336,7 @@ Due to resource constraints, only three aspects of the COVID-19 data were select
 
 #### Vaccination receptivity
 
-* 
+* UpSet plot: further customisation of the plot to include attribute plots and grouping by other factors
 
 # Conclusion
 
