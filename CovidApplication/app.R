@@ -44,7 +44,7 @@ ui <- fluidPage(
     tabPanel("Forecasting Positive Cases",
              sidebarPanel(
                h4("Dataset"),
-               csvFileUI("datafile", h5("Select File to Load (or default dataset will be used)")),hr(),
+               csvFileUI("datafile", h5("Select file to load (or default dataset will be used)")),hr(),
                conditionalPanel(
                  condition = "input.tabs == 'Explore Country Data' || input.tabs == 'Prediction' ",
                  forecastNavUI("datafile"),hr(),
@@ -53,8 +53,8 @@ ui <- fluidPage(
                conditionalPanel(
                  condition = "input.tabs == 'Prediction'",
                  
-                 checkboxGroupInput("variable1", h5("Model Selection - (Default Parameters)"),
-                                    c("Arima"="arima","Arima_Boosted" ="arima_boosted", "Exponential Smoothing (ETS)" = "ets", "Prophet"="prophet",
+                 checkboxGroupInput("variable1", h5("Model selection - (default parameters)"),
+                                    c("Arima"="arima","Arima Boosted" ="arima_boosted", "Exponential Smoothing (ETS)" = "ets", "Prophet"="prophet",
                                       "Linear Regression" = "lm", "MARS" = "mars", "SNAIVE" ="snaive"),selected =c("arima")),
                 
                  actionButton("ModelgoButton", label = "Go"),hr(),
@@ -100,7 +100,7 @@ ui <- fluidPage(
                                       textOutput("initialdisplay")
                                     ),
                                     flowLayout(
-                                    selectInput("dayselection", h5('Forecast Horizon'), choices =
+                                    selectInput("dayselection", h5('Forecast horizon'), choices =
                                                   c("60 days"="60 days",
                                                     "50 days"="50 days",
                                                     "40 days" = "40 days",
@@ -109,7 +109,7 @@ ui <- fluidPage(
                                                     "10 days" = "10 days"),
                                                 width = '100%'),
                                     
-                                    dateRangeInput("date_range", h5("Change dataset Date Range:"),
+                                    dateRangeInput("date_range", h5("Change dataset date range:"),
                                                    start = "1-23-2020", # Start date of the selected df
                                                    end = getMyDate(confirmed_cases_raw), # End date of the selected df
                                                    format = "m-d-yyyy")
@@ -733,18 +733,18 @@ ui <- fluidPage(
                            selectizeInput("factorofinterest",
                                           h5("Select factors of interest to view association (in blue) in Upset plot"), 
                                           list(
-                                            "Willing to take vaccine" = "vac_1_ag",
-                                            "Fear of getting COVID19" = "vac2_1_ag",
-                                            "Concern on vaccine side effects" = "vac2_2_ag",
-                                            "Confidence in vaccine efficacy" = "vac2_3_ag",
-                                            "Vaccine will protect recipient from COVID19 health effects" = "vac2_4_ag",
-                                            "Vaccine will prevent transmission of COVID from recipient" = "vac2_5_ag",          
-                                            "Will regret if don't take vaccine" = "vac2_6_ag",
-                                            "Will take vaccine 1 year later" = "vac_3_ag",
-                                            "Vaccine is important for health" = "vac4_ag",
-                                            "Will get vaccine if available" = "vac5_ag",
-                                            "Family and friends will want respondent to be vaccinated" = "vac6_ag",
-                                            "Trust COVID19 vaccines" = "vac7_ag"
+                                            "vac_1_ag" = "vac_1_ag",
+                                            "vac2_1_ag" = "vac2_1_ag",
+                                            "vac2_2_ag" = "vac2_2_ag",
+                                            "vac2_3_ag" = "vac2_3_ag",
+                                            "vac2_4_ag" = "vac2_4_ag",
+                                            "vac2_5_ag" = "vac2_5_ag",          
+                                            "vac2_6_ag" = "vac2_6_ag",
+                                            "vac_3_ag" = "vac_3_ag",
+                                            "vac4_ag" = "vac4_ag",
+                                            "vac5_ag" = "vac5_ag",
+                                            "vac6_ag" = "vac6_ag",
+                                            "vac7_ag" = "vac7_ag"
                                           ), # End list
                                           multiple = TRUE, selected=c("vac_1_ag","vac2_1_ag")),  
                
@@ -769,18 +769,18 @@ ui <- fluidPage(
                                c("Gender"="gender", 
                                  "Household size"="household_size",
                                  "Household children"="household_children",
-                                 "Willing to take vaccine"="vac_1",
-                                 "Fear of getting COVID19"="vac2_1",
-                                 "Concern on vaccine side effects"="vac2_2",
-                                 "Confidence in vaccine efficacy"="vac2_3",
-                                 "Vaccine will protect recipient from COVID19 health effects"="vac2_4",
-                                 "Vaccine will prevent transmission of COVID from recipient"="vac2_5",
-                                 "Will regret if don't take vaccine"="vac2_6",
-                                 "Will take vaccine 1 year later"="vac_3",
-                                 "Vaccine is important for health"="vac4",
-                                 "Will get vaccine if available"="vac5",
-                                 "Family and friends will want respondent to be vaccinated"="vac6",
-                                 "Trust COVID19 vaccines"="vac7"),
+                                 "vac_1"="vac_1",
+                                 "vac2_1"="vac2_1",
+                                 "vac2_2"="vac2_2",
+                                 "vac2_3"="vac2_3",
+                                 "vac2_4"="vac2_4",
+                                 "vac2_5"="vac2_5",
+                                 "vac2_6"="vac2_6",
+                                 "vac_3"="vac_3",
+                                 "vac4"="vac4",
+                                 "vac5"="vac5",
+                                 "vac6"="vac6",
+                                 "vac7"="vac7"),
                              width = '100%'),
                  
                  selectInput("predictiveVariable", 
@@ -790,18 +790,18 @@ ui <- fluidPage(
                                  "Gender"="gender", 
                                  "Household size"="household_size",
                                  "Household children"="household_children",
-                                 "Willing to take vaccine"="vac_1",
-                                 "Fear of getting COVID19"="vac2_1",
-                                 "Concern on vaccine side effects"="vac2_2",
-                                 "Confidence in vaccine efficacy"="vac2_3",
-                                 "Vaccine will protect recipient from COVID19 health effects"="vac2_4",
-                                 "Vaccine will prevent transmission of COVID from recipient"="vac2_5",
-                                 "Will regret if don't take vaccine"="vac2_6",
-                                 "Will take vaccine 1 year later"="vac_3",
-                                 "Vaccine is important for health"="vac4",
-                                 "Will get vaccine if available"="vac5",
-                                 "Family and friends will want respondent to be vaccinated"="vac6",
-                                 "Trust COVID19 vaccines"="vac7"),
+                                 "vac_1"="vac_1",
+                                 "vac2_1"="vac2_1",
+                                 "vac2_2"="vac2_2",
+                                 "vac2_3"="vac2_3",
+                                 "vac2_4"="vac2_4",
+                                 "vac2_5"="vac2_5",
+                                 "vac2_6"="vac2_6",
+                                 "vac_3"="vac_3",
+                                 "vac4"="vac4",
+                                 "vac5"="vac5",
+                                 "vac6"="vac6",
+                                 "vac7"="vac7"),
                              width = '100%'),
                  
                )
@@ -963,7 +963,7 @@ server <- function(input, output, session){
   datafile <- csvFileServer("datafile", stringsAsFactors = FALSE,myvalues)
   output$initialtext <- renderText(
     if(myvalues$default == 0){ 
-      paste("Please Upload the latest file from Johns Hopkins University. Exisitng Dataset as follows (caa 27 Mar 2021):", "", sep="\n\n\n")
+      paste("Please Upload the latest file from John Hopkins University. Exisiting dataset as follows (caa 27 Mar 2021):", "", sep="\n\n\n")
     }else{
       ""
     }
@@ -971,7 +971,7 @@ server <- function(input, output, session){
   
   output$initialtext1 <- renderText(
     if(myvalues$default == 0){
-      "Using Default Dataset - Data collected from 22 Jan 2020 to 27 Mar 2021"
+      "Using default dataset - data collected from 22 Jan 2020 to 27 Mar 2021"
     }else{
       ""
     }
