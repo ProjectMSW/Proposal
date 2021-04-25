@@ -1,6 +1,6 @@
 ---
 # Title Box
-title: COVID ExploreR <br>
+title: COVID ExploreR - Interactive Visual Analysis with R Shiny for Exploring COVID-19 Data<br>
 title_textsize: "70pt"
 author_textsize: "30pt"
 affiliation_textsize: "45pt"
