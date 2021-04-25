@@ -16,4 +16,4 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-The poster is created using posterdown package. The link to the poster can be found [here](https://github.com/ProjectMSW/Proposal/blob/3f6cce6744642222749edbd165e96535fc0c98fa/Poster/Poster.pdf).
+The poster is created using posterdown package. The link to the poster can be found [here](https://github.com/ProjectMSW/Proposal/blob/df27cfb9d53fd8f0126f14739ef013a8539d3087/Poster/Poster.pdf).
