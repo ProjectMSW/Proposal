@@ -108,7 +108,8 @@ Use this tab to forecast the number of positive cases.
 
 9. User can also click on the model under the legend to show or hide the model from the chart.
 
-![](images/screenshot.179.jpg){width=100%} <br>
+![](images/screenshot.179.jpg){width=100%} <br><br>
+![](images/screenshot.186.jpg){width=100%} <br>
 
 10. Users can also change the forecast period by changing the selection.
 
@@ -118,5 +119,23 @@ Use this tab to forecast the number of positive cases.
 
 ![](images/screenshot.181.jpg){width=100%} <br>
 
-12. For users who wish to explore more with the parameters of the models, they can click on 
+12. For users who wish to explore more with the parameters of the models, they can click on "Advance - Model Parameters Selection". Users are able to change the parameters for ETS and Prophet.
 
+![](images/screenshot.182.jpg){width=100%} <br>
+
+13. A new tab ETS MODEL will be shown (if ETS is selected).
+
+![](images/screenshot.183.jpg){width=100%} <br>
+
+14. Users are able to change the parameters as listed  (forecast horizon, dataset date range, Error, Trend and Season).The model will recalculate and show the updated values. Example shown changes made to Error and Season field.
+
+![](images/screenshot.184.jpg){width=100%} <br>
+
+
+### Data Table Tab
+
+1. Use this tab to have a quick overview of the raw data.
+
+2. If dataset was uploaded, the tab will show the uploaded dataset. Else, the default dataset details will be shown.
+
+![](images/screenshot.185.jpg){width=100%} <br>
