@@ -52,19 +52,19 @@
   },
   {
     "path": "posts/2021-04-25-report/",
-    "title": "Report",
-    "description": "A short description of the post.",
+    "title": "Practice Research Paper",
+    "description": "A Visual Analytics Application practice and research.",
     "author": [
       {
-        "name": "Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda",
+        "name": "Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda",
         "url": "www.smu.edu.sg"
       }
     ],
     "date": "2021-04-25",
     "categories": [],
-    "contents": "\r\nThis is the link to the report: https://github.com/ProjectMSW/Proposal/blob/69c5c67db2146679ea8d937947e9c3327eb94d8a/VAPracticeResearchPaper/VAPracticeResearchPaper.pdf\r\n\r\n\r\n\r\n",
+    "contents": "\r\nThe practice research paper is edited using the ACM article template of rticle package. The link to the paper can be found here.\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-04-25T20:35:18+08:00",
+    "last_modified": "2021-04-25T20:47:30+08:00",
     "input_file": "report.utf8.md"
   },
   {

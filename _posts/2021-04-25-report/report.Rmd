@@ -1,9 +1,9 @@
 ---
-title: "Report"
+title: "Practice Research Paper"
 description: |
-  A short description of the post.
+  A Visual Analytics Application practice and research.
 author:
-  - name: Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda
+  - name: Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda
     url: www.smu.edu.sg
 date: 04-25-2021
 output:
@@ -15,4 +15,5 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
-This is the link to the report: https://github.com/ProjectMSW/Proposal/blob/69c5c67db2146679ea8d937947e9c3327eb94d8a/VAPracticeResearchPaper/VAPracticeResearchPaper.pdf
+
+The practice research paper is edited using the ACM article template of `rticle` package. The link to the paper can be found [here](https://github.com/ProjectMSW/Proposal/blob/69c5c67db2146679ea8d937947e9c3327eb94d8a/VAPracticeResearchPaper/VAPracticeResearchPaper.pdf).
