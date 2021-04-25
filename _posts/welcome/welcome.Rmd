@@ -1,13 +1,11 @@
 ---
-title: "Welcome to My Blog"
+title: "Welcome to Our Blog"
 description: |
-  Welcome to our new blog, My Blog. We hope you enjoy 
+  Welcome to our project blog for ISSS608 Visual Analytics and Applications, a course module offered in SMU MITB. We hope you enjoy 
   reading what we have to say!
 author:
-  - name: Nora Jones 
-    url: https://example.com/norajones
-    affiliation: Spacely Sprockets
-    affiliation_url: https://example.com/spacelysprokets
+  - name: Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda
+    url: www.smu.edu.sg
 date: 02-23-2021
 output:
   distill::distill_article:

@@ -20,19 +20,18 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -52,7 +51,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
@@ -86,38 +85,38 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-<title>Covid Explorer: Welcome to My Blog</title>
+<title>Covid Explorer: Welcome to Our Blog</title>
 
-<meta property="description" itemprop="description" content="Welcome to our new blog, My Blog. We hope you enjoy &#10;reading what we have to say!"/>
+<meta property="description" itemprop="description" content="Welcome to our project blog for ISSS608 Visual Analytics and Applications, a course module offered in SMU MITB. We hope you enjoy &#10;reading what we have to say!"/>
 
 
 <!--  https://schema.org/Article -->
 <meta property="article:published" itemprop="datePublished" content="2021-02-23"/>
 <meta property="article:created" itemprop="dateCreated" content="2021-02-23"/>
-<meta name="article:author" content="Nora Jones"/>
+<meta name="article:author" content="Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-<meta property="og:title" content="Covid Explorer: Welcome to My Blog"/>
+<meta property="og:title" content="Covid Explorer: Welcome to Our Blog"/>
 <meta property="og:type" content="article"/>
-<meta property="og:description" content="Welcome to our new blog, My Blog. We hope you enjoy &#10;reading what we have to say!"/>
+<meta property="og:description" content="Welcome to our project blog for ISSS608 Visual Analytics and Applications, a course module offered in SMU MITB. We hope you enjoy &#10;reading what we have to say!"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Covid Explorer"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
 <meta property="twitter:card" content="summary"/>
-<meta property="twitter:title" content="Covid Explorer: Welcome to My Blog"/>
-<meta property="twitter:description" content="Welcome to our new blog, My Blog. We hope you enjoy &#10;reading what we have to say!"/>
+<meta property="twitter:title" content="Covid Explorer: Welcome to Our Blog"/>
+<meta property="twitter:description" content="Welcome to our project blog for ISSS608 Visual Analytics and Applications, a course module offered in SMU MITB. We hope you enjoy &#10;reading what we have to say!"/>
 
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Welcome to My Blog"]},{"type":"character","attributes":{},"value":["Welcome to our new blog, My Blog. We hope you enjoy \nreading what we have to say!"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Nora Jones"]},{"type":"character","attributes":{},"value":["https://example.com/norajones"]},{"type":"character","attributes":{},"value":["Spacely Sprockets"]},{"type":"character","attributes":{},"value":["https://example.com/spacelysprokets"]}]}]},{"type":"character","attributes":{},"value":["02-23-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Welcome to Our Blog"]},{"type":"character","attributes":{},"value":["Welcome to our project blog for ISSS608 Visual Analytics and Applications, a course module offered in SMU MITB. We hope you enjoy \nreading what we have to say!"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda"]},{"type":"character","attributes":{},"value":["www.smu.edu.sg"]}]}]},{"type":"character","attributes":{},"value":["02-23-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"NULL"}
+  {"type":"character","attributes":{},"value":["welcome_files/anchor-4.2.2/anchor.min.js","welcome_files/bowser-1.9.3/bowser.min.js","welcome_files/distill-2.2.21/template.v2.js","welcome_files/jquery-1.11.3/jquery.min.js","welcome_files/popper-2.6.0/popper.min.js","welcome_files/tippy-6.2.7/tippy-bundle.umd.min.js","welcome_files/tippy-6.2.7/tippy-light-border.css","welcome_files/tippy-6.2.7/tippy.css","welcome_files/tippy-6.2.7/tippy.umd.min.js","welcome_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2041,6 +2040,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.7/header-attrs.js"></script>
   <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
   <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -2061,7 +2061,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Welcome to My Blog","description":"Welcome to our new blog, My Blog. We hope you enjoy \nreading what we have to say!","authors":[{"author":"Nora Jones","authorURL":"https://example.com/norajones","affiliation":"Spacely Sprockets","affiliationURL":"https://example.com/spacelysprokets","orcidID":""}],"publishedDate":"2021-02-23T00:00:00.000+08:00","citationText":"Jones, 2021"}
+{"title":"Welcome to Our Blog","description":"Welcome to our project blog for ISSS608 Visual Analytics and Applications, a course module offered in SMU MITB. We hope you enjoy \nreading what we have to say!","authors":[{"author":"Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda","authorURL":"www.smu.edu.sg","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-02-23T00:00:00.000+08:00","citationText":"Amanda, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2087,14 +2087,14 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Welcome to My Blog</h1>
+<h1>Welcome to Our Blog</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-<p><p>Welcome to our new blog, My Blog. We hope you enjoy reading what we have to say!</p></p>
+<p><p>Welcome to our project blog for ISSS608 Visual Analytics and Applications, a course module offered in SMU MITB. We hope you enjoy reading what we have to say!</p></p>
 </div>
 
 <div class="d-byline">
-  Nora Jones <a href="https://example.com/norajones" class="uri">https://example.com/norajones</a> (Spacely Sprockets)<a href="https://example.com/spacelysprokets" class="uri">https://example.com/spacelysprokets</a>
+  Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda www.smu.edu.sg 
   
 <br/>02-23-2021
 </div>

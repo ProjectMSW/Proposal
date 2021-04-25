@@ -137,19 +137,19 @@
   },
   {
     "path": "posts/welcome/",
-    "title": "Welcome to My Blog",
-    "description": "Welcome to our new blog, My Blog. We hope you enjoy \nreading what we have to say!",
+    "title": "Welcome to Our Blog",
+    "description": "Welcome to our project blog for ISSS608 Visual Analytics and Applications, a course module offered in SMU MITB. We hope you enjoy \nreading what we have to say!",
     "author": [
       {
-        "name": "Nora Jones",
-        "url": "https://example.com/norajones"
+        "name": "Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda",
+        "url": "www.smu.edu.sg"
       }
     ],
     "date": "2021-02-23",
     "categories": [],
     "contents": "\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-04-11T19:21:54+08:00",
-    "input_file": {}
+    "last_modified": "2021-04-25T20:55:41+08:00",
+    "input_file": "welcome.utf8.md"
   }
 ]
