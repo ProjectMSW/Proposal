@@ -1,0 +1,29 @@
+---
+title: "User Guide"
+description: |
+  A short description of the post.
+author:
+  - name: Daniel Lin Yong Yan, Siow Mun Chai, Tan Wei Li Amanda
+    url: {}
+date: 04-25-2021
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Forecasting Postive Cases
+
+Use this tab to forecast the number of positive cases.
+
+### Explore Country Data
+
+1. User to select the dataset to use. 3 datasets were downloaded and stored in the data folder for quick reference. The dataset can be downloaded from https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series
+
+2. If user did not upload any dataset, the default dataset will be used (covid information caa 27 Mar 2021).
+
+

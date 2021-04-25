@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2021-04-25-user-guide/",
+    "title": "User Guide",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Daniel Lin Yong Yan, Siow Mun Chai, Tan Wei Li Amanda",
+        "url": {}
+      }
+    ],
+    "date": "2021-04-25",
+    "categories": [],
+    "contents": "\r\nForecasting Postive Cases\r\nUse this tab to forecast the number of positive cases.\r\nExplore Country Data\r\nUser to select the dataset to use. 3 datasets were downloaded and stored in the data folder for quick reference. The dataset can be downloaded from https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series\r\nIf user did not upload any dataset, the default dataset will be used (covid information caa 27 Mar 2021).\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-04-25T09:01:42+08:00",
+    "input_file": "user-guide.utf8.md"
+  },
+  {
     "path": "posts/2021-03-27-covid-deaths/",
     "title": "COVID-19: death statistics",
     "description": "This post is on the planning and prototyping process for one of the three sub-modules of a Shiny-based Visual Analytics Application project for the course *ISSS608 - Visual Analytics and Applications* offered in SMU MITB.",

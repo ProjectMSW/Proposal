@@ -24,7 +24,6 @@ library(gridExtra)
 
 library(shinyjs)
 
-#import::from(HH,likert)
 import::from(naniar,replace_with_na)
 
 
@@ -35,13 +34,13 @@ source("Modules/survey.R")
 
 
 ui <- fluidPage(
-  titlePanel("Covid Explorer"),
+  titlePanel(""),
   
   shinyjs::useShinyjs(),
   
   navbarPage(
     theme = shinytheme("sandstone"),
-    "Covid Explorer",
+    "COVID EXPLORER",
     tabPanel("Forecasting Positive Cases",
              sidebarPanel(
                h4("Dataset"),
