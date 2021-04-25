@@ -1,9 +1,9 @@
 ---
-title: "Application"
+title: "COVID ExploreR Application"
 description: |
   Link to Shiny Application
 author:
-  - name: Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda
+  - name: Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda
     url: www.smu.edu.sg
 date: 04-25-2021
 output:
