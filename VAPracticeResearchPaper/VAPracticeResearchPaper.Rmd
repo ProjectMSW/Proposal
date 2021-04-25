@@ -1,5 +1,5 @@
 ---
-title: IVAR-Shiny - Interactive Visual Analysis with R Shiny for Exploring COVID-19 Data
+title: COVID ExploreR - Interactive Visual Analysis with R Shiny for Exploring COVID-19 Data
 author:
   - name: Lin Yongyan
     email: yongyan.lin.2020@mitb.smu.edu.sg
@@ -183,7 +183,7 @@ ts2 <- SG %>%
 
 The focus of the predictive analysis is to allow users to compare and assess the performance of the predictive models provided. The design caters to two types of users: (1) trained user with basic knowledge in predictive time-series analysis; and (2) trained user with good knowledge and experience in predictive time-series analysis. The first type of user would be more interested to know what are the available models for predictive time-series analysis and to compare these models, whereas the second type of user is better equipped to understand and change more advanced model parameters. 
 
-Basic model parameters, such as country, date range in which the forecast is based on, and the forecast horizon, would be provided as a basic feature to explore the predictive time-series analysis. For the first type of users, the emphasis is on the comparison between models, and this comparison would be based on the same input parameters. The functionality to customise the input parameters for selected models would be provided for the more knowledgeable user (Table 1). For both groups of user, it is important to have evidence-based comparison based on established metrics such as the mean absolute error (MAE), root mean square error (RMSE), R-squared (RSQ) etc. Figure 11 shows the UI of the predictive time-series analysis.
+Basic model parameters, such as country, date range in which the forecast is based on, and the forecast horizon, would be provided as a basic feature to explore the predictive time-series analysis. For the first type of users, the emphasis is on the comparison between models, and this comparison would be based on the same input parameters. The functionality to customise the input parameters for selected models would be provided for the more knowledgeable user (Table 1). For both groups of user, it is important to have evidence-based comparison based on established metrics such as the mean absolute error (MAE), root mean square error (RMSE), R-squared (RSQ) etc. Figure 11 shows the UI of the predictive time-series analysis. The plots selected are unable to be rendered interactive.
 
 \begin{table}[]
 \begin{tabular}{@{}ll@{}}
@@ -293,7 +293,7 @@ mosaic plot               &                                   \\ \bottomrule
 \label{tab:my-table}
 \end{table}
 
-Within the association analysis plots, the UpSet plot is able to support multiple variables, whereas the density plot and mosaic plot are more appropriate for bivariate association. As such, the UI is designed to have three separate tabs for each group of identified analysis (Figures 16-18). For interactive plots, all the plots except for 
+Within the association analysis plots, the UpSet plot is able to support multiple variables, whereas the density plot and mosaic plot are more appropriate for bivariate association. As such, the UI is designed to have three separate tabs for each group of identified analysis (Figures 16-18). All plots, except for the density plot and mosaic plot, are unable to be rendered interactive.
 
 ![Final UI for exploratory analysis](images/vac-edaUI.jpg)
 
@@ -321,7 +321,7 @@ We can also take a look at the relationship between the willingness to take vacc
 
 ## Discussion
 
-In understanding vaccination sentiments, users are able to explore the survey responses of different countries by questions and the association between variables via the UpSet plot and the data exploration function. The insights gained from the exploration serves to inform on possible reasons behind willingness to take vaccine, which can in turn be used to drive policies and strategies to improve vaccination rates. We would like to caution users that the primary intention of the application is for users to explore in further detail the available COVID-19 data. Separate confirmatory data analysis is highly encouraged to validate the insights gained from our application.
+In understanding vaccination sentiments, users are able to explore the survey responses of different countries by questions and the association between variables via the UpSet plot and the data exploration function. Through their own exploration, users are able to dive into the data and gain insights on possible reasons behind willingness to take vaccine, which can in turn be used to drive policies and strategies to improve vaccination rates. We would like to caution users that the primary intention of the application is for users to explore in further detail the available COVID-19 data. Separate confirmatory data analysis is highly encouraged to validate the insights gained from our application.
 
 Other use cases for our applications are (and not limited to):-
 
@@ -331,7 +331,7 @@ Other use cases for our applications are (and not limited to):-
 
 # Future work
 
-Due to resource constraints, only three aspects of the COVID-19 data were selected for further exploration in our application. The application could be developed to include other aspects such as COVID-19 testing, hospitalisation and vaccination rates in the future. The ideal application would allow users to select the desired analysis (predictive, comparison with country indicators) for the variable(s) of interest. It would also be interesting to compare vaccination receptivity with other factors such as number of confirmed cases and deaths in the country and neighbouring countries.
+Due to resource constraints, only three aspects of the COVID-19 data were selected for further exploration in our application. Other aspects of the COVID-19 data, such as COVID-19 testing, hospitalisation and vaccination rates, could be included for a well-rounded data exploration experience. Another feature to be considered is the ability to allow users to select the desired analysis (predictive, comparison with country indicators) for the variable(s) of interest, instead of the current design where the analysis is pre-determined for the key variables. 
 
 In the current application, some functionalities were not included and may be considered for future works.
 
@@ -349,12 +349,13 @@ In the current application, some functionalities were not included and may be co
 
 *Vaccination receptivity*
 
+* Compare vaccination receptivity with other factors such as number of confirmed cases and deaths in the country and neighbouring countries
 * Bar plot with error bars: include interactivity component
 * UpSet plot: further customisation of the plot to include attribute plots and grouping by other factors
 
 # Conclusion
 
-The use of interactive techniques
+Interactivity is most commonly seen in applications using mainstream analysis and simple plots i.e. line graphs, bar graphs. When the complexity of analyses increases, interactivity is often the first feature to be dropped from visualisations. Yet, the use of interactivity in data visualisations is a critical component in allowing users to embark on their own journey to uncover relationships from the data. As R continues to gain popularity in the data science and visualisation community, it is pertinent that the support for interactive features grows in tandem.
 
 # References
 
