@@ -52,7 +52,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ```{css, echo=FALSE}
 section {
   border: 2px solid red;
-  margin-top: 40px;
+  margin-top: 0px;
   padding-top: 10px;
 }
 
@@ -162,7 +162,6 @@ knitr::include_graphics("images/vac-assocUI.jpg")
 #### FUTURE WORKS
 **1. Scope** - The application can be developed to include other aspects of COVID-19 such as testing, hospitalisation and vaccination rates.<br>
 **2. Analysis** - More analysis can be included e.g. Trends of New Cases across countries, inclusion of more regression models for COVID-19 Deaths.
-
 
 
 ```{r echo=FALSE, eval=FALSE}
