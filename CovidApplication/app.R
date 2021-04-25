@@ -56,13 +56,13 @@ ui <- fluidPage(
                  
                  checkboxGroupInput("variable1", h5("Model Selection - (Default Parameters)"),
                                     c("Arima"="arima","Arima_Boosted" ="arima_boosted", "Exponential Smoothing (ETS)" = "ets", "Prophet"="prophet",
-                                      "Linear Regression" = "lm", "MARS" = "mars", "SNAIVE" ="snaive", "ETS"="ETS"),selected =c("arima")),
+                                      "Linear Regression" = "lm", "MARS" = "mars", "SNAIVE" ="snaive"),selected =c("arima")),
                 
                  actionButton("ModelgoButton", label = "Go"),hr(),
                  a(id = "toggleAdvanced", h5("Advance - Model Parameters Selection"), href = "#"),
                  shinyjs::hidden(
                    div(id = "advanced",
-                       checkboxInput("variable4", "ETS",value=FALSE),
+                       checkboxInput("variable4", "Exponential Smoothing (ETS)",value=FALSE),
                        checkboxInput("variable5", "Prophet",value=FALSE)
                    )
                  ),
@@ -75,12 +75,18 @@ ui <- fluidPage(
                                     br(),
                                     span( textOutput("initialtext1"), style="font-size:18px"),
                                     hr(),
+                                    
+                                    h4("Visualising the time series data"),br(),
                                     shinycssloaders::withSpinner(plotlyOutput("distPlot")),
                                     hr(),
+                                    h4("View anomalies in the data"),br(),
                                     shinycssloaders::withSpinner(plotlyOutput("anomalyPlot")),
                                     hr(),
+                                    h4("Detecting Autocorrelation (ACF),
+                                    Partial Autocorrelation (PACF), and Cross Correlation (CCF) of Lagged Predictors"),br(),
                                     shinycssloaders::withSpinner(plotlyOutput("acfPlot")),
                                     hr(),
+                                    h4("Visualizing time series STL Decomposition"),br(),
                                     shinycssloaders::withSpinner(plotlyOutput("stlPlot")),
                                     br(),
                                     br()
@@ -710,7 +716,7 @@ ui <- fluidPage(
                
                conditionalPanel(
                  condition = "input.danieltab == 'Association of Factors' ",
-                 h4("View correlation between factors and responses for individual countries using the UpSet plot."),
+                 h4("View correlation between factors by Country"),
                selectInput("countryofinterest", h5('Select Country'), choices = 
                              c("Australia" ="Australia","Canada" ="Canada","Denmark"="Denmark",
                                "Finland"="Finland","France"="France","Germany"="Germany",
@@ -770,9 +776,6 @@ ui <- fluidPage(
                                  "vac_3"="vac_3","vac4"="vac4","vac5"="vac5","vac6"="vac6","vac7"="vac7"),
                              width = '100%'),
                  
-               
-                 
-                 
                )
          
              ),
@@ -806,7 +809,7 @@ ui <- fluidPage(
                  tabPanel("Association of Factors",  
                           
                           fluidRow(
-                            column(12, h3("UpSet plot reflecting association between questions and socio-determinants"))
+                            column(12, h3("Association between questions and socio-determinants"))
                           ),
                           fluidRow(
                             column(12, h5("The UpSet plot shows the co-occurrence between various questions and socio-determinants. 
@@ -823,52 +826,98 @@ ui <- fluidPage(
                           fluidRow(
                             column(12,h3("Legend"))
                           ),
-                                   
+                          
                           fluidRow(
-                              column(4,    
-                                  "vac_1 = Willing to take vaccine"),
-                              column(4,    
-                                     "vac2_1 = Fear of getting COVID19"),
-                              column(4,    
-                                     "vac2_2 = Concern on vaccine side effects")
-                             
-                          ),
-                              
-                          fluidRow(
-                            column(3,    
-                                   "vac2_3 = Confidence in vaccine efficacy"),
-                            column(4,    
-                                   "vac2_4 = Vaccine will protect recipient from COVID19 health effects"),
-                            column(5,    
-                                   "vac2_5 = Vaccine will prevent transmission of COVID from recipient")
+                            column(12,   
+                                   "vac_1_ag = Willing to take vaccine"),
+                            column(12,   
+                                   "vac2_1_ag = Fear of getting COVID19"),
+                            column(12,   
+                                   "vac2_2_ag = Concern on vaccine side effects")
                             
-                          ),    
-                                   
-                          fluidRow(
-                            column(3,    
-                                   "vac2_6 = Will regret if don't take vaccine"),
-                            column(4,    
-                                   "vac_3 = Will take vaccine 1 year later"),
-                            column(5,    
-                                   "vac4 = Vaccine is important for health")
-                           
                           ),
                           
                           fluidRow(
-                            column(3,    
-                                   "vac5 = Will get vaccine if available"),
-                            column(4,    
-                                   "vac6 = Family and friends will want respondent to be vaccinated"),
-                            column(5,    
-                                   "vac7 = Trust COVID19 vaccines")
+                            column(12,   
+                                   "vac2_3_ag = Confidence in vaccine efficacy"),
+                            column(12,   
+                                   "vac2_4_ag = Vaccine will protect recipient from COVID19 health effects"),
+                            column(12,   
+                                   "vac2_5_ag = Vaccine will prevent transmission of COVID from recipient")
                             
-                          )
+                          ),   
                           
+                          fluidRow(
+                            column(12,   
+                                   "vac2_6_ag = Will regret if don't take vaccine"),
+                            column(12,   
+                                   "vac_3_ag = Will take vaccine 1 year later"),
+                            column(12,   
+                                   "vac4_ag = Vaccine is important for health")
+                            
+                          ),
+                          
+                          fluidRow(
+                            column(12,   
+                                   "vac5_ag = Will get vaccine if available"),
+                            column(12,   
+                                   "vac6_ag = Family and friends will want respondent to be vaccinated"),
+                            column(12,   
+                                   "vac7_ag = Trust COVID19 vaccines")
+                            
+                          ),
+                          br(),
+                          br()
                           
                                    
                       ),
                          
-                 tabPanel("Data Exploration",  shinycssloaders::withSpinner(plotOutput("dataexplorationtab")))
+                 tabPanel("Data Exploration",  shinycssloaders::withSpinner(plotOutput("dataexplorationtab")),
+                          hr(),
+                          fluidRow(
+                            column(12,h3("Legend"))
+                          ),
+                          
+                          fluidRow(
+                            column(12,   
+                                   "vac_1_ag = Willing to take vaccine"),
+                            column(12,   
+                                   "vac2_1_ag = Fear of getting COVID19"),
+                            column(12,   
+                                   "vac2_2_ag = Concern on vaccine side effects")
+                            
+                          ),
+                          
+                          fluidRow(
+                            column(12,   
+                                   "vac2_3_ag = Confidence in vaccine efficacy"),
+                            column(12,   
+                                   "vac2_4_ag = Vaccine will protect recipient from COVID19 health effects"),
+                            column(12,   
+                                   "vac2_5_ag = Vaccine will prevent transmission of COVID from recipient")
+                            
+                          ),   
+                          
+                          fluidRow(
+                            column(12,   
+                                   "vac2_6_ag = Will regret if don't take vaccine"),
+                            column(12,   
+                                   "vac_3_ag = Will take vaccine 1 year later"),
+                            column(12,   
+                                   "vac4_ag = Vaccine is important for health")
+                            
+                          ),
+                          
+                          fluidRow(
+                            column(12,   
+                                   "vac5_ag = Will get vaccine if available"),
+                            column(12,   
+                                   "vac6_ag = Family and friends will want respondent to be vaccinated"),
+                            column(12,   
+                                   "vac7_ag = Trust COVID19 vaccines")
+                            
+                          )
+                          )
                )
              )
     )
@@ -999,7 +1048,7 @@ prophetmodelPanelServer("datafile")
     selected <- formatraw(confirmed_cases_raw)
     if(myvalues$default == 1){
       selected <- formatraw(datafile())
-      updateDateRangeInput(session, "date_range",end = getMyDate(datafile()))
+      updateDateRangeInput(session, "date_range1",end = getMyDate(datafile()))
       date_end <- input$date_range[2]
       date_end <-  date_end+1
       y <- format(date_end, "%d-%m-%Y")
@@ -1061,7 +1110,7 @@ prophetmodelPanelServer("datafile")
     selected <- formatraw(confirmed_cases_raw)
     if(myvalues$default == 1){
       selected <- formatraw(datafile())
-      updateDateRangeInput(session, "date_range",end = getMyDate(datafile()))
+      updateDateRangeInput(session, "date_range1",end = getMyDate(datafile()))
       date_end <- input$date_range[2]
       date_end <-  date_end+1
       y <- format(date_end, "%d-%m-%Y")
@@ -1129,7 +1178,7 @@ prophetmodelPanelServer("datafile")
     selected <- formatraw(confirmed_cases_raw)
     if(myvalues$default == 1){
       selected <- formatraw(datafile())
-      updateDateRangeInput(session, "date_range",end = getMyDate(datafile()))
+      updateDateRangeInput(session, "date_range2",end = getMyDate(datafile()))
       date_end <- input$date_range[2]
       date_end <-  date_end+1
       y <- format(date_end, "%d-%m-%Y")
@@ -1195,7 +1244,7 @@ prophetmodelPanelServer("datafile")
     selected <- formatraw(confirmed_cases_raw)
     if(myvalues$default == 1){
       selected <- formatraw(datafile())
-      updateDateRangeInput(session, "date_range",end = getMyDate(datafile()))
+      updateDateRangeInput(session, "date_range2",end = getMyDate(datafile()))
       date_end <- input$date_range[2]
       date_end <-  date_end+1
       y <- format(date_end, "%d-%m-%Y")
@@ -1260,9 +1309,6 @@ prophetmodelPanelServer("datafile")
   
   
   output$predictive <- renderPlotly({
-    
-   
-    
     
     date_start <- input$date_range[1]
     date_start <- date_start+1
@@ -1485,12 +1531,10 @@ prophetmodelPanelServer("datafile")
   
   observeEvent(input$variable4, {
     if(input$variable4 == FALSE){
-      print("here here?")
       myetsvalue$default <- 0
       removeTab(inputId = "tabs1", target = "ETS Model")
     }
    else{
-      print("not here?")
       insertTab(inputId = "tabs1",
                 tabPanel("ETS Model", etsmodelPanelUI("datafile")),
                 target = "Model Comparison"
@@ -1506,12 +1550,10 @@ prophetmodelPanelServer("datafile")
   
   observeEvent(input$variable5, {
     if(input$variable5 == FALSE){
-      print("here here?")
-     # myetsvalue$default <- 0
       removeTab(inputId = "tabs1", target = "Prophet Model")
     }
     else{
-      print("not here?")
+    
       insertTab(inputId = "tabs1",
                 tabPanel("Prophet Model", prophetmodelPanelUI("datafile")),
                 target = "Model Comparison"
