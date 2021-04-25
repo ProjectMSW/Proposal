@@ -81,8 +81,8 @@ ui <- fluidPage(
                                     h4("View anomalies in the data"),br(),
                                     shinycssloaders::withSpinner(plotlyOutput("anomalyPlot")),
                                     hr(),
-                                    h4("Detecting Autocorrelation (ACF),
-                                    Partial Autocorrelation (PACF), and Cross Correlation (CCF) of Lagged Predictors"),br(),
+                                    h4("Detecting Autocorrelation (ACF) and
+                                    Partial Autocorrelation (PACF) of Lagged Predictors"),br(),
                                     shinycssloaders::withSpinner(plotlyOutput("acfPlot")),
                                     hr(),
                                     h4("Visualizing time series STL Decomposition"),br(),
