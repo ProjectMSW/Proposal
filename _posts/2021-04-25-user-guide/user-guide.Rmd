@@ -3,7 +3,7 @@ title: "User Guide"
 description: |
   Step-by-step guide on how to use the data visualisation functions designed
 author:
-  - name: Daniel Lin Yong Yan, Siow Mun Chai, Tan Wei Li Amanda
+  - name: Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda
     url: {}
 date: 04-25-2021
 output:
