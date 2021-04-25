@@ -1,12 +1,18 @@
-name: "Proposal"
-title: "My Blog"
+name: "Covid Explorer Project"
+title: "Covid Explorer"
 description: |
-  My Blog
+ Project for Visual Analytics
 output_dir: "_site"
 navbar:
   right:
     - text: "Home"
       href: index.html
-    - text: "About"
+    - text: "Proposal"
+      href: index.html
+    - text: "Report"
       href: about.html
+    - text: "Poster"
+      href: about.html
+    - text: "User Guide"
+      href: user-guide.html
 output: distill::distill_article
