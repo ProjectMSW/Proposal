@@ -135,4 +135,7 @@ The following R packages would be used:
 - olsrr: https://cran.r-project.org/web/packages/olsrr/index.html
 - naniar: https://cran.r-project.org/web/packages/naniar/index.html
 - dlookr: https://cran.r-project.org/web/packages/dlookr/index.html
+- ggstatplot: https://cran.r-project.org/web/packages/ggstatsplot/index.html
+- gridExtra: https://cran.r-project.org/web/packages/gridExtra/index.html
+- ggExtra: https://cran.r-project.org/web/packages/ggExtra/index.html
 
