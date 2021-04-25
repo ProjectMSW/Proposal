@@ -974,7 +974,7 @@ server <- function(input, output, session){
   datafile <- csvFileServer("datafile", stringsAsFactors = FALSE,myvalues)
   output$initialtext <- renderText(
     if(myvalues$default == 0){ 
-      paste("Please Upload the latest file from John Hopkins University. Exisiting dataset as follows (caa 27 Mar 2021):", "", sep="\n\n\n")
+      paste("Please Upload the latest file from Johns Hopkins University. Exisiting dataset as follows (caa 27 Mar 2021):", "", sep="\n\n\n")
     }else{
       ""
     }

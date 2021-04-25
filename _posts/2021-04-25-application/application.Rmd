@@ -1,0 +1,19 @@
+---
+title: "Application"
+description: |
+  Link to Shiny Application
+author:
+  - name: Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda
+    url: www.smu.edu.sg
+date: 04-25-2021
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+This is the link to the shiny application:  https://mcsiow.shinyapps.io/CovidApplication/#
