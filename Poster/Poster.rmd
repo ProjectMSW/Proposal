@@ -29,20 +29,15 @@ logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/mast
 # Body
 poster_height: 841mm 
 poster_width: 594mm
-#font_size: 12pt
-font_family: arial
 column_numbers: 3
 body_textsize: "20pt"
 
 output: 
   posterdown::posterdown_html:
-    css: "style.css"
   # posterdown::posterdown_betterland:
   # posterdown::posterdown_betterport:
     self_contained: FALSE
 
-
-bibliography: packages.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -86,6 +81,11 @@ The following were the main analyses carried out thereafter.<br>
 ```{r pressure1, echo=FALSE, out.width = '100%'}
 knitr::include_graphics("package_icons3.png")
 ```
+<br>
+<br>
+<br>
+<br>
+
 
 # Analysis and Insights
 \vspace{-100pt}
@@ -123,15 +123,16 @@ knitr::include_graphics("images/deaths-spUI.jpg")
 **Funnel Plot**<br>
 The *ggplot2* package was used to generate the funnel plot, which is more appropriate for death rate analysis.
 \vspace{-100pt}
+
 ```{r pressure5, echo=FALSE, out.width = '100%'}
 knitr::include_graphics("images/deaths-fpUI.jpg")
 ```
-
 \vspace{-100pt}
 
 **Multiple Linear Regression**<br>
 The *olsrr* package was used to generate the UI for the multivariate analysis, which is more appropriate for exploring relationships with multiple independent variables.
 \vspace{-100pt}
+
 ```{r pressure6, echo=FALSE, out.width = '100%'}
 knitr::include_graphics("images/deaths-mlrUI.jpg")
 ```
@@ -156,10 +157,10 @@ knitr::include_graphics("images/vac-assocUI.jpg")
 
 # FUTURE WORKS
 
-**1. Scope** - The application can be developed to include other aspects of COVID-19 such as testing, hospitalisation and vaccination rates.<br>
-**2. Analysis** - More analysis can be included e.g. Trends of New Cases across countries, inclusion of more regression models for COVID-19 Deaths.
-
-
+**1. Scope** <br>
+The application can be developed to include other aspects of COVID-19 such as testing, hospitalisation and vaccination rates.<br><br>
+**2. Analysis**<br>
+More analysis can be included e.g. Trends of New Cases across countries, inclusion of more regression models for COVID-19 Deaths.
 
 ```{r echo=FALSE, eval=FALSE}
 library(pagedown)

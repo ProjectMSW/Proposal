@@ -16,21 +16,15 @@ Font-awesome icons ie github or twitter
 <!--
 Google fonts api stuff
 -->
-<link href='https://fonts.googleapis.com/css?family=arial' rel='stylesheet'>
 
 
 
-<<<<<<< HEAD
-<title>IVAR - Interactive Visual Analysis with R  for Exploring COVID-19 Data</title>
-=======
 <title>COVID ExploreR  </title>
->>>>>>> b507da0779055dd75ccc6277f5c0f7284ed8d7f3
 
-<script src="Poster_files/accessible-code-block-0.0.1/empty-anchor.js"></script>
-
+<script src="Poster_files/header-attrs-2.7/header-attrs.js"></script>
 
 
-<link rel="stylesheet" href="style.css" type="text/css" />
+
 
 <style>
 @page {
@@ -45,7 +39,7 @@ width: 594mm;
 height: 841mm;
 padding: 0;
 text-align: justify;
-font-family: arial;
+font-family: Palatino;
 }
 .poster_wrap {
 width: 594mm;
@@ -89,7 +83,7 @@ transform: translateY(-50%);
 -webkit-transform: translateY(-50%);
 }
 #title {
-font-family: arial;
+font-family: Palatino;
 }
 /* unvisited link */
 a:link {
@@ -328,14 +322,16 @@ Data wrangling and transformation was first carried out on the separate sets of 
 (UNDP) for health, economic and population structure indicators; and <br>
 (3) Imperial College London YouGov COVID-19 Behaviour Tracker Data Hub for survey data on virus perception and vaccination receptivity.</p>
 <p><strong>Tools Used</strong><br>
-<img src="package_icons3.png" width="100%" /></p>
+<img src="package_icons3.png" width="100%" />
+<br>
+<br>
+<br>
+<br></p>
 </div>
 <div id="analysis-and-insights" class="section level1">
 <h1>Analysis and Insights</h1>
-
 <div id="new-cases" class="section level4">
 <h4>NEW CASES</h4>
-
 <p><strong>Exploratory Time-Series Analysis</strong><br>
 The <em>timetk</em> package was used to provide diagnostic plots to study trends, seasonality and
 remainder, anomalies and lag if present in the time-series.
@@ -351,7 +347,6 @@ provided. The tool allows the user to explore and compare models available for p
 </div>
 <div id="deaths-and-death-rates" class="section level3">
 <h3>DEATHS AND DEATH RATES</h3>
-
 <p>The interactive visualization tool is designed such that the output is dependent on the type of variables selected and how the user plans to conduct the analysis.
 </p>
 <p><strong>Scatterplot</strong><br>
@@ -361,18 +356,17 @@ The scatterplot from <em>ggstatsplot</em> package was chosen for the statistical
 
 <strong>Funnel Plot</strong><br>
 The <em>ggplot2</em> package was used to generate the funnel plot, which is more appropriate for death rate analysis.
-
-<img src="images/deaths-fpUI.jpg" width="100%" /></p>
-
+</p>
+<p><img src="images/deaths-fpUI.jpg" width="100%" />
+</p>
 <p><strong>Multiple Linear Regression</strong><br>
 The <em>olsrr</em> package was used to generate the UI for the multivariate analysis, which is more appropriate for exploring relationships with multiple independent variables.
-
-<img src="images/deaths-mlrUI.jpg" width="100%" />
+</p>
+<p><img src="images/deaths-mlrUI.jpg" width="100%" />
 </p>
 </div>
 <div id="vaccination-receptivity" class="section level3">
 <h3>VACCINATION RECEPTIVITY</h3>
-
 <p><strong>Exploratory Analysis</strong><br>
 The <em>HH</em> package was used to generate the diverging stacked bar chart to allow users to view different countries receptivity towards vaccination. Error bars were also used to help users visualize uncertainty.
 
@@ -386,8 +380,10 @@ The UpSet plot was used to display associations between vaccination attitudes an
 </div>
 <div id="future-works" class="section level1">
 <h1>FUTURE WORKS</h1>
-<p><strong>1. Scope</strong> - The application can be developed to include other aspects of COVID-19 such as testing, hospitalisation and vaccination rates.<br>
-<strong>2. Analysis</strong> - More analysis can be included e.g. Trends of New Cases across countries, inclusion of more regression models for COVID-19 Deaths.</p>
+<p><strong>1. Scope</strong> <br>
+The application can be developed to include other aspects of COVID-19 such as testing, hospitalisation and vaccination rates.<br><br>
+<strong>2. Analysis</strong><br>
+More analysis can be included e.g. Trends of New Cases across countries, inclusion of more regression models for COVID-19 Deaths.</p>
 </div>
 </div>
 </div>
