@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<!--
+Font-awesome icons ie github or twitter
+-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/brands.css" integrity="sha384-n9+6/aSqa9lBidZMRCQHTHKJscPq6NW4pCQBiMmHdUCvPN8ZOg2zJJTkC7WIezWv" crossorigin="anonymous">
+
+<!--
+Google fonts api stuff
+-->
+<link href='https://fonts.googleapis.com/css?family=arial' rel='stylesheet'>
+
+
+
+<title>IVAR - Interactive Visual Analysis with R  for Exploring COVID-19 Data  </title>
+
+<script src="Poster_files/header-attrs-2.7/header-attrs.js"></script>
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+<style>
+@page {
+size: 594mm 841mm;
+margin: 0;
+padding: 0;
+}
+body {
+margin: 0;
+font-size: 20pt;
+width: 594mm;
+height: 841mm;
+padding: 0;
+text-align: justify;
+font-family: arial;
+}
+.poster_wrap {
+width: 594mm;
+height: 841mm;
+padding: 0cm;
+}
+.title_container {
+width: 594mm;
+height: calc(841mm * 0.15);
+overflow: hidden;
+background-color: #0b4545;
+border: 0 solid #0b4545;
+}
+.logo_left {
+float: left;
+width: 10%;
+height: 100%;
+background-color: #0b4545;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.logo_right {
+float: right;
+width: 10%;
+height: 100%;
+background-color: #0b4545;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.poster_title {
+text-align: center;
+position: relative;
+float: left;
+width: 80%;
+height: 100%;
+color: #FFFFFF;
+top: 50%;
+transform: translateY(-50%);
+-webkit-transform: translateY(-50%);
+}
+#title {
+font-family: arial;
+}
+/* unvisited link */
+a:link {
+color: #cc0000;
+}
+.mybreak {
+  break-before: column;
+}
+/* visited link */
+a:visited {
+color: #cc0000;
+}
+
+/* mouse over link */
+a:hover {
+color: #cc0000;
+}
+
+/* selected link */
+a:active {
+color: #cc0000;
+}
+.poster_body {
+-webkit-column-count: 3; /* Chrome, Safari, Opera */
+-moz-column-count: 3; /* Firefox */
+column-count: 3;
+-webkit-column-fill: auto;
+-moz-column-fill: auto;
+column-fill: auto;
+-webkit-column-rule-width: 1mm;
+-moz-column-rule-width: 1mm;
+column-rule-width: 1mm;
+-webkit-column-rule-style: dashed;
+-moz-column-rule-style: dashed;
+column-rule-style: dashed;
+-webkit-column-rule-color: #0b4545;
+-moz-column-rule-color: #0b4545;
+column-rule-color: #0b4545;
+column-gap: 1em;
+padding-left: 0.5em;
+padding-right: 0.5em;
+height: 100%;
+color: #000000
+background-color: #ffffff;
+}
+.poster_title h1 {
+font-size: 70pt;
+margin: 0;
+border: 0;
+font-weight: normal;
+}
+.poster_body_wrap{
+width: calc(594mm + 0 + 0);
+height: calc(841mm * 0.83);
+padding-top: calc(841mm * 0.005);
+padding-bottom: calc(841mm * 0.01);
+background-color: #ffffff;
+}
+.poster_title h3 {
+color: #ffffff;
+font-size: 30pt;
+margin: 0;
+border: 0;
+font-weight: normal;
+}
+.poster_title h3 > sup {
+  font-size: 35pt;
+  margin-left: 0.02em;
+}
+.poster_title h5 {
+color: #FFFFFF;
+font-size: ;
+margin: 0;
+border: 0;
+font-weight: normal;
+}
+img {
+margin-top: 2cm;
+margin-bottom: 0;
+}
+.section {
+  padding: 0.2em;
+}
+.poster_body h1 {
+text-align: center;
+color: #FFFFFF;
+font-size: 65pt;
+border: 2mm solid #0b4545;
+background-color: #0b4545;
+border-radius: 4mm 0mm;
+margin-top: 2mm;
+margin-bottom: 2mm;
+font-weight: normal;
+}
+.poster_body h2 {
+color: #000000;
+font-size: 40pt;
+padding-left: 4mm;
+font-weight: normal;
+}
+.span {
+width: 200%;
+}
+/* center align leaflet map,
+from https://stackoverflow.com/questions/52112119/center-leaflet-in-a-rmarkdown-document */
+.html-widget {
+margin: auto;
+position: sticky;
+margin-top: 2cm;
+margin-bottom: 2cm;
+}
+.leaflet.html-widget.html-widget-static-bound.leaflet-container.leaflet-touch.leaflet-fade-anim.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom {
+position: sticky;
+width: 100%;
+}
+pre.sourceCode.r {
+background-color: #dddddd40;
+border-radius: 4mm;
+padding: 4mm;
+width: 75%;
+/* align-items: center; */
+margin: auto;
+padding-left: 2cm;
+}
+code.sourceCode.r{
+background-color: transparent;
+font-size: 20pt;
+border-radius: 2mm;
+}
+.caption {
+font-size: 25pt;
+}
+.table caption {
+font-size: 25pt;
+padding-bottom: 3mm;
+
+}
+code {
+font-size: 1em;
+font-family: monospace;
+background-color: #00808024;
+color: #0b4545;
+padding: 1.2mm;
+border-radius: 2mm;
+}
+.poster_title code {
+font-size: 1em;
+}
+table {
+font-size: 40px;
+margin: auto;
+border-top: 3px solid #666;
+border-bottom: 3px solid #666;
+}
+table thead th {
+border-bottom: 3px solid #ddd;
+}
+td {
+padding: 8px;
+}
+th {
+padding: 15px;
+}
+caption {
+margin-bottom: 10px;
+}
+.poster_body p {
+margin-right: 4mm;
+margin-left: 4mm;
+margin-top: 6mm;
+margin-bottom: 10mm;
+}
+.poster_body ol {
+margin-right: 4mm;
+margin-left: 4mm;
+}
+#ul {
+margin-right: 4mm;
+margin-left: 4mm;
+}
+.references p {
+font-size: 20pt;
+}
+.orcid img {
+  width: 1em;
+}
+</style>
+</head>
+<body>
+
+
+<div class="poster_wrap">
+<div class="title_container">
+<!-- Left Logo  -->
+<div class="logo_left">
+<img src= 'https://raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png' style="width: 80%">
+</div>
+<!-- Poster Title -->
+<div class= "poster_title">
+<h1 id="title">IVAR - Interactive Visual Analysis with R <br>for Exploring COVID-19 Data <br></h1>
+<h3 id="author"><br>Lin Yongyan<sup></sup>, Siow Mun Chai<sup></sup>, Tan Wei Li Amanda<sup></sup>, <br> Prof Kam Tin Seong (Mentor)<sup></sup></h3><br>
+<h5 id="affiliation"><sup></sup> School of Computing and Information Systems, Singapore Management University</h5>
+</div>
+<!-- Right Logo  -->
+<div class="logo_right">
+<img src=smulogovector1.png style="width: 80%">
+</div>
+</div>
+
+<div class='poster_body_wrap'>
+<div class='poster_body'>
+<style type="text/css">
+section {
+  border: 2px solid red;
+  margin-top: 40px;
+  padding-top: 10px;
+}
+
+h2 {
+  column-span: all;
+  background: #7FD9CC;
+  padding: 10px;
+}
+
+h4 {
+  column-span: 1;
+  background: #bdded5;
+  padding: 8px;
+}
+</style>
+<div id="introduction-and-motivation" class="section level2">
+<h2>Introduction and Motivation</h2>
+<p><strong>Background</strong><br>
+In the global battle against the Coronavirus (COVID-19), countries seek to understand the virus, its spread, impact and more recently, receptivity towards COVID-19 vaccination. In today’s Data Age, there are many COVID-19 related data available across various platforms. Careful examination and derivation of insights from the data will support global efforts to mitigate the spread and impact of the virus.</p>
+<p><strong>Motivation</strong><br>
+To develop a consolidated interactive visualization tool to allow in-depth exploration and analysis of COVID-19 data for the generation of insights on key COVID-19 trends: <em>(1) new cases; (2) deaths;</em> and <em>(3) vaccination receptivity</em>.</p>
+<p><strong>Design Principles</strong><br></p>
+<ul>
+<li><p><u>Simplicity and Clarity</u> - Seamless user experience, easy to understand and aesthetically pleasing visualizations and statistical information</p></li>
+<li><p><u>Interactivity</u> - Flexibility to allow exploration of data to meet the specific needs of the user</p></li>
+<li><p><u>Utility</u> - Tools provided to generate useful and relevant insights from updated data</p></li>
+</ul>
+<p><strong>Analytical Approach</strong><br>
+Data wrangling and transformation was first carried out on the separate sets of data in preparation for further analysis.</p>
+<p>The following were the main analyses carried out thereafter.<br>
+- Predictive analysis of new cases<br>
+- Bivariate and multivariate analysis of deaths and death rates with health, economic and population structure indicators<br>
+- Exploratory and bivariate analysis of vaccination receptivity with virus perception and demographics</p>
+<p><strong>Data Sources</strong><br>
+(1) Center for Systems Science and Engineering (CSSE) at Johns Hopkins University for COVID-related data; <br>
+(2) Our World in Data, World Bank, UNdata, United Nations Development Programme
+(UNDP) for health, economic and population structure indicators; and <br>
+(3) Imperial College London YouGov COVID-19 Behaviour Tracker Data Hub for survey data on virus perception and vaccination receptivity.</p>
+<p><strong>Tools Used</strong><br>
+<img src="package_icons3.png" width="100%" /></p>
+</div>
+<div id="analysis-and-insights" class="section level2">
+<h2>Analysis and Insights</h2>
+<div id="new-cases" class="section level4">
+<h4>NEW CASES</h4>
+<p><strong>Exploratory Time-Series Analysis</strong><br>
+The <em>timetk</em> package was used to provide diagnostic plots to study trends, seasonality and
+remainder, anomalies and lag if present in the time-series.</p>
+<p><img src="images/cases-etsUI.jpg" width="100%" /></p>
+<p><strong>Predictive Time-Series Analysis</strong><br>
+The focus here is to allow users to compare and assess the performance of the predictive models
+provided. The tool allows the user to explore and compare models available for predictive time-series analysis. The tool also allows advanced users to change more advanced parameters.</p>
+<p><img src="images/cases-ptsUI.jpg" width="100%" /></p>
+</div>
+<div id="deaths-and-death-rates" class="section level4">
+<h4>DEATHS AND DEATH RATES</h4>
+<p>The guiding design principle was to allow users to interactively explore relationships of the number of deaths or death rates with other variables. The tool is designed such that the output is dependent on the type of variables selected and how the user plans to conduct the analysis.</p>
+<p><strong>Scatterplot</strong>
+The scatterplot from <em>ggstatsplot</em> package was chosen for the statistical tests conducted on the variables.
+<img src="images/deaths-spUI.jpg" width="100%" /></p>
+<p><strong>Funnel Plot</strong>
+The <em>ggplot2</em> package was used to generate the funnel plot, which is more appropriate for death rate analysis.
+<img src="images/deaths-fpUI.jpg" width="100%" /></p>
+<p><strong>Multiple Linear Regression</strong>
+The <em>olsrr</em> package was used to generate the UI for the multivariate analysis, which is more appropriate for exploring relationships with multiple independent variables.
+<img src="images/deaths-mlrUI.jpg" width="100%" /></p>
+</div>
+<div id="vaccination-receptivity" class="section level4">
+<h4>VACCINATION RECEPTIVITY</h4>
+<p><strong>Exploratory Analysis</strong>
+The <em>HH</em> package was used to generate the diverging stacked bar chart to allow users to view different countries receptivity towards vaccination. Error bars were also used to help users visualize uncertainty.</p>
+<p><img src="images/vac-edaUI.jpg" width="100%" /></p>
+<p><strong>Association Analysis</strong>
+The UpSet plot was used to display associations between vaccination attitudes and other factors.</p>
+<p><img src="images/vac-assocUI.jpg" width="100%" /></p>
+</div>
+<div id="future-works" class="section level4">
+<h4>FUTURE WORKS</h4>
+<p><strong>1. Scope</strong> - The application can be developed to include other aspects of COVID-19 such as testing, hospitalisation and vaccination rates.<br>
+<strong>2. Analysis</strong> - More analysis can be included e.g. Trends of New Cases across countries, inclusion of more regression models for COVID-19 Deaths.</p>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+
+
+</body>
+</html>

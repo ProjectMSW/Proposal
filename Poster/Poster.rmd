@@ -1,0 +1,176 @@
+---
+# Title Box
+title: IVAR - Interactive Visual Analysis with R <br>for Exploring COVID-19 Data <br>
+title_textsize: "70pt"
+author_textsize: "30pt"
+affiliation_textsize: "45pt"
+author:
+  - name: <br>Lin Yongyan
+    affil: 
+    email: yongyan.lin.2020@mitb.smu.edu.sg
+  - name: Siow Mun Chai
+    affil: 
+    email: mcsiow.2020@mitb.smu.edu.sg
+  - name: Tan Wei Li Amanda
+    affil: 
+    email: amandatan.2020@mitb.smu.edu.sg
+  - name: <br> Prof Kam Tin Seong (Mentor)
+    email: tskam@smu.edu.sg
+    main: true
+affiliation:
+  - num: 
+    address: School of Computing and Information Systems, Singapore Management University
+
+logoright_name: smulogovector1.png
+
+logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+
+
+# Body
+poster_height: 841mm 
+poster_width: 594mm
+#font_size: 12pt
+font_family: arial
+column_numbers: 3
+body_textsize: "20pt"
+
+output: 
+  posterdown::posterdown_html:
+    css: "style.css"
+  # posterdown::posterdown_betterland:
+  # posterdown::posterdown_betterport:
+    self_contained: FALSE
+
+
+bibliography: packages.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{css, echo=FALSE}
+section {
+  border: 2px solid red;
+  margin-top: 40px;
+  padding-top: 10px;
+}
+
+h2 {
+  column-span: all;
+  background: #7FD9CC;
+  padding: 10px;
+}
+
+h4 {
+  column-span: 1;
+  background: #bdded5;
+  padding: 8px;
+}
+```
+## Introduction and Motivation
+
+**Background**<br>
+In the global battle against the Coronavirus (COVID-19), countries seek to understand the virus, its spread, impact and more recently, receptivity towards COVID-19 vaccination. In today's Data Age, there are many COVID-19 related data available across various platforms. Careful examination and derivation of insights from the data will support global efforts to mitigate the spread and impact of the virus.
+
+**Motivation**<br>
+To develop a consolidated interactive visualization tool to allow in-depth exploration and analysis of COVID-19 data for the generation of insights on key COVID-19 trends: *(1) new cases; (2) deaths;* and *(3) vaccination receptivity*. 
+
+**Design Principles**<br>
+
+- <u>Simplicity and Clarity</u> - Seamless user experience, easy to understand and aesthetically pleasing visualizations and statistical information
+
+- <u>Interactivity</u> - Flexibility to allow exploration of data to meet the specific needs of the user
+
+- <u>Utility</u> - Tools provided to generate useful and relevant insights from updated data
+
+**Analytical Approach**<br>
+Data wrangling and transformation was first carried out on the separate sets of data in preparation for further analysis. 
+
+The following were the main analyses carried out thereafter.<br>
+- Predictive analysis of new cases<br>
+- Bivariate and multivariate analysis of deaths and death rates with health, economic and population structure indicators<br>
+- Exploratory and bivariate analysis of vaccination receptivity with virus perception and demographics
+
+**Data Sources**<br>
+(1) Center for Systems Science and Engineering (CSSE) at Johns Hopkins University for COVID-related data; <br>
+(2) Our World in Data, World Bank, UNdata, United Nations Development Programme
+(UNDP) for health, economic and population structure indicators; and <br>
+(3) Imperial College London YouGov COVID-19 Behaviour Tracker Data Hub for survey data on virus perception and vaccination receptivity.
+
+**Tools Used**<br>
+```{r pressure1, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("package_icons3.png")
+```
+
+## Analysis and Insights
+
+#### NEW CASES
+
+**Exploratory Time-Series Analysis**<br>
+The *timetk* package was used to provide diagnostic plots to study trends, seasonality and
+remainder, anomalies and lag if present in the time-series.
+
+```{r pressure2, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("images/cases-etsUI.jpg")
+```
+
+**Predictive Time-Series Analysis**<br>
+The focus here is to allow users to compare and assess the performance of the predictive models
+provided. The tool allows the user to explore and compare models available for predictive time-series analysis. The tool also allows advanced users to change more advanced parameters.
+
+```{r pressure3, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("images/cases-ptsUI.jpg")
+```
+
+#### DEATHS AND DEATH RATES
+The guiding design principle was to allow users to interactively explore relationships of the number of deaths or death rates with other variables. The tool is designed such that the output is dependent on the type of variables selected and how the user plans to conduct the analysis.
+
+**Scatterplot**
+The scatterplot from *ggstatsplot* package was chosen for the statistical tests conducted on the variables.
+```{r pressure4, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("images/deaths-spUI.jpg")
+```
+
+**Funnel Plot**
+The *ggplot2* package was used to generate the funnel plot, which is more appropriate for death rate analysis.
+```{r pressure5, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("images/deaths-fpUI.jpg")
+```
+
+**Multiple Linear Regression**
+The *olsrr* package was used to generate the UI for the multivariate analysis, which is more appropriate for exploring relationships with multiple independent variables.
+```{r pressure6, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("images/deaths-mlrUI.jpg")
+```
+
+#### VACCINATION RECEPTIVITY
+**Exploratory Analysis**
+The *HH* package was used to generate the diverging stacked bar chart to allow users to view different countries receptivity towards vaccination. Error bars were also used to help users visualize uncertainty.
+
+```{r pressure7, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("images/vac-edaUI.jpg")
+```
+
+**Association Analysis**
+The UpSet plot was used to display associations between vaccination attitudes and other factors.
+
+```{r pressure8, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("images/vac-assocUI.jpg")
+```
+
+#### FUTURE WORKS
+**1. Scope** - The application can be developed to include other aspects of COVID-19 such as testing, hospitalisation and vaccination rates.<br>
+**2. Analysis** - More analysis can be included e.g. Trends of New Cases across countries, inclusion of more regression models for COVID-19 Deaths.
+
+
+
+```{r echo=FALSE, eval=FALSE}
+library(pagedown)
+
+pagedown::chrome_print("Poster.html")
+
+```
+
+
+
