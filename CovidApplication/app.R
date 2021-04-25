@@ -910,15 +910,15 @@ ui <- fluidPage(
                           
                           fluidRow(
                             column(8,   
-                                   "vac_1_ag = Willing to take vaccine"),
+                                   "vac_1 = Willing to take vaccine"),
                             column(4,   
                                    "5 = Strongly Agree"),
                             column(8,   
-                                   "vac2_1_ag = Fear of getting COVID19"),
+                                   "vac2_1 = Fear of getting COVID19"),
                             column(4,   
                                    "4 = Agree"),
                             column(8,   
-                                   "vac2_2_ag = Concern on vaccine side effects"),
+                                   "vac2_2 = Concern on vaccine side effects"),
                             column(4,   
                                    "3 = Neutral")
                             
@@ -926,35 +926,35 @@ ui <- fluidPage(
                           
                           fluidRow(
                             column(8,   
-                                   "vac2_3_ag = Confidence in vaccine efficacy"),
+                                   "vac2_3 = Confidence in vaccine efficacy"),
                             column(4,   
                                    "2 = Disagree"),
                             column(8,   
-                                   "vac2_4_ag = Vaccine will protect recipient from COVID19 health effects"),
+                                   "vac2_4 = Vaccine will protect recipient from COVID19 health effects"),
                             column(4,   
                                    "1 = Strongly Disagree"),
                             column(12,   
-                                   "vac2_5_ag = Vaccine will prevent transmission of COVID from recipient")
+                                   "vac2_5 = Vaccine will prevent transmission of COVID from recipient")
                             
                           ),   
                           
                           fluidRow(
                             column(12,   
-                                   "vac2_6_ag = Will regret if don't take vaccine"),
+                                   "vac2_6 = Will regret if don't take vaccine"),
                             column(12,   
-                                   "vac_3_ag = Will take vaccine 1 year later"),
+                                   "vac_3 = Will take vaccine 1 year later"),
                             column(12,   
-                                   "vac4_ag = Vaccine is important for health")
+                                   "vac4 = Vaccine is important for health")
                             
                           ),
                           
                           fluidRow(
                             column(12,   
-                                   "vac5_ag = Will get vaccine if available"),
+                                   "vac5 = Will get vaccine if available"),
                             column(12,   
-                                   "vac6_ag = Family and friends will want respondent to be vaccinated"),
+                                   "vac6 = Family and friends will want respondent to be vaccinated"),
                             column(12,   
-                                   "vac7_ag = Trust COVID19 vaccines")
+                                   "vac7 = Trust COVID19 vaccines")
                             
                           )
                           )
