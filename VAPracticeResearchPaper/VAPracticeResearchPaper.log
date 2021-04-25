@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.4.19)  25 APR 2021 17:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.4.19)  25 APR 2021 17:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -741,12 +741,12 @@ rchPaper_files/figure-latex/unnamed-chunk-2-1.pdf>]
 LaTeX Warning: No positions in optional float specifier.
                Default added (so using `tbp') on input line 611.
 
-<images/vac-edaUI.jpg, id=162, 1129.21875pt x 649.67719pt>
+<images/vac-edaUI.jpg, id=161, 1129.21875pt x 649.67719pt>
 File: images/vac-edaUI.jpg Graphic file (type jpg)
 <use images/vac-edaUI.jpg>
 Package pdftex.def Info: images/vac-edaUI.jpg  used on input line 635.
 (pdftex.def)             Requested size: 240.0pt x 138.07191pt.
-<images/vac-assocUI.jpg, id=163, 1112.65688pt x 600.74437pt>
+<images/vac-assocUI.jpg, id=162, 1112.65688pt x 600.74437pt>
 File: images/vac-assocUI.jpg Graphic file (type jpg)
 <use images/vac-assocUI.jpg>
 Package pdftex.def Info: images/vac-assocUI.jpg  used on input line 641.
@@ -788,7 +788,7 @@ l.655
 l.655 
        <./images/deaths-spUI.jpg> <./images/deaths-fpUI.jpg> <./images/deaths-m
 lrUI.jpg> <./images/vac-edaUI.jpg>]
-<images/demo1.jpg, id=175, 465.53925pt x 343.88475pt>
+<images/demo1.jpg, id=174, 465.53925pt x 343.88475pt>
 File: images/demo1.jpg Graphic file (type jpg)
 <use images/demo1.jpg>
 Package pdftex.def Info: images/demo1.jpg  used on input line 666.
@@ -805,12 +805,12 @@ Overfull \hbox (12.20837pt too wide) in paragraph at lines 683--694
 
  []
 
-<images/demo2.jpg, id=176, 899.61093pt x 575.90157pt>
+<images/demo2.jpg, id=175, 899.61093pt x 575.90157pt>
 File: images/demo2.jpg Graphic file (type jpg)
 <use images/demo2.jpg>
 Package pdftex.def Info: images/demo2.jpg  used on input line 697.
 (pdftex.def)             Requested size: 240.0pt x 153.64133pt.
-<images/demo3.jpg, id=177, 934.24031pt x 496.10344pt>
+<images/demo3.jpg, id=176, 934.24031pt x 496.10344pt>
 File: images/demo3.jpg Graphic file (type jpg)
 <use images/demo3.jpg>
 Package pdftex.def Info: images/demo3.jpg  used on input line 712.
@@ -934,18 +934,18 @@ Here is how much of TeX's memory you used:
 {c:/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2021/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmb10.pfb><c:/texlive/2021/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmbxti10.pfb><c:/texlive/2021/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmmi9.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmr6.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmr9.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb><
-c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb><c:/texlive
-/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb><c:/texlive/2021/texm
-f-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/2021/texmf-dist/fonts/ty
-pe1/urw/helvetic/uhvr8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/u
-tmb8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on VAPracticeResearchPaper.pdf (8 pages, 2060374 bytes).
+1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmr9.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/c
+msy9.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb><
+c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb><c:/texlive
+/2021/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/2021/texmf-dis
+t/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/u
+rw/times/utmb8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmri8a.p
+fb>
+Output written on VAPracticeResearchPaper.pdf (8 pages, 2053361 bytes).
 PDF statistics:
- 265 PDF objects out of 1000 (max. 8388607)
- 219 compressed objects within 3 object streams
+ 261 PDF objects out of 1000 (max. 8388607)
+ 216 compressed objects within 3 object streams
  74 named destinations out of 1000 (max. 500000)
  245 words of extra memory for PDF output out of 10000 (max. 10000000)
 
