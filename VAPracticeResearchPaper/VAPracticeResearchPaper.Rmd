@@ -11,9 +11,8 @@ author:
     email: amandatan.2020@mitb.smu.edu.sg
     affiliation: Masters of IT in Business (MITB), Singapore Management University (SMU)
 abstract: |
-  In today's Data Age, data on COVID-19 are related data available, visualisations and studies.
+  Interactivity is often synonymous with data visualisations and is an important component for one to derive useful insights from the visualisation. When the complexity of the analysis in the visualisation increases, static forms are often preferred, and this is evident in the level of interactivity support provided by R packages with more useful yet complex statistical tools. In this paper, we present the COVID ExploreR, an interactive visual analysis application for exploring COVID-19 data. Centred around user interaction and user experience design framework, COVID ExploreR uses dynamic input controls as an alternative to ensure interactivity with the data, when visualisation interactivity cannot be achieved.
 
-  It consists of two paragraphs.
 bibliography: sigproc.bib
 csl: acm-sig-proceedings.csl
 output: rticles::acm_article
@@ -24,7 +23,7 @@ output: rticles::acm_article
 
 The Coronavirus (COVID-19) has caught the world’s attention with the first COVID-19 cases reported in Wuhan, Hubei, China, in December 2019. In the global battle against the virus, countries seek to understand the virus, its spread, impact and more recently, receptivity towards the COVID-19 vaccination. We are currently living in the Data Age, where many COVID-19 related data are made available on the Internet. This has facilitated numerous, but not limited to, epidemiology and statistical studies across the globe. 
 
-In the data science realm, many data-driven applications are developed to provide a one-stop information hub for the public. These applications are typically developed using programming languages such as HTML, Java and JavaScript. With the growing popularity of R, and its ability to create web applications using the R Shiny package, the creation of interactive visualisations without having in-depth web programming knowledge has been made possible. 
+In the data science realm, many data-driven applications are developed to provide a one-stop information hub for the public. These applications are typically developed using programming languages such as HTML, Java and JavaScript. With the growing popularity of R, its statistical capabilities, and its ability to create web applications using the R Shiny package, the creation of interactive visualisations without having in-depth web programming knowledge has been made possible. 
 
 In this paper, we aim to leverage the richness of the COVID-19 data to provide an interactive experience in generating insights and analyses using R Shiny from three key aspects: (1) new cases; (2) deaths; and (3) vaccination receptivity.
 
