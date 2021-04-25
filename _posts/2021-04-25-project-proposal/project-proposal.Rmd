@@ -3,7 +3,7 @@ title: "COVID ExploreR - Interactive Visual Analysis with R Shiny for Exploring 
 description: |
   Project Proposal
 author:
-  - name: Lin YongYan, Siow Mun Chai, Tan Wei Li Amanda
+  - name: Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda
     url: www.smu.edu.sg
 date: 04-25-2021
 output:
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduction
 
-The Coronavirus (COVID-19) has caught the world's attention with the first COVID-19 cases reported in Wuhan, Hubei, China, in December 2019. In the global battle against the virus, countries seek to understand the virus, its spread,impact and more recently, receptivity towards the COVID-19 vaccination. We are currently living in the Data Age,where many COVID-19 related data are made available on
+The Coronavirus (COVID-19) has caught the world's attention with the first COVID-19 cases reported in Wuhan, Hubei, China, in December 2019. In the global battle against the virus, countries seek to understand the virus, its spread, impact and more recently, receptivity towards the COVID-19 vaccination. We are currently living in the Data Age,where many COVID-19 related data are made available on
 the Internet. This has facilitated numerous, but not limited to epidemiology and statistical studies across the globe.
 
 In the data science realm, many data-driven applications are developed to provide a one-stop information hub for the public. These applications are typically developed using programming languages such as HTML, Java and JavaScript. With the growing popularity of R, and its ability to create web applications using the R Shiny package, the creation of interactive visualisations without having in-depth web programming knowledge has been made possible.

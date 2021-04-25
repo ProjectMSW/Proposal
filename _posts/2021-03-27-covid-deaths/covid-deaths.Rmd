@@ -2,7 +2,7 @@
 title: "COVID-19: death statistics"
 description: |
   This post is on the planning and prototyping process for one of the three sub-modules of a Shiny-based Visual Analytics Application project for the course *ISSS608 - Visual Analytics and Applications* offered in SMU MITB.
-author: amanda
+author: Tan Wei Li Amanda
 URL: https://mydatastory.netlify.app
 date: 04-11-2021
 output:
@@ -1031,7 +1031,7 @@ The output panel will display the results according to the user selection on the
 
 *- End of assignment, thank you! -*
 
-```{r}
+```{r eval=FALSE, echo=FALSE}
 covid_deaths_tidy <- covid_deaths_tidy %>%
     mutate(deaths_per_test = total_deaths / total_tests,
            deaths_per_population = total_deaths / population) %>%
