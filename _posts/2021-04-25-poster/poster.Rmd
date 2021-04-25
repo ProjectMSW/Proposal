@@ -1,0 +1,19 @@
+---
+title: "Poster"
+description: |
+ A Visual Analytics Application practice and research.
+author:
+  - name: Lin Yongyan, Siow Mun Chai, Tan Wei Li Amanda
+    url: www.smu.edu.sg
+date: 04-25-2021
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+The poster is created using posterdown package. The link to the poster can be found [here](https://github.com/ProjectMSW/Proposal/blob/3f6cce6744642222749edbd165e96535fc0c98fa/Poster/Poster.pdf).

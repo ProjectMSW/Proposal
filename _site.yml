@@ -11,6 +11,8 @@ navbar:
       href: posts/2021-04-25-project-proposal/index.html
     - text: "Report"
       href: posts/2021-04-25-report/index.html
+    - text: "Poster"
+      href: posts/2021-04-25-poster/index.html
     - text: "Application"
       href: posts/2021-04-25-application/index.html
     - text: "User Guide"
