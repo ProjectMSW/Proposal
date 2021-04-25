@@ -16,4 +16,4 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-The practice research paper is edited using the ACM article template of `rticle` package. The link to the paper can be found [here](https://github.com/ProjectMSW/Proposal/blob/69c5c67db2146679ea8d937947e9c3327eb94d8a/VAPracticeResearchPaper/VAPracticeResearchPaper.pdf).
+The practice research paper is edited using the ACM article template of `rticle` package. The link to the paper can be found [here](https://github.com/ProjectMSW/Proposal/blob/dd18e16c45eb56321dd8a1fba346fec6b74f6b7d/VAPracticeResearchPaper/VAPracticeResearchPaper.pdf).
