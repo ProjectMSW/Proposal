@@ -301,41 +301,53 @@ Within the association analysis plots, the UpSet plot is able to support multipl
 
 # Demonstration
 
-Vaccination is believed to play a key role in curbing the spread of COVID-19 and bringing an end to the global pandemic. However, vaccination rates are slow with some countries and it is important to understand the reasons of not wanting to be vaccinated, in order to develop targeted strategies to increase vaccination rates. We will demonstrate the use case of understanding vaccination receptivity with our application.
+Vaccination is believed to play a key role in curbing the spread of COVID-19 and bringing an end to the global pandemic. However, vaccination rates are slow with some countries and it is important to understand the reasons of not wanting to be vaccinated, in order to develop targeted strategies to increase vaccination rates. We will demonstrate the use case of our application in understanding vaccination receptivity in more detail.
 
-Using the *diverging stacked bar chart*, we are able to visualize the responses to the different questions and hence get a deeper understanding of the possible association and determinants behind the attitudes and inclination towards vaccination. The question on whether one is worried about the side effects of COVID-19 vaccines is selected.
+Under **Survey Finding** of the **Understanding Vaccination Sentiments** sub-module, we are able to visualize the responses to the different questions from the *diverging stacked bar chart*, and hence get a deeper understanding of the possible association and determinants behind the attitudes and inclination towards vaccination. The question on whether one is worried about the side effects of COVID-19 vaccines is selected.
 
 ![Diverging stacked bar chart showing the proportion of respondents who are worried about getting COVID-19 and bar plot with error bar showing the proportion of respondents with "strongly agreed"](images/demo1.jpg)
 
 From Figure ##, it is observed that South Korea and Japan have a relatively low proportion of people who strongly agreed and agree that they were worried about getting COVID-19. Comparing it to their vaccination rates taken from @owidcoronavirus2020, this could be one possible explanation for the low vaccination rate of South Korean and Japan (0.15% and 0.67% of population fully vaccinated as of 22 Apr 2021). From the bar plot with error bar, we are fairly confident that the proportion of responses for "Strongly Agree" would not change much due to the short error bar.
 
-Closer examination would be needed to understand the factors that could be affecting different countries’ inclination towards vaccination, which would provide useful insights on possible strategies to improve vaccination rates, such as vaccination awareness campaigns.
+Let us take a closer look at Japan. Under the **Association of Factors** tab, we observe that the willingness to take the vaccine and the concern on vaccine side effects have the largest intersection size in the UpSet plot (Figure #). This hints at a strong association between the two questions. Other questions that have a moderate association would be willingness-concern-regret, willingness-concern-confidence in efficacy-regret and willingness-fear of COVID-confidence in efficacy-regret. We observe that the themes are similar for groups with moderate to strong association: the respondents who strongly agree to taking vaccines have high confidence in the vaccine efficacy and are not concerned on the vaccine side effects.
 
+![UpSet plot showing the correlation of "Strongly Agree" responses across survey questions for Japan](images/demo2.jpg)
 
+We can also take a look at the relationship between the willingness to take vaccine with the respondent's age in the **Data Exploration** tab. From Figure #, we observe that the majority of respondents are aged between 50 to 63, with more respondents having strong willingness to take the vaccine. However, as we move along to younger age groups, the proportion of these respondents who have strong willingness is the lowest.
 
-# Discussion
+![Density plot of willingness to take vaccine by age for Japan](images/demo3.jpg)
 
+## Discussion
 
+In understanding vaccination sentiments, users are able to explore the survey responses of different countries by questions and the association between variables via the UpSet plot and the data exploration function. The insights gained from the exploration serves to inform on possible reasons behind willingness to take vaccine, which can in turn be used to drive policies and strategies to improve vaccination rates. We would like to caution users that the primary intention of the application is for users to explore in further detail the available COVID-19 data. Separate confirmatory data analysis is highly encouraged to validate the insights gained from our application.
 
+Other use cases for our applications are (and not limited to):-
+
+* Management of healthcare resources and government expenditure from the predictive analysis of confirmed COVID-19 cases
+* Future preparation to handle a similar pandemic by understanding the relationship between a country's ranking in certain global indices and the number of deaths or death rate experienced by the country
+* Management of vaccine supplies in anticipation of the intention and willingness of the country's residents in taking the COVID-19 vaccine
 
 # Future work
 
-Due to resource constraints, only three aspects of the COVID-19 data were selected for further exploration in our application. The application could be developed to include other aspects such as COVID-19 testing, hospitalisation and vaccination rates in the future. In the current application, some functionalities were not included and may be considered for future works.
+Due to resource constraints, only three aspects of the COVID-19 data were selected for further exploration in our application. The application could be developed to include other aspects such as COVID-19 testing, hospitalisation and vaccination rates in the future. The ideal application would allow users to select the desired analysis (predictive, comparison with country indicators) for the variable(s) of interest. It would also be interesting to compare vaccination receptivity with other factors such as number of confirmed cases and deaths in the country and neighbouring countries.
 
-#### New cases
+In the current application, some functionalities were not included and may be considered for future works.
+
+*New cases*
 
 * Exploratory time-series analysis: explore and compare trends across different countries
 * Predictive time-series analysis: compare two or more models based on different input parameters, and include more models for advance analysis
 
-#### Deaths and death rates
+*Deaths and death rates*
 
 * Inclusion of more global indicators
 * Scatterplot: further customisation of statistical test to be used, customisation of scale encodings
 * Funnel plot: customisation of scale encodings
 * MLR: include more regression models
 
-#### Vaccination receptivity
+*Vaccination receptivity*
 
+* Bar plot with error bars: include interactivity component
 * UpSet plot: further customisation of the plot to include attribute plots and grouping by other factors
 
 # Conclusion

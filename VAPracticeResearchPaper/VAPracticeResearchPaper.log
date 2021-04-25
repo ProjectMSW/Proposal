@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.4.19)  25 APR 2021 09:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.4.19)  25 APR 2021 17:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -695,21 +695,21 @@ Overfull \hbox (6.45975pt too wide) in paragraph at lines 544--559
 [][]
  []
 
-<images/deaths-spUI.jpg, id=137, 874.01532pt x 563.10374pt>
+<images/deaths-spUI.jpg, id=137, 1125.45468pt x 624.83438pt>
 File: images/deaths-spUI.jpg Graphic file (type jpg)
 <use images/deaths-spUI.jpg>
 Package pdftex.def Info: images/deaths-spUI.jpg  used on input line 577.
-(pdftex.def)             Requested size: 240.0pt x 154.62631pt.
-<images/deaths-fpUI.jpg, id=138, 876.27374pt x 382.42876pt>
+(pdftex.def)             Requested size: 240.0pt x 133.24034pt.
+<images/deaths-fpUI.jpg, id=138, 1123.94907pt x 446.41782pt>
 File: images/deaths-fpUI.jpg Graphic file (type jpg)
 <use images/deaths-fpUI.jpg>
 Package pdftex.def Info: images/deaths-fpUI.jpg  used on input line 583.
-(pdftex.def)             Requested size: 240.0pt x 104.73932pt.
-<images/deaths-mlrUI.jpg, id=139, 855.94781pt x 556.32843pt>
+(pdftex.def)             Requested size: 240.0pt x 95.32402pt.
+<images/deaths-mlrUI.jpg, id=139, 1112.65688pt x 609.77812pt>
 File: images/deaths-mlrUI.jpg Graphic file (type jpg)
 <use images/deaths-mlrUI.jpg>
 Package pdftex.def Info: images/deaths-mlrUI.jpg  used on input line 589.
-(pdftex.def)             Requested size: 240.0pt x 155.98311pt.
+(pdftex.def)             Requested size: 240.0pt x 131.52774pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
@@ -741,16 +741,16 @@ rchPaper_files/figure-latex/unnamed-chunk-2-1.pdf>]
 LaTeX Warning: No positions in optional float specifier.
                Default added (so using `tbp') on input line 611.
 
-<images/vac-edaUI.jpg, id=162, 790.152pt x 498.663pt>
+<images/vac-edaUI.jpg, id=162, 1129.21875pt x 649.67719pt>
 File: images/vac-edaUI.jpg Graphic file (type jpg)
 <use images/vac-edaUI.jpg>
 Package pdftex.def Info: images/vac-edaUI.jpg  used on input line 635.
-(pdftex.def)             Requested size: 240.0pt x 151.46425pt.
-<images/vac-assocUI.jpg, id=163, 790.152pt x 504.08325pt>
+(pdftex.def)             Requested size: 240.0pt x 138.07191pt.
+<images/vac-assocUI.jpg, id=163, 1112.65688pt x 600.74437pt>
 File: images/vac-assocUI.jpg Graphic file (type jpg)
 <use images/vac-assocUI.jpg>
 Package pdftex.def Info: images/vac-assocUI.jpg  used on input line 641.
-(pdftex.def)             Requested size: 240.0pt x 153.1106pt.
+(pdftex.def)             Requested size: 240.0pt x 129.57918pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
@@ -781,94 +781,132 @@ l.655
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
 l.655 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+16}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.655 
        <./images/deaths-spUI.jpg> <./images/deaths-fpUI.jpg> <./images/deaths-m
-lrUI.jpg>]
-<images/demo1.jpg, id=174, 888.31876pt x 495.35063pt>
+lrUI.jpg> <./images/vac-edaUI.jpg>]
+<images/demo1.jpg, id=175, 465.53925pt x 343.88475pt>
 File: images/demo1.jpg Graphic file (type jpg)
 <use images/demo1.jpg>
-Package pdftex.def Info: images/demo1.jpg  used on input line 664.
-(pdftex.def)             Requested size: 240.0pt x 133.82959pt.
+Package pdftex.def Info: images/demo1.jpg  used on input line 666.
+(pdftex.def)             Requested size: 240.0pt x 177.28365pt.
 
-Overfull \hbox (3.85738pt too wide) in paragraph at lines 687--693
-\T1/aer/m/n/9 Due to re-source con-straints, only three as-pects of the COVID-
+Overfull \hbox (3.71544pt too wide) in paragraph at lines 673--682
+\T1/aer/m/n/9 have a rel-a-tively low pro-por-tion of peo-ple who strongly agre
+ed
  []
 
+
+Overfull \hbox (12.20837pt too wide) in paragraph at lines 683--694
+\T1/aer/m/n/9 concern-regret, willingness-concern-confidence in efficacy-regret
+
+ []
+
+<images/demo2.jpg, id=176, 899.61093pt x 575.90157pt>
+File: images/demo2.jpg Graphic file (type jpg)
+<use images/demo2.jpg>
+Package pdftex.def Info: images/demo2.jpg  used on input line 697.
+(pdftex.def)             Requested size: 240.0pt x 153.64133pt.
+<images/demo3.jpg, id=177, 934.24031pt x 496.10344pt>
+File: images/demo3.jpg Graphic file (type jpg)
+<use images/demo3.jpg>
+Package pdftex.def Info: images/demo3.jpg  used on input line 712.
+(pdftex.def)             Requested size: 240.0pt x 127.43958pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.703   P
-         redictive time-series analysis: compare two or more models based on [7
-pdfTeX warning (ext4): destination with the same identifier (name{figure.16}) h
-as been already used, duplicate ignored
+l.717 \subsection{Discussion}\label{discussion}}
+                                                 [7pdfTeX warning (ext4): desti
+nation with the same identifier (name{figure.17}) has been already used, duplic
+ate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.703   P
-         redictive time-series analysis: compare two or more models based onpdf
-TeX warning (ext4): destination with the same identifier (name{figure.17}) has 
-been already used, duplicate ignored
+l.717 \subsection{Discussion}\label{discussion}}
+                                                pdfTeX warning (ext4): destinat
+ion with the same identifier (name{figure.18}) has been already used, duplicate
+ ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.703   P
-         redictive time-series analysis: compare two or more models based onpdf
-TeX warning (ext4): destination with the same identifier (name{figure.18}) has 
-been already used, duplicate ignored
+l.717 \subsection{Discussion}\label{discussion}}
+                                                pdfTeX warning (ext4): destinat
+ion with the same identifier (name{figure.19}) has been already used, duplicate
+ ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.703   P
-         redictive time-series analysis: compare two or more models based on <.
-/images/vac-edaUI.jpg> <./images/vac-assocUI.jpg> <./images/demo1.jpg>]
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 744--748
+l.717 \subsection{Discussion}\label{discussion}}
+                                                pdfTeX warning (ext4): destinat
+ion with the same identifier (name{figure.20}) has been already used, duplicate
+ ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.717 \subsection{Discussion}\label{discussion}}
+                                                 <./images/vac-assocUI.jpg> <./
+images/demo1.jpg> <./images/demo2.jpg> <./images/demo3.jpg>]
+Overfull \hbox (8.05316pt too wide) in paragraph at lines 738--742
+\T1/aer/m/n/9 un-der-stand-ing the re-la-tion-ship be-tween a coun-try's rank-
+ []
+
+
+Overfull \hbox (3.85738pt too wide) in paragraph at lines 749--758
+\T1/aer/m/n/9 Due to re-source con-straints, only three as-pects of the COVID-
+ []
+
+
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 813--817
 [] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 749--753
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 818--822
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 754--758
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 823--827
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 759--762
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 828--831
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 763--767
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 832--836
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 768--773
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 837--842
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 774--777
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 843--846
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 778--781
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 847--850
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 782--786
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 851--855
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 787--791
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 856--860
 [][][] [] 
  []
 
 
-Overfull \hbox (2.05199pt too wide) in paragraph at lines 792--796
+Overfull \hbox (2.05199pt too wide) in paragraph at lines 861--865
 [][][] [] 
  []
 
@@ -876,22 +914,20 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.800 \end{document}
-                     [8
-
-] (./VAPracticeResearchPaper.aux)
+l.869 \end{document}
+                     [8] (./VAPracticeResearchPaper.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `VAPracticeResearchPaper.out' has not changed
 .
-(rerunfilecheck)             Checksum: 7BD79ED8F94270ACD1D031A0B86B4BDB;2650.
+(rerunfilecheck)             Checksum: 9E8778800432B177CADB3A055B521EC0;2664.
  ) 
 Here is how much of TeX's memory you used:
- 11574 strings out of 478994
- 164220 string characters out of 5862207
- 482062 words of memory out of 5000000
- 28728 multiletter control sequences out of 15000+600000
+ 11582 strings out of 478994
+ 164338 string characters out of 5862207
+ 481970 words of memory out of 5000000
+ 28735 multiletter control sequences out of 15000+600000
  454161 words of font info for 87 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,13n,102p,408b,473s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -906,10 +942,10 @@ c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb><c:/texlive
 f-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/2021/texmf-dist/fonts/ty
 pe1/urw/helvetic/uhvr8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/u
 tmb8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on VAPracticeResearchPaper.pdf (8 pages, 1700644 bytes).
+Output written on VAPracticeResearchPaper.pdf (8 pages, 2060374 bytes).
 PDF statistics:
- 264 PDF objects out of 1000 (max. 8388607)
- 220 compressed objects within 3 object streams
- 75 named destinations out of 1000 (max. 500000)
- 235 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 265 PDF objects out of 1000 (max. 8388607)
+ 219 compressed objects within 3 object streams
+ 74 named destinations out of 1000 (max. 500000)
+ 245 words of extra memory for PDF output out of 10000 (max. 10000000)
 
