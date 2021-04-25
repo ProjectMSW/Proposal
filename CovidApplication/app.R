@@ -41,7 +41,7 @@ ui <- fluidPage(
   
   navbarPage(
     theme = shinytheme("sandstone"),
-    "Home:",
+    "Covid Explorer",
     tabPanel("Forecasting Positive Cases",
              sidebarPanel(
                h4("Dataset"),
